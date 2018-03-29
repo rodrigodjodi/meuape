@@ -1,140 +1,81 @@
-<krpano version="1.19" title="Tour virtual" debugmode="true">
-
-	<include url="skin/PIPE-vtourskin.xml" />
-	<include url="plugins/showtext.xml" />
-
-	<textstyle name="ROBOTO" 
-		font="Roboto" 
-		fontsize="20" 
-		italic="false" 
-		background="false" 
-		border="false" 
-		alpha="0.8" 
-		textcolor="0xffffff" 
-		blendmode="normal"   /> 
-	<!-- customize skin settings: maps, gyro, thumbnails, tooltips, layout, design, ... -->
-	<skin_settings maps="false"
-	               maps_type="bing"
-	               maps_bing_api_key=""
-	               maps_zoombuttons="false"
-	               gyro="true"
-	               littleplanetintro="false"
-	               title="true"
-	               thumbs="true"
-	               thumbs_width="120" thumbs_height="80" thumbs_padding="10" thumbs_crop="0|40|240|160"
-	               thumbs_opened="false"
-	               thumbs_text="false"
-	               thumbs_dragging="true"
-	               thumbs_onhoverscrolling="false"
-	               thumbs_scrollbuttons="false"
-	               thumbs_scrollindicator="false"
-	               thumbs_loop="false"
-	               tooltips_buttons="false"
-	               tooltips_thumbs="false"
-	               tooltips_hotspots="true"
-	               tooltips_mapspots="false"
-	               deeplinking="false"
-	               loadscene_flags="MERGE"
-	               loadscene_blend="OPENBLEND(0.5, 0.0, 0.75, 0.05, linear)"
-	               loadscene_blend_prev="SLIDEBLEND(0.5, 180, 0.75, linear)"
-	               loadscene_blend_next="SLIDEBLEND(0.5,   0, 0.75, linear)"
-	               loadingtext="carregando..."
-	               layout_width="100%"
-	               layout_maxwidth.normal="900"
-	               layout_maxwidth.mobile=""
-	               controlbar_width.normal="-44"
-	               controlbar_width.mobile="100%"
-	               controlbar_height.normal="38"
-	               controlbar_height.mobile="34"
-	               controlbar_offset.normal="22"
-	               controlbar_offset.mobile="0"
-	               controlbar_offset_closed="-40"
-	               controlbar_overlap.normal="7"
-	               controlbar_overlap.mobile="2"
-	               design_skin_images="vtourskin.png"
-	               design_bgcolor="0x000000"
-	               design_bgalpha="0.5"
-	               design_bgborder="0 0xFFFFFF 1.0"
-	               design_bgroundedge.normal="9"
-	               design_bgroundedge.mobile="1"
-	               design_bgshadow="0 0 9 0xFFFFFF 0.5"
-	               design_thumbborder_bgborder="4 0xFFFFFF 1.0"
-	               design_thumbborder_padding="2"
-	               design_thumbborder_bgroundedge="5"
-	               design_text_css="color:#FFFFFF; font-family:Roboto;"
-	               design_text_shadow="1"
-	               />
-
-	<!--
-	    For an alternative skin design either change the <skin_settings> values 
-	    from above or optionally include one of the predefined designs from below.
-	    Either by removing the 'xml-if-check' from the particular <include> element
-	    or by adding e.g. initvar:{design:'flat_light'} to the embedpano() call in
-	    the html file:
+﻿<krpano version="1.19" title="*TITULO*" idletime="0.5" debugmode="true">
+	<include url="skin/vtourskin.xml" />
+	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
+	<include url="skin/vtourskin_design_flat_light.xml" />
+	<skin_settings webvr_prev_next_hotspots="false"
+		tooltips_hotspots="true"
+		tooltips_mapspots="false"
+		loadingtext="carregando..."
+		deeplinking="false"
+		design_text_css="color:#FFFFFF;
+		font-family:Roboto;"
+		design_skin_images="PIPE-vtourskin_light.png" />
 	
-	<include url="skin/vtourskin_design_glass.xml"       if="design === 'glass'"       />
-	<include url="skin/vtourskin_design_flat.xml"        if="design === 'flat'"        />
-	<include url="skin/vtourskin_design_flat_light.xml"  if="design === 'flat_light'"  />
-	<include url="skin/vtourskin_design_ultra_light.xml" if="design === 'ultra_light'" />
-	<include url="skin/vtourskin_design_117.xml"         if="design === '117'"         />
--->
-
-	<!-- startup action - load the first pano/scene -->
+	<!-- startup action - load the first scene -->
 	<action name="startup" autorun="onstart">
-		if(startscene === null OR !scene[get(startscene)], copy(startscene,scene[0].name); );
-		loadscene(get(startscene), null, MERGE);
-		
+		if(ambiente === null OR !scene[get(ambiente)], copy(ambiente,scene[0].name); );
+		loadscene(get(ambiente), null, MERGE);
 		if(startactions !== null, startactions() );
+		if(stagewidth GT 1200, sidebar_open());
+		webvr_hide_all_vr_only_hotspots();
+		txtadd(plugin[WebVR].onentervr, '; webvr_show_all_vr_only_hotspots();');
+		txtadd(plugin[WebVR].onexitvr, '; webvr_hide_all_vr_only_hotspots();');
 	</action>
-
-
+	<display autofullscreen="false"/>
 	
-	<scene name="padrao" title="ESTAR" onstart="on_scene_loaded(get(xml.scene), 65);" thumburl="panos/LESSENCE_TOURAP_R0-01_CAM01.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="classico" title="classico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/classico.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/LESSENCE_TOURAP_R0-01_CAM01.tiles/preview.jpg" />
+		<preview url="panos/classico.tiles/preview.jpg" />
 
-		<image>
-			<cube url="panos/LESSENCE_TOURAP_R0-01_CAM01.tiles/pano_%s.jpg" />
-			<mobile>
-				<cube url="panos/LESSENCE_TOURAP_R0-01_CAM01.tiles/mobile_%s.jpg" />
-			</mobile>
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/classico.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
 		</image>
 
-		
+		<image if="webvr.isenabled">
+			<cube url="panos/classico.tiles/vr/pano_%s.jpg" />
+		</image>
 
 	</scene>
 
-	<scene name="classico" title="DEMI SUÍTE 2" onstart="on_scene_loaded(get(xml.scene), 65);" thumburl="panos/LESSENCE_TOURAP_R0-01_CAM02.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="contemporaneo" title="contemporaneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/contemporaneo.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/LESSENCE_TOURAP_R0-01_CAM02.tiles/preview.jpg" />
+		<preview url="panos/contemporaneo.tiles/preview.jpg" />
 
-		<image>
-			<cube url="panos/LESSENCE_TOURAP_R0-01_CAM02.tiles/pano_%s.jpg" />
-			<mobile>
-				<cube url="panos/LESSENCE_TOURAP_R0-01_CAM02.tiles/mobile_%s.jpg" />
-			</mobile>
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/contemporaneo.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
 		</image>
 
+		<image if="webvr.isenabled">
+			<cube url="panos/contemporaneo.tiles/vr/pano_%s.jpg" />
+		</image>
 
 	</scene>
 
-	<scene name="contemporaneo" title="DEMI SUÍTE 1" onstart="on_scene_loaded(get(xml.scene), 54);" thumburl="panos/LESSENCE_TOURAP_R0-01_CAM03.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="padrao" title="padrao" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/padrao.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0" vlookat="0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/LESSENCE_TOURAP_R0-01_CAM03.tiles/preview.jpg" />
+		<preview url="panos/padrao.tiles/preview.jpg" />
 
-		<image>
-			<cube url="panos/LESSENCE_TOURAP_R0-01_CAM03.tiles/pano_%s.jpg" />
-			<mobile>
-				<cube url="panos/LESSENCE_TOURAP_R0-01_CAM03.tiles/mobile_%s.jpg" />
-			</mobile>
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
 		</image>
 
+		<image if="webvr.isenabled">
+			<cube url="panos/padrao.tiles/vr/pano_%s.jpg" />
+		</image>
 
 	</scene>
+
+
 </krpano>
