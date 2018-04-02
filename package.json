@@ -12,6 +12,7 @@
     "vue": "^2.5.13",
     "vue-krpano": "^1.5.3",
     "vue-router": "^3.0.1",
+    "vue-script2": "^2.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
