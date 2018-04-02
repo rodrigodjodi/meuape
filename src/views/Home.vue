@@ -35,7 +35,7 @@
 
 <script>
 // @ is an alias to /src
-import Krpano from "vue-krpano";
+import Krpano from "@/components/Krpano";
 export default {
   name: "home",
   components: { Krpano },
