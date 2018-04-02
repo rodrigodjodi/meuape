@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
   />
   <link rel="shortcut icon" href="<%= webpackConfig.output.publicPath %>favicon.ico">
   <title>Piemonte</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    WebFont.load({
-      google: {
-        families: ["Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic"]
-      }
-    });
-  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" type="text/javascript" async></script>
+  
 </head>
 
 <body>
@@ -25,6 +20,13 @@
   <div id="app"></div>
   <!-- built files will be auto injected -->
   <script src="tour.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        families: ["Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic"]
+      }
+    });
+  </script>
 </body>
 
 </html>
