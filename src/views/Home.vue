@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <krpano :xml="'tour.xml'"
+    <krpano xml="tour.xml"
       :lazy-load="true"
       class="content"
       @panoCreated="init"
@@ -22,7 +22,7 @@
         <p>Cozinha: {{opcoes.forroCozinha}}</p>
       </div>
       <div>
-          <select :disabled="!loggedIn" id="soflow" name="apartamentos">
+          <select :disabled="!loggedIn" name="apartamentos">
             <option value="0">Selecione um apartamento</option>
             <option v-for="ap in apartamentos" :key="ap" value="ap">{{ap}}</option>
           </select>
@@ -160,6 +160,7 @@ export default {
   border-radius: 10px;
   padding: 9px 15px;
   color: white;
+  margin-left: 40px;
 }
 .tab {
   height: 40px;
@@ -177,29 +178,5 @@ export default {
 }
 .active {
   background-color: #9ac088;
-}
-select#soflow {
-  -webkit-appearance: button;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-  -webkit-padding-end: 20px;
-  -webkit-padding-start: 2px;
-  -webkit-user-select: none;
-  user-select: none;
-  background-image: url(http://i62.tinypic.com/15xvbd5.png),
-    -webkit-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5);
-  background-position: 97% center;
-  background-repeat: no-repeat;
-  border: 1px solid #aaa;
-  color: #555;
-  font-size: inherit;
-  margin: 20px;
-  overflow: hidden;
-  padding: 5px 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 300px;
 }
 </style>

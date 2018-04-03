@@ -2,7 +2,8 @@
 	<include url="skin/vtourskin.xml" />
 	<!-- customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... -->
 	<include url="skin/vtourskin_design_flat_light.xml" />
-	<skin_settings webvr_prev_next_hotspots="false"
+	<skin_settings 
+		webvr_prev_next_hotspots="true"
 		tooltips_hotspots="true"
 		tooltips_mapspots="false"
 		loadingtext="carregando..."
@@ -23,7 +24,25 @@
 	</action>
 	<display autofullscreen="false"/>
 	
-	<scene name="classico" title="classico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/classico.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="padrao" title="Padrão" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/padrao.tiles/thumb.jpg" lat="" lng="" heading="">
+
+		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+
+		<preview url="panos/padrao.tiles/preview.jpg" />
+
+		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+			<level tiledimagewidth="1024" tiledimageheight="1024">
+				<cube url="panos/padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+			</level>
+		</image>
+
+		<image if="webvr.isenabled">
+			<cube url="panos/padrao.tiles/vr/pano_%s.jpg" />
+		</image>
+
+	</scene>
+
+	<scene name="classico" title="Clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/classico.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
@@ -41,7 +60,7 @@
 
 	</scene>
 
-	<scene name="contemporaneo" title="contemporaneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/contemporaneo.tiles/thumb.jpg" lat="" lng="" heading="">
+	<scene name="contemporaneo" title="Contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/contemporaneo.tiles/thumb.jpg" lat="" lng="" heading="">
 
 		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
@@ -59,23 +78,7 @@
 
 	</scene>
 
-	<scene name="padrao" title="padrao" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/padrao.tiles/thumb.jpg" lat="" lng="" heading="">
-
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
-
-		<preview url="panos/padrao.tiles/preview.jpg" />
-
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
-
-		<image if="webvr.isenabled">
-			<cube url="panos/padrao.tiles/vr/pano_%s.jpg" />
-		</image>
-
-	</scene>
+	
 
 
 </krpano>
