@@ -1,15 +1,10 @@
 {
-  "name": "meuape",
-  "short_name": "meuape",
+  "name": "Piemonte",
+  "short_name": "Piemonte",
   "icons": [
     {
-      "src": "/img/icons/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/img/icons/android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "/images/icon_2.png",
+      "sizes": "256x256",
       "type": "image/png"
     }
   ],
