@@ -8,27 +8,18 @@
     />
     <div class="opcoes">
       <div class="opcoes-nav">
-        <div class="tab" :class="{active:scenepadrao}" @click="scene = 'padrao'">Padrão</div>
-        <div class="tab" :class="{active:sceneclassico}" @click="scene = 'classico'">Clássico</div>
-        <div class="tab" :class="{active:scenecontemporaneo}" @click="scene = 'contemporaneo'">Contemporâneo</div>
+        <div class="tab" @click="acabamento = 'padrao'">Padrão</div>
+        <div class="tab" @click="acabamento = 'classico'">Clássico</div>
+        <div class="tab" @click="acabamento = 'contemporaneo'">Contemporâneo</div>
       </div>
         
+        <toggle-button v-model="sala" :value="true" id="ambtoggle" :labels="{checked: 'Sala', unchecked: 'Banheiro'}" :width="100" :color="{checked: '#75C791', unchecked: '#0e607f'}"/><br/><br/>
       <div class="opcoes-text">
-        <h2>Pisos</h2>
-        <p>Sala: {{opcoes.pisoSala}}</p>
-        <p>Cozinha: {{opcoes.pisoCozinha}}</p>
-        <h2>Forros</h2>
-        <p>Sala: {{opcoes.forroSala}}</p>
-        <p>Cozinha: {{opcoes.forroCozinha}}</p>
+        <toggle-button v-model="op1" :sync="true"/> Acabamentos e revestimentos <br/><br/>
+        <toggle-button v-model="op2"/> Piso áreas secas<br/><br/>
+        <toggle-button v-model="op3"/> Substituir porcelanato por pintura<br/><br/>
+        <toggle-button v-model="op4"/> Kit gás
       </div>
-      <div>
-          <select :disabled="!loggedIn" name="apartamentos">
-            <option value="0">Selecione um apartamento</option>
-            <option v-for="ap in apartamentos" :key="ap" value="ap">{{ap}}</option>
-          </select>
-        <button @click="confirmaPedido" class="opcoes-confirm">CONFIRMAR PEDIDO</button>
-      </div>
-      <p v-show="!loggedIn" style="color:red">É necessário entrar para confirmar o pedido.</p>
     </div>
   </div>
 </template>
@@ -41,25 +32,13 @@ export default {
   components: { Krpano },
   data() {
     return {
-      scene: "padrao",
-      apartamentos: [
-        101,
-        102,
-        103,
-        104,
-        201,
-        202,
-        203,
-        204,
-        301,
-        302,
-        303,
-        304,
-        401,
-        402,
-        403,
-        404
-      ],
+      sala: true,
+      acabamento: "padrao",
+      op1: false,
+      op2: false,
+      op3: false,
+      op4: false,
+
       logRequestVisible: false
     };
   },
@@ -67,41 +46,25 @@ export default {
     loggedIn() {
       return this.$store.state.loggedIn;
     },
-    opcoes() {
-      let options = {};
-      switch (this.scene) {
-        case "padrao":
-          options.pisoSala = "Contrapiso em concreto.";
-          options.pisoCozinha = "Cerâmica branca 40x40.";
-          options.forroSala = "Laje com pintura branca.";
-          options.forroCozinha = "Forro de gesso com pintura branca.";
-          break;
-        case "classico":
-          options.pisoSala = "  Laminado madeira padrão carvalho";
-          options.pisoCozinha = "Porcelanato ";
-          options.forroSala = "Forro de gesso com rodateto";
-          options.forroCozinha = "Forro de gesso com pintura branca.";
-          break;
-        case "contemporaneo":
-          options.pisoSala = "  Porcelanato 60x60";
-          options.pisoCozinha = "Porcelanato";
-          options.forroSala = "Forro de gesso com destaque";
-          options.forroCozinha = "Forro de gesso com pintura branca.";
-          break;
-
-        default:
-          break;
+    scene() {
+      let sceneString = "";
+      let ambiente = this.sala ? "sala" : "bwc";
+      if (this.acabamento === "padrao") {
+        sceneString = ambiente + "-" + this.acabamento;
+      } else {
+        sceneString =
+          ambiente +
+          "-" +
+          this.acabamento +
+          "-" +
+          Number(this.op1) +
+          "_" +
+          Number(this.op2);
+        if (this.sala) {
+          sceneString += "_" + Number(this.op3);
+        }
       }
-      return options;
-    },
-    scenepadrao() {
-      return this.scene === "padrao" ? true : false;
-    },
-    sceneclassico() {
-      return this.scene === "classico" ? true : false;
-    },
-    scenecontemporaneo() {
-      return this.scene === "contemporaneo" ? true : false;
+      return sceneString;
     }
   },
   methods: {

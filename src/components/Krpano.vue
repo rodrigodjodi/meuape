@@ -39,6 +39,7 @@ export default {
     krpanoReady(krpanoInstance) {
       console.log("embedpano fulfilled");
       this.krpanoInstance = krpanoInstance;
+      this.loadScene();
     },
     krpanoError(error) {
       throw new Error("Error on embedpano:" + error);
@@ -55,9 +56,10 @@ export default {
       let scene = this.scene;
       if (this.krpanoInstance) {
         if (scene) {
-          let str = `if(scene[${scene}]===null,
+          let str = `trace(${scene});
+                  if(scene[${scene}]===null,
                   loadscene(get(scene[0].name),null,MERGE|KEEPVIEW,BLEND(0.5)),
-                  loadscene(${scene},null,MERGE,BLEND(0.5)))`;
+                  loadscene(${scene},null,MERGE|KEEPVIEW,BLEND(0.5)))`;
           this.krpanoInstance.call(str);
           this.$emit("sceneChanged", scene);
         } else {
