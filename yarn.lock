@@ -6414,6 +6414,10 @@ vue-hot-reload-api@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
 
+vue-js-toggle-button@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/vue-js-toggle-button/-/vue-js-toggle-button-1.2.2.tgz#0062f8fa0f34babf2d76c77d88ccbe4d462ce1ac"
+
 vue-krpano@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/vue-krpano/-/vue-krpano-1.5.3.tgz#2a4396bf89ddd8750eed60f025e93bd8b59a15c5"

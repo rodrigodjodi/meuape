@@ -10,6 +10,7 @@
   "dependencies": {
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.13",
+    "vue-js-toggle-button": "^1.2.2",
     "vue-krpano": "^1.5.3",
     "vue-router": "^3.0.1",
     "vue-script2": "^2.0.1",
