@@ -569,7 +569,7 @@
 			add(hotspot[skin_webvr_prev_scene].ath, hlookat_offset);
 			add(hotspot[skin_webvr_next_scene].ath, hlookat_offset);
 		);
-		if(plugin[skin_gyro].enabled,
+		if(plugin[skin_gyro].isavailable AND plugin[skin_gyro].enabled,
 			<!-- reset the gyro tracking -->
 			plugin[skin_gyro].resetsensor(get(h));
 		);
