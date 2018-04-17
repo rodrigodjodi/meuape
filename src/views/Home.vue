@@ -8,17 +8,25 @@
     />
     <div class="opcoes">
       <div class="opcoes-nav">
-        <div class="tab" @click="acabamento = 'padrao'">Padrão</div>
-        <div class="tab" @click="acabamento = 'classico'">Clássico</div>
-        <div class="tab" @click="acabamento = 'contemporaneo'">Contemporâneo</div>
+        <div class="tab" :class="[acabamento === 'padrao' ? 'active' : '']" @click="acabamento = 'padrao'">Padrão</div>
+        <div class="tab" :class="[acabamento === 'classico' ? 'active' : '']" @click="acabamento = 'classico'">Clássico</div>
+        <div class="tab" :class="[acabamento === 'contemporaneo' ? 'active' : '']" @click="acabamento = 'contemporaneo'">Contemporâneo</div>
       </div>
-        
-        <toggle-button v-model="sala" :value="true" id="ambtoggle" :labels="{checked: 'Sala', unchecked: 'Banheiro'}" :width="100" :color="{checked: '#75C791', unchecked: '#0e607f'}"/><br/><br/>
-      <div class="opcoes-text">
-        <toggle-button v-model="op1" :sync="true"/> Acabamentos e revestimentos <br/><br/>
-        <toggle-button v-model="op2"/> Piso áreas secas<br/><br/>
+      <div class="opcoes-amb">
+        <toggle-button 
+          v-model="sala"
+          :value="true"
+          id="ambtoggle"
+          :labels="{checked: 'Sala', unchecked: 'Banheiro'}"
+          :width="100"
+          :color="{checked: '#75C791', unchecked: '#0e607f'}"
+        />
+      </div>
+      <div class="opcoes-text" v-if="acabamento !== 'padrao'">
+        <toggle-button v-model="op1"/> Acabamentos e revestimentos {{getCost('op1')}}<br/><br/>
+        <toggle-button v-model="op2"/> Piso áreas secas {{getCost('op2')}}<br/><br/>
         <toggle-button v-model="op3"/> Substituir porcelanato por pintura<br/><br/>
-        <toggle-button v-model="op4"/> Kit gás
+        <toggle-button v-model="op4"/> Kit gás {{getCost('op4')}}
       </div>
     </div>
   </div>
@@ -32,14 +40,57 @@ export default {
   components: { Krpano },
   data() {
     return {
+      tipologia: "2q",
       sala: true,
       acabamento: "padrao",
       op1: false,
       op2: false,
       op3: false,
       op4: false,
-
-      logRequestVisible: false
+      custos: {
+        "2q": {
+          classico: {
+            op1: 3329.91,
+            op2: 7368.66,
+            op3: 0,
+            op4: 3478.9
+          },
+          contemporaneo: {
+            op1: 4069.22,
+            op2: 6433.01,
+            op3: 0,
+            op4: 3478.9
+          }
+        },
+        "3q": {
+          classico: {
+            op1: 0,
+            op2: 0,
+            op3: 0,
+            op4: 0
+          },
+          contemporaneo: {
+            op1: 0,
+            op2: 0,
+            op3: 0,
+            op4: 0
+          }
+        },
+        duplex: {
+          classico: {
+            op1: 0,
+            op2: 0,
+            op3: 0,
+            op4: 0
+          },
+          contemporaneo: {
+            op1: 0,
+            op2: 0,
+            op3: 0,
+            op4: 0
+          }
+        }
+      }
     };
   },
   computed: {
@@ -68,6 +119,15 @@ export default {
     }
   },
   methods: {
+    getCost(op) {
+      var cost = this[op]
+        ? this.custos[this.tipologia][this.acabamento][op]
+        : 0;
+      return cost.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    },
     init() {
       console.log("initialized");
     },
@@ -110,6 +170,11 @@ export default {
   display: flex;
   width: 100%;
 }
+.opcoes-amb {
+  flex: 0;
+  align-self: center;
+  margin: 10px 0;
+}
 .opcoes-text {
   flex: 0;
   align-self: flex-start;
@@ -137,7 +202,7 @@ export default {
   margin: 4px;
 }
 .tab:hover {
-  border: 2px solid #9ac088;
+  background-color: #b5e29f;
 }
 .active {
   background-color: #9ac088;
