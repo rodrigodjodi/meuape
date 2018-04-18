@@ -22,11 +22,34 @@
           :color="{checked: '#75C791', unchecked: '#0e607f'}"
         />
       </div>
-      <div class="opcoes-text" v-if="acabamento !== 'padrao'">
-        <toggle-button v-model="op1"/> Acabamentos e revestimentos {{getCost('op1')}}<br/><br/>
-        <toggle-button v-model="op2"/> Piso áreas secas {{getCost('op2')}}<br/><br/>
-        <toggle-button v-model="op3"/> Substituir porcelanato por pintura<br/><br/>
-        <toggle-button v-model="op4"/> Kit gás {{getCost('op4')}}
+      <div class="opcoes-text">
+        <div class="opItem"  v-if="acabamento !== 'padrao'">
+          <toggle-button  
+            :labels="{checked: 'Sim (kit)', unchecked: 'Não'}"
+            :width="90"
+            v-if="acabamento !== 'padrao'" :value="true" :disabled="true"/> Acabamentos e revestimentos {{getCost('op1')}}<br/><br/>
+        </div>
+        <div class="opItem"  v-if="acabamento !== 'padrao'">
+          <toggle-button
+            v-model="op2"
+            :width="90"
+            :labels="{checked: 'Sim', unchecked: 'Não'}"
+          /> Piso áreas secas {{getCost('op2')}}<br/><br/>
+        </div>
+        <div class="opItem"  v-if="acabamento !== 'padrao'">
+          <toggle-button
+            v-model="op3"
+            :width="90"
+            :labels="{checked: 'Pintura', unchecked: 'Porcelanato'}"
+          /> Parede da Cozinha<br/><br/>
+        </div>
+        <div class="opItem">
+          <toggle-button
+            v-model="op4"
+            :width="90"
+            :labels="{checked: 'Sim', unchecked: 'Não'}"
+          /> Kit aquecedor {{getCost('op4')}}
+        </div>
       </div>
     </div>
   </div>
@@ -43,12 +66,15 @@ export default {
       tipologia: "2q",
       sala: true,
       acabamento: "padrao",
-      op1: false,
+      op1: true,
       op2: false,
       op3: false,
       op4: false,
       custos: {
         "2q": {
+          padrao: {
+            op4: 3478.9
+          },
           classico: {
             op1: 3329.91,
             op2: 7368.66,
@@ -63,6 +89,9 @@ export default {
           }
         },
         "3q": {
+          padrao: {
+            op4: 3478.9
+          },
           classico: {
             op1: 0,
             op2: 0,
@@ -77,6 +106,9 @@ export default {
           }
         },
         duplex: {
+          padrao: {
+            op4: 3478.9
+          },
           classico: {
             op1: 0,
             op2: 0,
@@ -147,7 +179,6 @@ export default {
 .home {
   display: flex;
   border: 2px solid #9ac088;
-  padding: 10px;
   margin: 10px 5px;
   flex-wrap: wrap;
 }
@@ -199,7 +230,6 @@ export default {
   color: white;
   padding-top: 12px;
   border: 1px solid #9ac088;
-  margin: 4px;
 }
 .tab:hover {
   background-color: #b5e29f;
