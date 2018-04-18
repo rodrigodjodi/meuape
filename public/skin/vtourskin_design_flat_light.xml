@@ -8,7 +8,7 @@
 	               controlbar_width="-24"
 	               controlbar_height="40"
 	               controlbar_offset.normal="20"
-	               controlbar_offset.mobile="20"
+	               controlbar_offset.mobile="5"
 	               controlbar_offset_closed="-40"
 	               controlbar_overlap.no-fractionalscaling="10"
 	               controlbar_overlap.fractionalscaling="0"
