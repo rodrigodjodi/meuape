@@ -1,0 +1,199 @@
+<div data-duration-in="300" data-duration-out="100" class="tabs w-tabs">
+    <div class="tabs-menu w-tab-menu">
+        <a data-w-tab="Tab 1" class="tab-link w--current w-inline-block w-tab-link">
+            <div>2ª via de boleto</div>
+        </a>
+        <a data-w-tab="Tab 2" class="tab-link w-inline-block w-tab-link">
+            <div>Atendimento ao Cliente</div>
+        </a>
+        <a data-w-tab="Tab 3" class="tab-link w-inline-block w-tab-link">
+            <div>Assistência Técnica</div>
+        </a>
+        <a data-w-tab="Tab 4" class="tab-link w-inline-block w-tab-link">
+            <div>Personalização</div>
+        </a>
+    </div>
+    <div class="tabs-content w-clearfix w-tab-content">
+
+        <div data-w-tab="Tab 1" class="tab-pane w--tab-active w-clearfix w-tab-pane">
+            <div class="_02 section-content">
+                <form class="empre-interest-form" action="http://boleto.piemonteimoveis.com.br:8080/scciweb/cgi-bin/scciweb.cgi" method="get">
+                    <p>Digite o número do contrato (sem o dígito verificador) e o CPF do titular.</p>
+                    <input type="hidden" name="nomeprog" value="webcalcdata">
+                    <input type="hidden" name="tipoexec" value="W">
+                    <!--
+                    <select class="form-field w-select">
+                        <option>Empreendimento...</option>
+                        <option>Arvoredo Residencial</option>
+                        <option>Edifício Interlaken</option>
+                        <option>Edifício Sant Louis</option>
+                        <option>Edifício Torre do Sol</option>
+                        <option>Edifício Ville Bretagne</option>
+                        <option>Floripa Residence</option>
+                        <option>Lojas Antonina</option>
+                        <option>Lojas Florianópolis</option>
+                        <option>Lojas Morretes</option>
+                        <option>Moradias Rio Bonito</option>
+                        <option>Reserva Allameda</option>
+                        <option>Reserva Boulevard</option>
+                        <option>Reserva Ecoville</option>
+                        <option>Residencial Antonina</option>
+                        <option>Residencial Bela Vista</option>
+                        <option>Residencial Florianópolis</option>
+                        <option>Residencial Hortências I</option>
+                        <option>Residencial Hortências II</option>
+                        <option>Residencial Morretes</option>
+                        <option>Residencial Rio Bonito</option>
+                        <option>Residencial Vila do Sol</option>
+                        <option>Sant Paul de Vence</option>
+                        <option>Versatile Home</option>
+                        <option>Versatile Office</option>
+                        <option>Victoria Village</option>
+                    </select>
+                    -->
+                    <input type="text" class="form-field w-input" maxlength="256" name="login" data-name="Contrato" placeholder="Contrato" id="contrato"
+                        required="">
+                    <input type="text" class="form-field w-input" maxlength="256" name="cpf" data-name="CPF" placeholder="CPF" id="cpf" required="">
+                    <input type="submit" value="Gerar Boleto" data-wait="Aguarde..." class="form-button w-button" onclick="javascript:chama(); ga('send', 'event', 'boleto','click', 'enviado');">
+                </form>
+            </div>
+        </div>
+
+        <div data-w-tab="Tab 2" class="w-clearfix w-tab-pane">
+            <div class="_02 section-content">
+
+                <form id="form3_Cliente" class="empre-interest-form" action="/area-do-cliente.php" method="post">
+                    <p>
+                        <strong>Dúvidas, reclamações ou sugestões?</strong>
+                    </p>
+                    <input id="form3_nome" name="nome" class="form-field w-input" maxlength="256" placeholder="Nome" type="text" required="required">
+                    <input id="form3_email" name="E-mail" class="form-field w-input" maxlength="256" placeholder="E-mail" type="email" required="required">
+                    <input id="form3_telefone" name="telefone" class="form-field w-input" maxlength="256" placeholder="Telefone" type="text"
+                        required="required">
+                    <textarea id="form3_mensagem" name="mensagem" class="form-textarea w-input" cols="30" maxlength="5000" rows="4" placeholder="Mensagem"
+                        required="required"></textarea>
+                    <input id="form3_destinatario" name="destinatario" value="contato@piemonteimoveis.com.br" type="hidden">
+                    <input id="form3_submit" name="submit" class="form-button w-button" value="Enviar" data-wait="Aguarde..." type="submit">
+                    <input type="hidden" name="cms-form" value="Q2xpZW50ZTpwZXJjaF9mb3JtczovdGVtcGxhdGVzL2NvbnRlbnQvY2xpZW50ZS5odG1sOjE1MjQwNDkzNTM=">
+
+                </form>
+
+            </div>
+        </div>
+        <div data-w-tab="Tab 3" class="w-clearfix w-tab-pane">
+            <div class="_02 section-content">
+
+                <form id="form4_Suporte" class="empre-interest-form" action="/area-do-cliente.php" method="post">
+                    <input id="form4_rand" name="rand" type="hidden" value="20180444998">
+                    <input id="form4_proprietario" name="proprietario" class="form-field w-input" maxlength="256" placeholder="Proprietário"
+                        type="text" required="required">
+                    <input id="form4_contrato" name="contrato" class="form-field w-input" maxlength="256" placeholder="Nº Contrato da Piemonte"
+                        type="text" required="required">
+                    <input id="form4_email" name="E-mail" class="form-field w-input" maxlength="256" placeholder="E-mail" type="email" required="required">
+                    <input id="form4_telefone" name="telefone" class="form-field w-input" maxlength="256" placeholder="Telefone" type="text"
+                        required="required">
+
+                    <input id="form4_empreendimento" name="empreendimento" class="form-field w-input" maxlength="256" placeholder="Empreendimento"
+                        type="text" required="required">
+
+                    <h5>Disponibilidade</h5>
+                    <div class="radiowrapper">
+                        <div class="radiobutton">
+                            <input id="form4_segunda" name="segunda" value="Segunda" type="checkbox">
+                            <label for="segunda">Segunda</label>
+                        </div>
+                        <div class="radiobutton">
+                            <input id="form4_terca" name="terca" value="Terça" type="checkbox">
+                            <label for="terca">Terça</label>
+                        </div>
+                        <div class="radiobutton">
+                            <input id="form4_quarta" name="quarta" value="Quarta" type="checkbox">
+                            <label for="quarta">Quarta</label>
+                        </div>
+                        <div class="radiobutton">
+                            <input id="form4_quinta" name="quinta" value="Quinta" type="checkbox">
+                            <label for="quinta">Quinta</label>
+                        </div>
+                        <div class="radiobutton">
+                            <input id="form4_sexta" name="sexta" value="Sexta" type="checkbox">
+                            <label for="sexta">Sexta</label>
+                        </div>
+                    </div>
+                    <div class="radiowrapper">
+                        <div class="radiobutton">
+                            <input id="form4_disponibilidade1" name="disponibilidade" type="radio" value="Manhã - 9h às 13h">
+                            <label for="form4_disponibilidade1">Manhã - 9h às 13h</label>
+                        </div>
+                        <div class="radiobutton">
+                            <input id="form4_disponibilidade2" name="disponibilidade" type="radio" value="Tarde - 14h às 18h">
+                            <label for="form4_disponibilidade2">Tarde - 14h às 18h</label>
+                        </div>
+                        <div class="radiobutton">
+                            <input id="form4_disponibilidade3" name="disponibilidade" type="radio" value="Integral - 9h às 13 / 14h às 18h">
+                            <label for="form4_disponibilidade3">Integral - 9h às 13 / 14h às 18h</label>
+                        </div>
+                    </div>
+
+                    <p>Solicito vistoria no imóvel acima especificado, tendo em vista sanar problemas relativos à:</p>
+                    <textarea id="form4_mensagem" name="mensagem" class="form-textarea w-input" cols="30" maxlength="5000" rows="4" placeholder="Mensagem"
+                        required="required"></textarea>
+                    <input id="form4_destinatario" name="destinatario" value="posvenda@piemonteimoveis.com.br, ana.pogogelski@piemonteimoveis.com.br"
+                        type="hidden">
+                    <p>Observações:</p>
+                    <ul>
+                        <li>Consulte os itens cobertos pela garantia e os respectivos prazo no Manual do Proprietário.</li>
+                        <li>Caso haja a constatação de que o(s) defeito(s) apresentado(s) acima seja(m) oriundo(s) de mau uso
+                            ou de modificação das características do imóvel, não haverá garantia e será cobrada uma taxa
+                            de visita no valor de R$ 100,00 (cem reais).</li>
+                    </ul>
+                    <input id="form4_submit" name="submit" class="form-button w-button" value="Enviar" data-wait="Aguarde..." type="submit">
+                    <input type="hidden" name="cms-form" value="U3Vwb3J0ZTpwZXJjaF9mb3JtczovdGVtcGxhdGVzL2NvbnRlbnQvY2xpZW50ZS5odG1sOjE1MjQwNDkzNTM=">
+
+                </form>
+
+            </div>
+        </div>
+        <div data-w-tab="Tab 4" class="tab-pane w--tab-active w-clearfix w-tab-pane">
+            <div class="_02 section-content">
+                <form class="empre-interest-form" action="https://dist-qsedmfeqzb.now.sh/#/" method="get">
+                    <p>Digite o número do contrato (sem o dígito verificador) e o CPF do titular.</p>
+
+                    <select class="form-field w-select">
+                        <option>Empreendimento...</option>
+                        <option>Bosc Eco Residence</option>
+                        <option disabled>Arvoredo Residencial</option>
+                        <option disabled>Edifício Interlaken</option>
+                        <option disabled>Edifício Sant Louis</option>
+                        <option disabled>Edifício Torre do Sol</option>
+                        <option disabled>Edifício Ville Bretagne</option>
+                        <option disabled>Floripa Residence</option>
+                        <option disabled>Lojas Antonina</option>
+                        <option disabled>Lojas Florianópolis</option>
+                        <option disabled>Lojas Morretes</option>
+                        <option disabled>Moradias Rio Bonito</option>
+                        <option disabled>Reserva Allameda</option>
+                        <option disabled>Reserva Boulevard</option>
+                        <option disabled>Reserva Ecoville</option>
+                        <option disabled>Residencial Antonina</option>
+                        <option disabled>Residencial Bela Vista</option>
+                        <option disabled>Residencial Florianópolis</option>
+                        <option disabled>Residencial Hortências I</option>
+                        <option disabled>Residencial Hortências II</option>
+                        <option disabled>Residencial Morretes</option>
+                        <option disabled>Residencial Rio Bonito</option>
+                        <option disabled>Residencial Vila do Sol</option>
+                        <option disabled>Sant Paul de Vence</option>
+                        <option disabled>Versatile Home</option>
+                        <option disabled>Versatile Office</option>
+                        <option disabled>Victoria Village</option>
+                    </select>
+
+                    <input type="text" class="form-field w-input" maxlength="256" name="login" data-name="Contrato" placeholder="Contrato" id="contrato"
+                        required="">
+                    <input type="text" class="form-field w-input" maxlength="256" name="cpf" data-name="CPF" placeholder="CPF" id="cpf" required="">
+                    <input type="submit" value="Gerar Boleto" data-wait="Aguarde..." class="form-button w-button" onclick="">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
