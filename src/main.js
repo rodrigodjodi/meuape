@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import ToggleButton from "vue-js-toggle-button";
+import "./firebase";
+import VueFire from "vuefire";
+Vue.use(VueFire);
 Vue.use(ToggleButton);
 Vue.config.productionTip = false;
 new Vue({

@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
 Vue.use(Vuex);
-
+import { incc } from "./firebase";
 export default new Vuex.Store({
   state: {
     loggedIn: false,
@@ -12,7 +11,8 @@ export default new Vuex.Store({
     op1: true,
     op2: false,
     op3: false,
-    op4: false
+    op4: false,
+    incc: 0
   },
   getters: {
     scene: state => {
@@ -55,7 +55,16 @@ export default new Vuex.Store({
       } else {
         console.error("ambiente não existe:" + amb);
       }
+    },
+    SET_INCC(state, val) {
+      state.incc = val;
     }
   },
-  actions: {}
+  actions: {
+    getINCC({ commit }) {
+      incc.once("value").then(function(snapshot) {
+        commit("SET_INCC", snapshot.val());
+      });
+    }
+  }
 });

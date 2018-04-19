@@ -20,6 +20,9 @@ export default {
     toggleLog() {
       this.$store.commit("TOOGLE_LOG");
     }
+  },
+  created() {
+    this.$store.dispatch("getINCC");
   }
 };
 </script>

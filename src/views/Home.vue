@@ -127,13 +127,13 @@ export default {
     setKit(kit) {
       this.$store.commit("TOGGLE_KIT", kit);
     },
-    setOption2(e) {
+    setOption2() {
       this.$store.commit("TOGGLE_OPTION", "op2");
     },
-    setOption3(e) {
+    setOption3() {
       this.$store.commit("TOGGLE_OPTION", "op3");
     },
-    setOption4(e) {
+    setOption4() {
       this.$store.commit("TOGGLE_OPTION", "op4");
     },
     getCost(op) {
