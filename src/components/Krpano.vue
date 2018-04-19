@@ -23,9 +23,6 @@ export default {
     });
   },
   methods: {
-    test() {
-      console.log("test");
-    },
     createPano() {
       const { embedpano, removepano } = window;
 

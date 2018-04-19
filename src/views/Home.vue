@@ -16,6 +16,7 @@
         <toggle-button 
           v-model="sala"
           :value="true"
+          :sync="true"
           id="ambtoggle"
           :labels="{checked: 'Sala', unchecked: 'Banheiro'}"
           :width="100"
@@ -41,6 +42,7 @@
             v-model="op3"
             :width="90"
             :labels="{checked: 'Pintura', unchecked: 'Porcelanato'}"
+            :color="{checked: '#75C791', unchecked: '#75C791'}"
           /> Parede da Cozinha<br/><br/>
         </div>
         <div class="opItem">
@@ -162,16 +164,10 @@ export default {
     },
     init() {
       console.log("initialized");
-    },
-    confirmaPedido() {
-      if (!this.loggedIn) {
-        this.logRequestVisible = true;
-      } else {
-        alert(
-          "Aqui leva para o downlaod de um pdf com as informações do contato, apartamento e escolha do kit para assinatura."
-        );
-      }
     }
+  },
+  mounted() {
+    window.vm = this;
   }
 };
 </script>

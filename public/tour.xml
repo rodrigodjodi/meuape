@@ -38,7 +38,7 @@
 		/>
 	</layer>
 	<action name="scenechange" scope="local" type="Javascript">
-		$vm0.sala = false;
+		vm.sala = false;
 	</action>
 
 <!-- FIM TROCA DE CENA -->	
