@@ -8,38 +8,33 @@
     />
     <div class="opcoes">
       <div class="opcoes-nav">
-        <div class="tab" :class="[acabamento === 'padrao' ? 'active' : '']" @click="acabamento = 'padrao'">Padrão</div>
-        <div class="tab" :class="[acabamento === 'classico' ? 'active' : '']" @click="acabamento = 'classico'">Clássico</div>
-        <div class="tab" :class="[acabamento === 'contemporaneo' ? 'active' : '']" @click="acabamento = 'contemporaneo'">Contemporâneo</div>
-      </div>
-      <div class="opcoes-amb">
-        <toggle-button 
-          v-model="sala"
-          :value="true"
-          :sync="true"
-          id="ambtoggle"
-          :labels="{checked: 'Sala', unchecked: 'Banheiro'}"
-          :width="100"
-          :color="{checked: '#75C791', unchecked: '#0e607f'}"
-        />
+        <div class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="setKit('padrao')">Padrão</div>
+        <div class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="setKit('classico')">Clássico</div>
+        <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="setKit('contemporaneo')">Contemporâneo</div>
       </div>
       <div class="opcoes-text">
-        <div class="opItem"  v-if="acabamento !== 'padrao'">
+        <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button  
             :labels="{checked: 'Sim (kit)', unchecked: 'Não'}"
             :width="90"
-            v-if="acabamento !== 'padrao'" :value="true" :disabled="true"/> Acabamentos e revestimentos {{getCost('op1')}}<br/><br/>
+            v-if="kit !== 'padrao'" :value="true" :disabled="true"
+          />
+         Acabamentos kit {{getCost('op1')}}<br/><br/>
         </div>
-        <div class="opItem"  v-if="acabamento !== 'padrao'">
+        <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
-            v-model="op2"
+            :value="op2"
+            :sync="true"
+            @change = "setOption2"
             :width="90"
             :labels="{checked: 'Sim', unchecked: 'Não'}"
-          /> Piso áreas secas {{getCost('op2')}}<br/><br/>
+          /> Piso áreas secas <br/><br/>
         </div>
-        <div class="opItem"  v-if="acabamento !== 'padrao'">
+        <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
-            v-model="op3"
+            :value="op3"
+            :sync="true"
+            @change = "setOption3"
             :width="90"
             :labels="{checked: 'Pintura', unchecked: 'Porcelanato'}"
             :color="{checked: '#75C791', unchecked: '#75C791'}"
@@ -47,10 +42,12 @@
         </div>
         <div class="opItem">
           <toggle-button
-            v-model="op4"
+            :value="op4"
+            :sync="true"
+            @change = "setOption4"
             :width="90"
             :labels="{checked: 'Sim', unchecked: 'Não'}"
-          /> Kit aquecedor {{getCost('op4')}}
+          /> Kit aquecedor
         </div>
       </div>
     </div>
@@ -60,18 +57,13 @@
 <script>
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "home",
   components: { Krpano },
   data() {
     return {
-      tipologia: "2q",
-      sala: true,
-      acabamento: "padrao",
-      op1: true,
-      op2: false,
-      op3: false,
-      op4: false,
       custos: {
         "2q": {
           padrao: {
@@ -128,35 +120,24 @@ export default {
     };
   },
   computed: {
-    loggedIn() {
-      return this.$store.state.loggedIn;
-    },
-    scene() {
-      let sceneString = "";
-      let ambiente = this.sala ? "sala" : "bwc";
-      if (this.acabamento === "padrao") {
-        sceneString = ambiente + "-" + this.acabamento;
-      } else {
-        sceneString =
-          ambiente +
-          "-" +
-          this.acabamento +
-          "-" +
-          Number(this.op1) +
-          "_" +
-          Number(this.op2);
-        if (this.sala) {
-          sceneString += "_" + Number(this.op3);
-        }
-      }
-      return sceneString;
-    }
+    ...mapState(["tipologia", "kit", "op1", "op2", "op3", "op4"]),
+    ...mapGetters(["scene"])
   },
   methods: {
+    setKit(kit) {
+      this.$store.commit("TOGGLE_KIT", kit);
+    },
+    setOption2(e) {
+      this.$store.commit("TOGGLE_OPTION", "op2");
+    },
+    setOption3(e) {
+      this.$store.commit("TOGGLE_OPTION", "op3");
+    },
+    setOption4(e) {
+      this.$store.commit("TOGGLE_OPTION", "op4");
+    },
     getCost(op) {
-      var cost = this[op]
-        ? this.custos[this.tipologia][this.acabamento][op]
-        : 0;
+      var cost = this[op] ? this.custos[this.tipologia][this.kit][op] : 0;
       return cost.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"

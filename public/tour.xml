@@ -22,23 +22,26 @@
 		if(stagewidth GT 1200, sidebar_open());
 	</action>
 <!-- TROCA DE CENA -->
+	<style name="scn_btn" 
+		type="text" vcenter="true" bg="false" css="text-align:center;color:#FFFFFF"
+		height="100%" width="50%"
+	/>
 	<layer name="skin_scene_change" bgcolor="get:skin_settings.design_bgcolor"
 		bgalpha="get:skin_settings.design_bgalpha" bgborder="get:skin_settings.design_bgborder"
 		bgroundedge="get:skin_settings.design_bgroundedge" bgshadow="get:skin_settings.design_bgshadow"
 		type="container" align="top" width="200" height="40" height.mobile="20" x="0" y="5"
 		onloaded="" zorder="3" keep="true"
 	>
-		<layer name="btn-sala" type="text" html="SALA" vcenter="true" bg="false" css="text-align:center;color:#FFFFFF"
-			height="100%" width="50%"
-			ondown="scenechange"
+		<layer name="btn-sala"  html="SALA" style="scn_btn" 
+			ondown="scenechange" scene="sala"
 		/>
-		<layer name="btn-bwc" type="text" html="BANHEIRO" vcenter="true" bg="false" css="text-align:center;color:#FFFFFF"
-			height="100%" width="50%" x="100"
+		<layer name="btn-bwc" html="BANHEIRO" style="scn_btn" 
+			x="100"
 			ondown="scenechange" scene="bwc"
 		/>
 	</layer>
 	<action name="scenechange" scope="local" type="Javascript">
-		vm.sala = false;
+		vm.$store.commit('CHANGE_AMBIENTE', caller.scene);
 	</action>
 
 <!-- FIM TROCA DE CENA -->	
