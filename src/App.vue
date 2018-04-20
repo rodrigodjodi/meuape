@@ -4,7 +4,6 @@
       <router-link class="logo" to="/">
         <img src="images/piemonte.png" alt="logo piemonte">
       </router-link>
-      <div @click="toggleLog" class="login">{{rightText}}</div>
     </div>
     <router-view/>
   </div>
