@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
-import { incc } from "./firebase";
+import { db } from "./firebase";
 export default new Vuex.Store({
   state: {
     loggedIn: false,
@@ -62,9 +62,12 @@ export default new Vuex.Store({
   },
   actions: {
     getINCC({ commit }) {
-      incc.once("value").then(function(snapshot) {
-        commit("SET_INCC", snapshot.val());
-      });
+      db
+        .ref("incc")
+        .once("value")
+        .then(function(snapshot) {
+          commit("SET_INCC", snapshot.val());
+        });
     }
   }
 });

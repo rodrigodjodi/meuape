@@ -6,6 +6,7 @@
       </router-link>
     </div>
     <router-view/>
+    {{$route.query.email}}
   </div>
 </template>
 <script>

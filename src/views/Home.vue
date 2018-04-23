@@ -58,7 +58,6 @@
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
 import { mapState, mapGetters } from "vuex";
-
 export default {
   name: "home",
   components: { Krpano },
@@ -147,6 +146,7 @@ export default {
       console.log("initialized");
     }
   },
+
   mounted() {
     window.vm = this;
   }
