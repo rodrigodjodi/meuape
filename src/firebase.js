@@ -8,7 +8,7 @@ const app = initializeApp({
 export const actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be whitelisted in the Firebase Console.
-  url: "http://localhost:8080/finishLogin",
+  url: process.env.VUE_APP_URL,
   handleCodeInApp: true
 };
 export const auth = app.auth();

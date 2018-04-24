@@ -4,25 +4,32 @@
       <router-link class="logo" to="/">
         <img src="images/piemonte.png" alt="logo piemonte">
       </router-link>
+      <span v-if="loggedIn" @click="logout" class="logout">SAIR</span>
     </div>
     <router-view/>
-    {{$route.query.email}}
   </div>
 </template>
 <script>
+import { auth } from "./firebase";
 export default {
   computed: {
-    rightText() {
-      return this.$store.state.loggedIn ? "Olá, Piemonte." : "ENTRAR";
+    loggedIn() {
+      return this.$store.state.loggedIn;
     }
   },
   methods: {
-    toggleLog() {
-      this.$store.commit("TOOGLE_LOG");
+    logout() {
+      auth.signOut().then(() => this.$router.push("userlogin"));
     }
   },
   created() {
-    this.$store.dispatch("getINCC");
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.$store.commit("SET_LOGIN_STATE", true);
+      } else {
+        this.$store.commit("SET_LOGIN_STATE", false);
+      }
+    });
   }
 };
 </script>
@@ -54,7 +61,7 @@ body {
   width: 200px;
   height: 49px;
 }
-.login {
+.logout {
   margin-left: auto;
   color: white;
   text-decoration: none;

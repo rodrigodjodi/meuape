@@ -146,7 +146,9 @@ export default {
       console.log("initialized");
     }
   },
-
+  created() {
+    this.$store.dispatch("getINCC");
+  },
   mounted() {
     window.vm = this;
   }

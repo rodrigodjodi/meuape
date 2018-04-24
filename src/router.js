@@ -3,9 +3,10 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Admin from "./views/Admin.vue";
 import Login from "./views/Login.vue";
+import UserLogin from "./views/UserLogin.vue";
 import FinishLogin from "./views/FinishLogin.vue";
 import Erro from "./views/Erro.vue";
-import { auth, actionCodeSettings } from "./firebase";
+import { auth } from "./firebase";
 Vue.use(Router);
 
 export default new Router({
@@ -14,38 +15,32 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      beforeEnter(to, from, next) {
+        auth.currentUser ? next() : next("userlogin");
+      }
     },
     {
       path: "/admin",
       name: "admin",
-      component: Admin
+      component: Admin,
+      beforeEnter(to, from, next) {
+        auth.currentUser ? next() : next("login");
+      }
     },
     {
       path: "/login",
       name: "login",
-      component: Login,
-      beforeEnter(to, from, next) {
-        if (to.query.email) {
-          auth
-            .sendSignInLinkToEmail(to.query.email, actionCodeSettings)
-            .then(function() {
-              console.log("Email de verificação enviado");
-              window.localStorage.setItem("emailForSignIn", to.query.email);
-              next("/finishLogin");
-            })
-            .catch(function(error) {
-              console.log(error);
-              next("erro");
-            });
-        } else {
-          next();
-        }
-      }
+      component: Login
     },
     {
-      path: "/finishLogin",
-      name: "finishLogin",
+      path: "/userlogin",
+      name: "userlogin",
+      component: UserLogin
+    },
+    {
+      path: "/finishlogin",
+      name: "finishlogin",
       component: FinishLogin
     },
     {

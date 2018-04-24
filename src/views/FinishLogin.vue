@@ -1,13 +1,21 @@
 <template>
   <div>
-      <h1>Fim do login </h1>
+    <div v-if="loginSuccess">
+        <h1>Fim do login </h1>
+        <p>Seu login foi realizado com êxito!</p>
+        <p>Você pode fechar essa janela e voltar para a página de personalização.</p>
+    </div>
   </div>
 </template>
 <script>
 import { auth } from "../firebase";
 export default {
+  data() {
+    return {
+      loginSuccess: false
+    };
+  },
   mounted() {
-    console.log(window.location.href);
     if (auth.isSignInWithEmailLink(window.location.href)) {
       var email = window.localStorage.getItem("emailForSignIn");
       if (!email) {
@@ -15,12 +23,14 @@ export default {
       }
       auth
         .signInWithEmailLink(email)
-        .then(result => {
+        .then(() => {
           // Clear email from storage.
           window.localStorage.removeItem("emailForSignIn");
-          this.$router.push("/");
+          this.loginSuccess = true;
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };

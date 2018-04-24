@@ -1,4 +1,4 @@
-﻿<krpano version="1.19" title="BOSC Eco Residence" idletime="0.5" debugmode="true">
+﻿<krpano version="1.19" title="" idletime="0.5" debugmode="true">
 	<include url="skin/vtourskin.xml" />
 	<include url="skin/vtourskin_design_flat_light.xml" />
 	<!--

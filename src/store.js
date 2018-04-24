@@ -12,7 +12,8 @@ export default new Vuex.Store({
     op2: false,
     op3: false,
     op4: false,
-    incc: 0
+    incc: 0,
+    user: null
   },
   getters: {
     scene: state => {
@@ -36,8 +37,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    TOOGLE_LOG(state) {
-      state.loggedIn = !state.loggedIn;
+    SET_USER(state, user) {
+      state.user = user;
     },
     TOGGLE_OPTION(state, op) {
       state[op] = !state[op];
@@ -58,6 +59,9 @@ export default new Vuex.Store({
     },
     SET_INCC(state, val) {
       state.incc = val;
+    },
+    SET_LOGIN_STATE(state, val) {
+      state.loggedIn = val;
     }
   },
   actions: {
@@ -67,7 +71,8 @@ export default new Vuex.Store({
         .once("value")
         .then(function(snapshot) {
           commit("SET_INCC", snapshot.val());
-        });
+        })
+        .catch(error => console.log(error));
     }
   }
 });
