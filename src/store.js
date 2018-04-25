@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
 export default new Vuex.Store({
   state: {
     loggedIn: false,
-    tipologia: "2q",
+    tipologia: "",
     ambiente: "sala",
     kit: "padrao",
     op1: true,
@@ -13,7 +13,9 @@ export default new Vuex.Store({
     op3: false,
     op4: false,
     incc: 0,
-    user: null
+    user: null,
+    unidades: {},
+    demoMode : false
   },
   getters: {
     scene: state => {
@@ -62,6 +64,15 @@ export default new Vuex.Store({
     },
     SET_LOGIN_STATE(state, val) {
       state.loggedIn = val;
+    },
+    SET_TIPOLOGIA(state, val) {
+      state.tipologia = val;
+    },
+    SET_DEMOMODE(state, val) {
+      state.tipologia = val;
+    },
+    SET_UNIDADES(state, val) {
+      state.unidades = val;
     }
   },
   actions: {
@@ -71,6 +82,23 @@ export default new Vuex.Store({
         .once("value")
         .then(function(snapshot) {
           commit("SET_INCC", snapshot.val());
+        })
+        .catch(error => console.log(error));
+    },
+    getUnidades({ commit }) {
+      db
+        .ref("empreendimentos/bosc")
+        .orderByChild("email").equalTo(auth.currentUser.email)
+        .once("value")
+        .then(function(snapshot) {
+          let result = snapshot.val();
+          if(Object.keys(result).length === 0){
+            commit('SET_DEMOMODE', true)
+          } else if (Object.keys(result).length === 1) { 
+            commit('SET_TIPOLOGIA', result[Object.keys(result)[0]].tipologia)
+          } else if (Object.keys(result).length === 1) {
+            commit('SET_UNIDADES', result)
+          }
         })
         .catch(error => console.log(error));
     }

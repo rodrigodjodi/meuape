@@ -148,6 +148,7 @@ export default {
   },
   created() {
     this.$store.dispatch("getINCC");
+    this.$store.dispatch("getUnidades");
   },
   mounted() {
     window.vm = this;

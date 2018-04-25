@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h1>Login Usuário </h1>
+      <h1>Login adm </h1>
       <input v-model="email" type="email" name="email" id="">
       <button @click="sendEmailLink" type="submit">LOG IN</button>
       <p v-if="msg">{{msg}}</p>
@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     sendEmailLink() {
-      actionCodeSettings.url += "finishuserlogin";
+      actionCodeSettings.url += "finishadmlogin";
       auth
         .sendSignInLinkToEmail(this.email, actionCodeSettings)
         .then(() => {
@@ -39,15 +39,13 @@ export default {
     }
   },
   created() {
-    console.log('este é o component userlogin')
+    console.log('este é o component admlogin')
     auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push("/");
+        console.log('tem um usuario')
+        this.$router.push("admin");
       } else {
-        if (this.$route.query.email) {
-          this.email = this.$route.query.email;
-          this.sendEmailLink();
-        }
+        console.log("why not user?")
       }
     });
   }
