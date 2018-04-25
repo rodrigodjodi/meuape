@@ -39,13 +39,13 @@ export default {
     }
   },
   created() {
-    console.log('este é o component admlogin')
+    console.log("este é o component admlogin");
     auth.onAuthStateChanged(user => {
       if (user) {
-        console.log('tem um usuario')
+        console.log("tem um usuario");
         this.$router.push("admin");
       } else {
-        console.log("why not user?")
+        console.log("why not user?");
       }
     });
   }

@@ -15,7 +15,7 @@ export default new Vuex.Store({
     incc: 0,
     user: null,
     unidades: {},
-    demoMode : false
+    visitante: false
   },
   getters: {
     scene: state => {
@@ -68,8 +68,8 @@ export default new Vuex.Store({
     SET_TIPOLOGIA(state, val) {
       state.tipologia = val;
     },
-    SET_DEMOMODE(state, val) {
-      state.tipologia = val;
+    SET_VISITANTE(state, val) {
+      state.visitante = val;
     },
     SET_UNIDADES(state, val) {
       state.unidades = val;
@@ -88,16 +88,17 @@ export default new Vuex.Store({
     getUnidades({ commit }) {
       db
         .ref("empreendimentos/bosc")
-        .orderByChild("email").equalTo(auth.currentUser.email)
+        .orderByChild("email")
+        .equalTo(auth.currentUser.email)
         .once("value")
         .then(function(snapshot) {
           let result = snapshot.val();
-          if(Object.keys(result).length === 0){
-            commit('SET_DEMOMODE', true)
-          } else if (Object.keys(result).length === 1) { 
-            commit('SET_TIPOLOGIA', result[Object.keys(result)[0]].tipologia)
+          if (!result) {
+            commit("SET_VISITANTE", true);
           } else if (Object.keys(result).length === 1) {
-            commit('SET_UNIDADES', result)
+            commit("SET_TIPOLOGIA", result[Object.keys(result)[0]].tipologia);
+          } else if (Object.keys(result).length === 1) {
+            commit("SET_UNIDADES", result);
           }
         })
         .catch(error => console.log(error));

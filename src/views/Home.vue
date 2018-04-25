@@ -28,7 +28,7 @@
             @change = "setOption2"
             :width="90"
             :labels="{checked: 'Sim', unchecked: 'Não'}"
-          /> Piso áreas secas <br/><br/>
+          /> Piso áreas secas {{getCost('op2')}}<br/><br/>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
@@ -38,7 +38,7 @@
             :width="90"
             :labels="{checked: 'Pintura', unchecked: 'Porcelanato'}"
             :color="{checked: '#75C791', unchecked: '#75C791'}"
-          /> Parede da Cozinha<br/><br/>
+          /> Parede da Cozinha {{getCost('op3')}}<br/><br/>
         </div>
         <div class="opItem">
           <toggle-button
@@ -47,7 +47,7 @@
             @change = "setOption4"
             :width="90"
             :labels="{checked: 'Sim', unchecked: 'Não'}"
-          /> Kit aquecedor
+          /> Kit aquecedor{{getCost('op4')}}
         </div>
       </div>
     </div>
@@ -64,62 +64,38 @@ export default {
   data() {
     return {
       custos: {
-        "2q": {
-          padrao: {
-            op4: 3478.9
-          },
-          classico: {
-            op1: 3329.91,
-            op2: 7368.66,
-            op3: 0,
-            op4: 3478.9
-          },
-          contemporaneo: {
-            op1: 4069.22,
-            op2: 6433.01,
-            op3: 0,
-            op4: 3478.9
-          }
+        "2quartos": {
+          op1: 12.917,
+          op2: 18.197,
+          op3: 0,
+          op4: 8.595
         },
-        "3q": {
-          padrao: {
-            op4: 3478.9
-          },
-          classico: {
-            op1: 0,
-            op2: 0,
-            op3: 0,
-            op4: 0
-          },
-          contemporaneo: {
-            op1: 0,
-            op2: 0,
-            op3: 0,
-            op4: 0
-          }
+        "3quartos": {
+          op1: 13.293,
+          op2: 24.592,
+          op3: 0,
+          op4: 8.595
         },
         duplex: {
-          padrao: {
-            op4: 3478.9
-          },
-          classico: {
-            op1: 0,
-            op2: 0,
-            op3: 0,
-            op4: 0
-          },
-          contemporaneo: {
-            op1: 0,
-            op2: 0,
-            op3: 0,
-            op4: 0
-          }
+          op1: 15.04,
+          op2: 33.641,
+          op3: 0,
+          op4: 8.595
         }
       }
     };
   },
   computed: {
-    ...mapState(["tipologia", "kit", "op1", "op2", "op3", "op4"]),
+    ...mapState([
+      "tipologia",
+      "kit",
+      "op1",
+      "op2",
+      "op3",
+      "op4",
+      "incc",
+      "visitante"
+    ]),
     ...mapGetters(["scene"])
   },
   methods: {
@@ -136,7 +112,8 @@ export default {
       this.$store.commit("TOGGLE_OPTION", "op4");
     },
     getCost(op) {
-      var cost = this[op] ? this.custos[this.tipologia][this.kit][op] : 0;
+      if (this.visitante) return 0;
+      var cost = this[op] ? this.custos[this.tipologia][op] * this.incc : 0;
       return cost.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL"
