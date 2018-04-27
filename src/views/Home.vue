@@ -30,7 +30,6 @@
           />
          <span style="margin-left:8px;">Acabamentos kit</span>
           <span v-if="tipologia" class="opItemValor">{{getCost('op1')}}</span>
-          <br/><br/>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
@@ -42,7 +41,6 @@
           />
           <span style="margin-left:8px;">Piso áreas secas</span>
           <span v-if="tipologia"  class="opItemValor">{{getCost('op2')}}</span>
-          <br/><br/>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
@@ -55,7 +53,7 @@
           />
           <span style="margin-left:8px;">Parede da Cozinha</span>
           <span v-if="tipologia"  class="opItemValor">{{getCost('op3')}}</span>
-          <br/><br/>
+
         </div>
         <div class="opItem">
           <toggle-button
@@ -67,7 +65,9 @@
           />
           <span style="margin-left:8px;">Kit aquecedor</span>
           <span v-if="tipologia"  class="opItemValor">{{getCost('op4')}}</span>
-          <br/><br/>
+        </div>
+        <div style="text-align:right">
+          TOTAL: {{custoTotal}}
         </div>
       </div>
     </div>
@@ -118,6 +118,21 @@ export default {
   },
   computed: {
     ...mapState(["incc", "userEmail"]),
+    custoTotal() {
+      let sum = 0;
+      this.kit === "padrao"
+        ? (sum += 0)
+        : (sum += this.custos[this.tipologia]["op1"]);
+      this.op2 ? (sum += this.custos[this.tipologia]["op2"]) : (sum += 0);
+      this.op4 ? (sum += this.custos[this.tipologia]["op4"]) : (sum += 0);
+
+      let cost = sum * this.incc;
+
+      return cost.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    },
     scene() {
       let sceneString = "";
       if (this.kit === "padrao") {
@@ -227,16 +242,13 @@ export default {
   display: flex;
   width: 100%;
 }
-.opcoes-amb {
-  flex: 0;
-  align-self: center;
-  margin: 10px 0;
-}
 .opcoes-text {
+  border: 2px groove #555;
   flex: 0;
   align-self: stretch;
   color: #fff;
   padding: 10px;
+  margin: 4px;
 }
 .opcoes-confirm {
   align-self: center;
@@ -265,23 +277,14 @@ export default {
 }
 .opItem {
   display: flex;
+  border: 2px groove #555;
+  margin: 8px 0;
+  padding: 4px;
 }
 .opItemValor {
   margin-left: auto;
 }
-.dummy {
-  background: tomato;
-  padding: 5px;
-  width: 100px;
-  height: 100px;
-  margin: 10px;
 
-  line-height: 100px;
-  color: white;
-  font-weight: bold;
-  font-size: 2em;
-  text-align: center;
-}
 @media (max-width: 479px) {
   .home {
     margin: 0;
