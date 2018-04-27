@@ -41,7 +41,7 @@
 		/>
 	</layer>
 	<action name="scenechange" scope="local" type="Javascript">
-		vm.$store.commit('CHANGE_AMBIENTE', caller.scene);
+		vm.ambiente = caller.scene;
 	</action>
 
 <!-- FIM TROCA DE CENA -->	

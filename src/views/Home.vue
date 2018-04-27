@@ -2,15 +2,14 @@
   <div class="home">
     <krpano xml="tour.xml"
       :lazy-load="true"
-      class="content"
       @panoCreated="init"
       :scene="scene"
     />
     <div class="opcoes">
       <div class="opcoes-nav">
-        <div class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="setKit('padrao')">Padrão</div>
-        <div class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="setKit('classico')">Clássico</div>
-        <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="setKit('contemporaneo')">Contemporâneo</div>
+        <div class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="kit='padrao'">Padrão</div>
+        <div class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="kit='classico'">Clássico</div>
+        <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
       </div>
       <div class="opcoes-text">
         <div class="opItem"  v-if="kit !== 'padrao'">
@@ -19,35 +18,46 @@
             :width="90"
             v-if="kit !== 'padrao'" :value="true" :disabled="true"
           />
-         Acabamentos kit {{getCost('op1')}}<br/><br/>
+         <span style="margin-left:8px;">Acabamentos kit</span>
+          <span v-if="tipologia" class="opItemValor">{{getCost('op1')}}</span>
+          <br/><br/>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
             :value="op2"
             :sync="true"
-            @change = "setOption2"
+            @change = "setOption(2)"
             :width="90"
             :labels="{checked: 'Sim', unchecked: 'Não'}"
-          /> Piso áreas secas {{getCost('op2')}}<br/><br/>
+          />
+          <span style="margin-left:8px;">Piso áreas secas</span>
+          <span v-if="tipologia"  class="opItemValor">{{getCost('op2')}}</span>
+          <br/><br/>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
             :value="op3"
             :sync="true"
-            @change = "setOption3"
+            @change = "setOption(3)"
             :width="90"
             :labels="{checked: 'Pintura', unchecked: 'Porcelanato'}"
             :color="{checked: '#75C791', unchecked: '#75C791'}"
-          /> Parede da Cozinha {{getCost('op3')}}<br/><br/>
+          />
+          <span style="margin-left:8px;">Parede da Cozinha</span>
+          <span v-if="tipologia"  class="opItemValor">{{getCost('op3')}}</span>
+          <br/><br/>
         </div>
         <div class="opItem">
           <toggle-button
             :value="op4"
             :sync="true"
-            @change = "setOption4"
+            @change = "setOption(4)"
             :width="90"
             :labels="{checked: 'Sim', unchecked: 'Não'}"
-          /> Kit aquecedor{{getCost('op4')}}
+          />
+          <span style="margin-left:8px;">Kit aquecedor</span>
+          <span v-if="tipologia"  class="opItemValor">{{getCost('op4')}}</span>
+          <br/><br/>
         </div>
       </div>
     </div>
@@ -57,12 +67,21 @@
 <script>
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
+import { db } from "../firebase";
 export default {
   name: "home",
   components: { Krpano },
   data() {
     return {
+      tipologia: "",
+      ambiente: "sala",
+      kit: "padrao",
+      op1: true,
+      op2: false,
+      op3: false,
+      op4: false,
+      unidades: null,
       custos: {
         "2quartos": {
           op1: 12.917,
@@ -86,30 +105,33 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      "tipologia",
-      "kit",
-      "op1",
-      "op2",
-      "op3",
-      "op4",
-      "incc",
-      "visitante"
-    ]),
-    ...mapGetters(["scene"])
+    ...mapState(["incc", "user"]),
+    scene() {
+      let sceneString = "";
+      if (this.kit === "padrao") {
+        sceneString = this.ambiente + "-" + this.kit;
+      } else {
+        sceneString =
+          this.ambiente +
+          "-" +
+          this.kit +
+          "-" +
+          Number(this.op1) +
+          "_" +
+          Number(this.op2);
+        if (this.ambiente === "sala") {
+          sceneString += "_" + Number(this.op3);
+        }
+      }
+      return sceneString;
+    }
   },
   methods: {
     setKit(kit) {
       this.$store.commit("TOGGLE_KIT", kit);
     },
-    setOption2() {
-      this.$store.commit("TOGGLE_OPTION", "op2");
-    },
-    setOption3() {
-      this.$store.commit("TOGGLE_OPTION", "op3");
-    },
-    setOption4() {
-      this.$store.commit("TOGGLE_OPTION", "op4");
+    setOption(op) {
+      this["op" + op] = !this["op" + op];
     },
     getCost(op) {
       if (this.visitante) return 0;
@@ -121,17 +143,42 @@ export default {
     },
     init() {
       console.log("initialized");
+    },
+    getUnidades() {
+      console.log(this.user);
+      db
+        .ref("empreendimentos/bosc")
+        .orderByChild("adm/email")
+        .equalTo(this.user.email)
+        .once("value")
+        .then(snapshot => {
+          let result = snapshot.val();
+          console.log(result);
+          if (!result) {
+            console.log("É visitante");
+          }
+          let arrayUnidades = Object.keys(result).sort((a, b) => a - b);
+          console.log(arrayUnidades);
+          this.tipologia = result[arrayUnidades[0]].tipologia;
+          this.$store.commit(
+            "SET_USER_DISPLAY_NAME",
+            result[arrayUnidades[0]].adm.nome
+          );
+          this.unidades = result;
+        })
+        .catch(error => console.log(error));
     }
   },
   created() {
     this.$store.dispatch("getINCC");
-    this.$store.dispatch("getUnidades");
+    this.getUnidades();
   },
   mounted() {
     window.vm = this;
   }
 };
 </script>
+
 <style>
 .home {
   display: flex;
@@ -139,12 +186,13 @@ export default {
   margin: 10px 5px;
   flex-wrap: wrap;
 }
-.content {
+.krpano {
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 480px;
-  height: 60vmin;
+  min-height: 360px;
 }
+
 .opcoes {
   display: flex;
   flex-direction: column;
@@ -165,7 +213,7 @@ export default {
 }
 .opcoes-text {
   flex: 0;
-  align-self: flex-start;
+  align-self: stretch;
   color: #fff;
   padding: 10px;
 }
@@ -193,5 +241,30 @@ export default {
 }
 .active {
   background-color: #9ac088;
+}
+.opItem {
+  display: flex;
+}
+.opItemValor {
+  margin-left: auto;
+}
+.dummy {
+  background: tomato;
+  padding: 5px;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+
+  line-height: 100px;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
+}
+@media (max-width: 479px) {
+  .home {
+    margin: 0;
+    border: none;
+  }
 }
 </style>

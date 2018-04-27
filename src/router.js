@@ -7,9 +7,14 @@ import UserLogin from "./views/UserLogin.vue";
 import FinishUserLogin from "./views/FinishUserLogin.vue";
 import FinishAdmLogin from "./views/FinishAdmLogin.vue";
 import Erro from "./views/Erro.vue";
+import store from "./store";
 import { auth } from "./firebase";
 Vue.use(Router);
-
+auth.onAuthStateChanged(user => {
+  if (user) {
+    store.commit("SET_USER", user);
+  }
+});
 export default new Router({
   mode: "history",
   routes: [
@@ -17,16 +22,17 @@ export default new Router({
       path: "/",
       name: "home",
       component: Home,
-      beforeEnter(to, from, next) {
-        auth.currentUser ? next() : next("userlogin");
+      meta: {
+        auth: true
       }
     },
     {
       path: "/admin",
       name: "admin",
       component: Admin,
-      beforeEnter(to, from, next) {
-        auth.currentUser ? next() : next("admlogin");
+      meta: {
+        title: "Administração Personalização",
+        auth: true
       }
     },
     {

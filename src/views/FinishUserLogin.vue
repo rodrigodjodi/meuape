@@ -121,7 +121,7 @@ $primary: #42b983;
       color: #fff;
       font-size: 1em;
       position: absolute;
-      margin-top: -47px;
+      margin-top: -42px;
       opacity: 0;
       left: 0;
       transition: all 0.1s ease-in;

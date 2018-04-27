@@ -1,20 +1,26 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div class="header">
       <router-link class="logo" to="/">
         <img src="images/piemonte.png" alt="logo piemonte">
       </router-link>
-      <span v-if="loggedIn" @click="logout" class="logout">SAIR</span>
+      <span v-if="user" class="logout">Olá, {{displayName}}  </span>
+      <span v-if="user" @click="logout">SAIR</span>
     </div>
-    <router-view/>
+    <router-view class="router"/>
   </div>
 </template>
 <script>
 import { auth } from "./firebase";
 export default {
   computed: {
-    loggedIn() {
-      return this.$store.state.loggedIn;
+    user() {
+      return this.$store.state.user;
+    },
+    displayName() {
+      return this.$store.state.displayName
+        ? this.$store.state.displayName
+        : "Visitante";
     }
   },
   methods: {
@@ -22,15 +28,7 @@ export default {
       auth.signOut().then(() => this.$router.push("userlogin"));
     }
   },
-  created() {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        this.$store.commit("SET_LOGIN_STATE", true);
-      } else {
-        this.$store.commit("SET_LOGIN_STATE", false);
-      }
-    });
-  }
+  created() {}
 };
 </script>
 
@@ -43,36 +41,39 @@ html,
 body {
   background-color: #2d2d2b;
   margin: 0;
+  height: 100%;
 }
 #app {
-  font-family: "Lato", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100%;
 }
-#nav {
+.header {
   display: flex;
   background-color: rgba(69, 82, 88, 0.9);
   padding: 10px 20px;
   border-bottom: 1px solid #455258;
   align-items: center;
 }
-#nav img {
+.header .logo {
   width: 200px;
-  height: 49px;
 }
-.logout {
+.header img {
+  max-width: 100%;
+}
+.header .logout {
   margin-left: auto;
   color: white;
   text-decoration: none;
-  color: #42b983;
   cursor: pointer;
 }
-.logo {
+.router {
   flex: 1;
 }
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+@media (max-width: 479px) {
+  .header {
+    padding: 8px 8px 0;
+  }
 }
 </style>

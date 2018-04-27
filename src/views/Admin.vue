@@ -1,23 +1,28 @@
 <template>
-<div>
-  <label for="select-emp">Empreendimento:</label>
-  <select id="select-emp" v-model="empreendimento">
-      <option value="">Selecione...</option>
-      <option value="bosc">BOSC Eco Residence</option>
-  </select>
+<div class="admin">
+  <div class="text_center">
+    <label for="select-emp">Empreendimento:</label>
+    <select id="select-emp" v-model="empreendimento">
+        <option value="">Selecione...</option>
+        <option value="bosc">BOSC Eco Residence</option>
+    </select>
+  </div>
   <hr>
   <div v-if="unidades!==null">
     <h3>Cadastro contrato</h3>
-    <select id="select-unidade" v-model="unidade">
-      <option value="">Selecione...</option>
-      <option v-for="(props, unidade) in unidades" :key="unidade">
-        {{unidade}}
-      </option>
-    </select>
-    <input v-model="contrato" type="text" name="input-contrato" placeholder="Nº contrato..." :disabled="unidade===''">
-    <input v-model="email" type="email" name="input-email" placeholder="Email cliente..." :disabled="unidade===''">
-    <button @click="cadastraContrato" :disabled="unidade===''">CADASTRAR CONTRATO</button>
-
+    <form @submit="cadastraContrato">
+      <select id="select-unidade" v-model="unidade">
+        <option value="">Selecione...</option>
+        <option v-for="(props, unidade) in unidades" :key="unidade">
+          {{unidade}}
+        </option>
+      </select>
+      <input v-model="contrato" type="text" name="input-contrato" placeholder="Nº contrato..." :disabled="unidade===''" required>
+      <input v-model="email" type="email" name="input-email" placeholder="Email cliente..." :disabled="unidade===''" required>
+      <input v-model="nomeCliente" type="text" name="input-nome" placeholder="Nome..." :disabled="unidade===''" required>
+      <input v-model="sobrenomeCliente" type="text" name="input-sobrenome" placeholder="Sobrenome..." :disabled="unidade===''" required>
+      <button :disabled="unidade===''">CADASTRAR CONTRATO</button>
+    </form>
   <hr>
     <h3>Quadro resumo</h3>
     <table>
@@ -26,6 +31,8 @@
         <th>Tipologia</th>
         <th>Contrato</th>
         <th>E-mail</th>
+        <th>Nome</th>
+        <th>Sobrenome</th>
         <th>Kit</th>
         <th>Piso áreas secas</th>
         <th>Paredes cozinha</th>
@@ -34,18 +41,20 @@
       <tr v-for="(props, unidade) in unidades" :key="unidade">
         <td>{{unidade}}</td>
         <td>{{props.tipologia}}</td>
-        <td>{{props.contrato}}</td>
-        <td>{{props.email}}</td>
-        <td>{{props.kit}}</td>
-        <td>{{props.op2}}</td>
-        <td>{{props.op3}}</td>
-        <td>{{props.op4}}</td>
+        <td>{{props.adm ? props.adm.contrato : null}}</td>
+        <td>{{props.adm ? props.adm.email : null}}</td>
+        <td>{{props.adm ? props.adm.nome : null}}</td>
+        <td>{{props.adm ? props.adm.sobrenome : null}}</td>
+        <td>{{props.private ? props.private.kit : null}}</td>
+        <td>{{props.private ? props.private.op2 : null}}</td>
+        <td>{{props.private ? props.private.op3 : null}}</td>
+        <td>{{props.private ? props.private.op4 : null}}</td>
       </tr>
     </table>
 
   <hr>
 
-    <h3>Reset unidade</h3>  
+    <h3>Cadastro / Reset unidade</h3>  
     <label for="">Número ap</label>
     <input type="text" v-model="unidade">
     <select v-model="tipologia">
@@ -65,6 +74,8 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
+      nomeCliente: null,
+      sobrenomeCliente: null,
       unidade: "",
       tipologia: "",
       tipologias: ["2quartos", "3quartos", "duplex"],
@@ -76,18 +87,35 @@ export default {
     };
   },
   methods: {
-    cadastraContrato() {
+    cadastraContrato(e) {
+      e.preventDefault();
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
       empreendimento
         .child(this.unidade)
-        .update({ contrato: this.contrato, email: this.email })
-        .then(result => console.log(result))
-        .catch(error => console.log(error));
-      this.unidade = "";
-      this.contrato = null;
-      this.email = null;
+        .child("adm")
+        .update({
+          contrato: this.contrato,
+          email: this.email,
+          nome: this.nomeCliente,
+          sobrenome: this.sobrenomeCliente
+        })
+        .then(() => {
+          this.unidade = "";
+          this.contrato = null;
+          this.email = null;
+          this.nomeCliente = null;
+          this.sobrenomeCliente = null;
+          console.log("Dados inseridos");
+        })
+        .catch(error => console.log("error" + error));
     },
     novoApartamento() {
+      if (
+        !confirm(
+          "Isso apagará todos os dados da unidade caso ela já exista! Confirma?"
+        )
+      )
+        return;
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
       empreendimento
         .child(this.unidade)
@@ -103,12 +131,32 @@ export default {
   },
   watch: {
     empreendimento() {
-      if (!this.empreendimento) return;
+      if (!this.empreendimento) {
+        this.unidades = null;
+        return;
+      }
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
       empreendimento.on("value", snapshot => {
         this.unidades = snapshot.val();
+        console.log(this.unidades);
       });
     }
   }
 };
 </script>
+
+<style>
+label {
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+  display: block;
+  font-weight: 600;
+}
+.admin {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+.text_center {
+  text-align: center;
+}
+</style>

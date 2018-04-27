@@ -1,21 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
-import { db, auth } from "./firebase";
+import { db } from "./firebase";
 export default new Vuex.Store({
   state: {
-    loggedIn: false,
-    tipologia: "",
-    ambiente: "sala",
-    kit: "padrao",
-    op1: true,
-    op2: false,
-    op3: false,
-    op4: false,
     incc: 0,
     user: null,
-    unidades: {},
-    visitante: false
+    displayName: "Visitante"
   },
   getters: {
     scene: state => {
@@ -42,23 +33,10 @@ export default new Vuex.Store({
     SET_USER(state, user) {
       state.user = user;
     },
-    TOGGLE_OPTION(state, op) {
-      state[op] = !state[op];
+    SET_USER_DISPLAY_NAME(state, name) {
+      state.displayName = name;
     },
-    TOGGLE_KIT(state, kit) {
-      if (["padrao", "classico", "contemporaneo"].includes(kit)) {
-        state.kit = kit;
-      } else {
-        console.error("kit não existe:" + kit);
-      }
-    },
-    CHANGE_AMBIENTE(state, amb) {
-      if (["sala", "bwc"].includes(amb)) {
-        state.ambiente = amb;
-      } else {
-        console.error("ambiente não existe:" + amb);
-      }
-    },
+
     SET_INCC(state, val) {
       state.incc = val;
     },
@@ -70,9 +48,6 @@ export default new Vuex.Store({
     },
     SET_VISITANTE(state, val) {
       state.visitante = val;
-    },
-    SET_UNIDADES(state, val) {
-      state.unidades = val;
     }
   },
   actions: {
@@ -82,24 +57,6 @@ export default new Vuex.Store({
         .once("value")
         .then(function(snapshot) {
           commit("SET_INCC", snapshot.val());
-        })
-        .catch(error => console.log(error));
-    },
-    getUnidades({ commit }) {
-      db
-        .ref("empreendimentos/bosc")
-        .orderByChild("email")
-        .equalTo(auth.currentUser.email)
-        .once("value")
-        .then(function(snapshot) {
-          let result = snapshot.val();
-          if (!result) {
-            commit("SET_VISITANTE", true);
-          } else if (Object.keys(result).length === 1) {
-            commit("SET_TIPOLOGIA", result[Object.keys(result)[0]].tipologia);
-          } else if (Object.keys(result).length === 1) {
-            commit("SET_UNIDADES", result);
-          }
         })
         .catch(error => console.log(error));
     }
