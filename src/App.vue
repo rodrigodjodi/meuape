@@ -42,6 +42,7 @@ body {
   background-color: #2d2d2b;
   margin: 0;
   height: 100%;
+  font-family: Lato, sans-serif;
 }
 #app {
   display: flex;
