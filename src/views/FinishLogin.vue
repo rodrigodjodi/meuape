@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #427fb9;
+$primary: #42b983;
 @keyframes spinner {
   0% {
     transform: rotateZ(0deg);
