@@ -1,63 +1,51 @@
 <template>
   <div class="wrapper">
-  <form @submit.prevent="sendEmailLink" class="login" :class="{loading:isLoading}">
-    <p class="title">Use seu e-mail para entrar</p>
-    <input ref="email" v-model="email" type="email" placeholder="email" autofocus/>
-    <i class="fa fa-envelope"></i>
-    <span class="errorMessage">{{errMsg}}</span>
-    <button>
-    <h2 v-if="isLoading">Aguardando confirmação...</h2>
-      <i v-if="isLoading" class="spinner"></i>
-      <span>{{msg}}</span>
-    </button>
-  </form>
-</div>
+    <form class="login loading" :class="{ok:loginSuccess}">
+      <button>
+      <h2>{{title}}</h2>
+        <i class="spinner"></i>
+        <span v-if="loginSuccess">Você pode fechar essa janela e voltar à administração.</span>
+      </button>
+    </form>
+  </div>
 </template>
-
 <script>
-import { auth, actionCodeSettings } from "../firebase";
+import { auth } from "../firebase";
 export default {
   data() {
     return {
-      email: "",
-      isLoading: false,
-      errMsg: null
+      loginSuccess: false
     };
   },
   computed: {
-    msg() {
-      let loadingMsg = `Clique no link enviado para
-      ${this.email} para concluir o login.`;
-      return this.isLoading ? loadingMsg : "Entrar";
-    }
-  },
-  methods: {
-    sendEmailLink() {
-      actionCodeSettings.url = process.env.VUE_APP_URL + "finishadmlogin";
-      auth
-        .sendSignInLinkToEmail(this.email, actionCodeSettings)
-        .then(() => {
-          window.localStorage.setItem("emailForSignIn", this.email);
-          this.isLoading = "true";
-        })
-        .catch(error => {
-          if (error.code === "auth/invalid-email") {
-            this.email = "";
-            this.$refs.email.focus();
-            this.errMsg =
-              "Houve um problema com o email fornecido. Tente novamente.";
-          } else {
-            console.error(error);
-          }
-        });
+    title() {
+      return this.loginSuccess ? "Pronto!" : "Validando...";
     }
   },
   created() {
     auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push("admin");
+        this.$router.push("/");
       }
     });
+  },
+  mounted() {
+    if (auth.isSignInWithEmailLink(window.location.href)) {
+      var email = window.localStorage.getItem("emailForSignIn");
+      if (!email) {
+        email = window.prompt("Por favor confirme seu e-mail");
+      }
+      auth
+        .signInWithEmailLink(email)
+        .then(() => {
+          // Clear email from storage.
+          window.localStorage.removeItem("emailForSignIn");
+          this.loginSuccess = true;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 };
 </script>
@@ -95,6 +83,7 @@ $primary: #427fb9;
   padding: 10px 20px 20px 20px;
   width: 90%;
   max-width: 320px;
+  min-height: 240px;
   background: #ffffff;
   position: relative;
   padding-bottom: 80px;

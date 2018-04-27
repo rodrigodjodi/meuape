@@ -12,6 +12,16 @@
         <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
       </div>
       <div class="opcoes-text">
+        <div v-if="tipologia">
+          Personalizando apartamento
+          <select @change="changeApto">
+            <option v-for="apto in nomesUnidades" :key="apto" :value="apto">{{apto}}</option>
+          </select> Tipologia: {{tipologia}}
+        </div>
+        <div style="text-align:center" v-else>
+            <h3>Modo visitante. </h3>
+            <p>Somente usuários registrador podem ver preços e condições.</p>
+        </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button  
             :labels="{checked: 'Sim (kit)', unchecked: 'Não'}"
@@ -74,6 +84,7 @@ export default {
   components: { Krpano },
   data() {
     return {
+      apto: "",
       tipologia: "",
       ambiente: "sala",
       kit: "padrao",
@@ -82,6 +93,7 @@ export default {
       op3: false,
       op4: false,
       unidades: null,
+      nomesUnidades: [],
       custos: {
         "2quartos": {
           op1: 12.917,
@@ -105,7 +117,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["incc", "user"]),
+    ...mapState(["incc", "userEmail"]),
     scene() {
       let sceneString = "";
       if (this.kit === "padrao") {
@@ -127,6 +139,11 @@ export default {
     }
   },
   methods: {
+    changeApto(ev) {
+      let ap = ev.target.value;
+      this.apto = ap;
+      this.tipologia = this.unidades[ap].tipologia;
+    },
     setKit(kit) {
       this.$store.commit("TOGGLE_KIT", kit);
     },
@@ -144,12 +161,13 @@ export default {
     init() {
       console.log("initialized");
     },
-    getUnidades() {
-      console.log(this.user);
+    getUserInfo() {
+      console.log("home user: " + this.userEmail);
+      if (!this.userEmail) return;
       db
         .ref("empreendimentos/bosc")
         .orderByChild("adm/email")
-        .equalTo(this.user.email)
+        .equalTo(this.userEmail)
         .once("value")
         .then(snapshot => {
           let result = snapshot.val();
@@ -158,7 +176,8 @@ export default {
             console.log("É visitante");
           }
           let arrayUnidades = Object.keys(result).sort((a, b) => a - b);
-          console.log(arrayUnidades);
+          this.nomesUnidades = arrayUnidades;
+          this.apto = arrayUnidades[0];
           this.tipologia = result[arrayUnidades[0]].tipologia;
           this.$store.commit(
             "SET_USER_DISPLAY_NAME",
@@ -169,12 +188,14 @@ export default {
         .catch(error => console.log(error));
     }
   },
-  created() {
-    this.$store.dispatch("getINCC");
-    this.getUnidades();
+  watch: {
+    userEmail: "getUserInfo"
   },
-  mounted() {
+  created() {
+    console.log(".Home.vue created hook:");
     window.vm = this;
+    this.$store.dispatch("getINCC");
+    this.getUserInfo();
   }
 };
 </script>

@@ -5,7 +5,7 @@
         <img src="images/piemonte.png" alt="logo piemonte">
       </router-link>
       <span v-if="user" class="logout">Olá, {{displayName}}  </span>
-      <span v-if="user" @click="logout">SAIR</span>
+      <span v-if="user" class="logout" @click="logout">SAIR</span>
     </div>
     <router-view class="router"/>
   </div>
@@ -15,12 +15,10 @@ import { auth } from "./firebase";
 export default {
   computed: {
     user() {
-      return this.$store.state.user;
+      return this.$store.state.userEmail;
     },
     displayName() {
-      return this.$store.state.displayName
-        ? this.$store.state.displayName
-        : "Visitante";
+      return this.$store.state.displayName;
     }
   },
   methods: {
@@ -28,7 +26,9 @@ export default {
       auth.signOut().then(() => this.$router.push("userlogin"));
     }
   },
-  created() {}
+  created() {
+    console.log("app.vue created hook");
+  }
 };
 </script>
 

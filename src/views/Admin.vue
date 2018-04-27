@@ -9,6 +9,10 @@
   </div>
   <hr>
   <div v-if="unidades!==null">
+    <h3>Atualizar INCC (toDO)</h3>
+  </div>
+  <hr>
+  <div v-if="unidades!==null">
     <h3>Cadastro contrato</h3>
     <form @submit="cadastraContrato">
       <select id="select-unidade" v-model="unidade">
@@ -16,11 +20,12 @@
         <option v-for="(props, unidade) in unidades" :key="unidade">
           {{unidade}}
         </option>
-      </select>
-      <input v-model="contrato" type="text" name="input-contrato" placeholder="Nº contrato..." :disabled="unidade===''" required>
-      <input v-model="email" type="email" name="input-email" placeholder="Email cliente..." :disabled="unidade===''" required>
-      <input v-model="nomeCliente" type="text" name="input-nome" placeholder="Nome..." :disabled="unidade===''" required>
+      </select><br>
+      <input v-model="contrato" type="text" name="input-contrato" placeholder="Nº contrato..." :disabled="unidade===''" required><br>
+      <input v-model="email" type="email" name="input-email" placeholder="Email cliente..." :disabled="unidade===''" required><br>
+      <input v-model="nomeCliente" type="text" name="input-nome" placeholder="Nome..." :disabled="unidade===''" required><br>
       <input v-model="sobrenomeCliente" type="text" name="input-sobrenome" placeholder="Sobrenome..." :disabled="unidade===''" required>
+      <br>
       <button :disabled="unidade===''">CADASTRAR CONTRATO</button>
     </form>
   <hr>

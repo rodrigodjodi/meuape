@@ -1,43 +1,79 @@
 <template>
   <div class="wrapper">
-    <form class="login loading" :class="{ok:loginSuccess}">
-      <button>
-      <h2>{{title}}</h2>
-        <i class="spinner"></i>
-        <span v-if="loginSuccess">Você pode fechar essa janela e voltar à personalização.</span>
-      </button>
-    </form>
-  </div>
+  <form @submit="onSubmit" class="login" :class="{loading:generatingLink, ok:linkReady}">
+    <p class="title">Use seu e-mail para entrar</p>
+    <input ref="email" v-model="email" type="email" placeholder="email" autofocus required/>
+    <i class="fa fa-envelope"></i>
+    <span class="errorMessage">{{errMsg}}</span>
+    <button>
+    <h2 v-if="generatingLink">{{titleMsg}}</h2>
+      <i v-if="generatingLink" class="spinner"></i>
+      <span>{{msg}}</span>
+    </button>
+  </form>
+</div>
 </template>
+
 <script>
-import { auth } from "../firebase";
+import { auth, actionCodeSettings } from "../firebase";
 export default {
   data() {
     return {
-      loginSuccess: false
+      email: "",
+      generatingLink: false,
+      linkReady: false,
+      errMsg: null
     };
   },
   computed: {
-    title() {
-      return this.loginSuccess ? "Pronto!" : "Validando...";
+    titleMsg() {
+      if (this.linkReady) {
+        return "Pronto!";
+      } else if (this.generatingLink) {
+        return "Gerando link...";
+      }
+    },
+    msg() {
+      if (this.linkReady) {
+        return `Enviamos um email para ${this.email} com o link de acesso.
+        Você pode fechar essa janela.`;
+      } else if (this.generatingLink) {
+        return "";
+      } else {
+        return "Entrar";
+      }
     }
   },
-  mounted() {
-    if (auth.isSignInWithEmailLink(window.location.href)) {
-      var email = window.localStorage.getItem("emailForSignIn");
-      if (!email) {
-        email = window.prompt("Por favor confirme seu e-mail");
-      }
+  methods: {
+    onSubmit(e) {
+      e.preventDefault();
+      this.generatingLink = "true";
+      this.sendEmailLink();
+    },
+    sendEmailLink() {
+      actionCodeSettings.url = process.env.VUE_APP_URL + "finishlogin";
       auth
-        .signInWithEmailLink(email)
+        .sendSignInLinkToEmail(this.email, actionCodeSettings)
         .then(() => {
-          // Clear email from storage.
-          window.localStorage.removeItem("emailForSignIn");
-          this.loginSuccess = true;
+          window.localStorage.setItem("emailForSignIn", this.email);
+          this.linkReady = true;
         })
         .catch(error => {
-          console.log(error);
+          if (error.code === "auth/invalid-email") {
+            this.email = "";
+            this.$refs.email.focus();
+            this.errMsg =
+              "Houve um problema com o email fornecido. Tente novamente.";
+          } else {
+            console.error(error);
+          }
         });
+    }
+  },
+  created() {
+    if (this.$route.query.email) {
+      this.email = this.$route.query.email;
+      this.sendEmailLink();
     }
   }
 };
@@ -76,7 +112,6 @@ $primary: #42b983;
   padding: 10px 20px 20px 20px;
   width: 90%;
   max-width: 320px;
-  min-height: 240px;
   background: #ffffff;
   position: relative;
   padding-bottom: 80px;

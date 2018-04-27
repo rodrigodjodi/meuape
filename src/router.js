@@ -2,20 +2,14 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Admin from "./views/Admin.vue";
-import AdmLogin from "./views/AdmLogin.vue";
-import UserLogin from "./views/UserLogin.vue";
-import FinishUserLogin from "./views/FinishUserLogin.vue";
-import FinishAdmLogin from "./views/FinishAdmLogin.vue";
+import Login from "./views/Login.vue";
+import FinishLogin from "./views/FinishLogin.vue";
 import Erro from "./views/Erro.vue";
-import store from "./store";
 import { auth } from "./firebase";
+import store from "./store";
 Vue.use(Router);
-auth.onAuthStateChanged(user => {
-  if (user) {
-    store.commit("SET_USER", user);
-  }
-});
-export default new Router({
+
+const router = new Router({
   mode: "history",
   routes: [
     {
@@ -36,24 +30,9 @@ export default new Router({
       }
     },
     {
-      path: "/admlogin",
-      name: "admlogin",
-      component: AdmLogin
-    },
-    {
-      path: "/userlogin",
-      name: "userlogin",
-      component: UserLogin
-    },
-    {
-      path: "/finishuserlogin",
-      name: "finishuserlogin",
-      component: FinishUserLogin
-    },
-    {
-      path: "/finishadmlogin",
-      name: "finishadmlogin",
-      component: FinishAdmLogin
+      path: "/login",
+      name: "login",
+      component: Login
     },
     {
       path: "/erro",
@@ -62,3 +41,34 @@ export default new Router({
     }
   ]
 });
+
+router.beforeResolve((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  if (to.meta.auth) {
+    auth.onAuthStateChanged(user => {
+      console.log("2. : onAuthStateChanged fired");
+      if (user) {
+        console.log("3. user exists:");
+        console.log(user);
+        store.commit("SET_USER_EMAIL", user.email);
+        store.commit("SET_USER_DISPLAY_NAME", user.email);
+        console.log("4. user email commited");
+        next();
+      } else {
+        console.log("else do if user");
+        store.commit("SET_USER_EMAIL", null);
+        if (to.name === "admin") {
+          next("/admlogin");
+        } else {
+          next("/userlogin");
+        }
+      }
+    });
+  } else {
+    next();
+  }
+});
+
+export default router;
