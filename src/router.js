@@ -35,6 +35,11 @@ const router = new Router({
       component: Login
     },
     {
+      path: "/finishlogin",
+      name: "finishlogin",
+      component: FinishLogin
+    },
+    {
       path: "/erro",
       name: "erro",
       component: Erro
@@ -48,22 +53,13 @@ router.beforeResolve((to, from, next) => {
   }
   if (to.meta.auth) {
     auth.onAuthStateChanged(user => {
-      console.log("2. : onAuthStateChanged fired");
       if (user) {
-        console.log("3. user exists:");
-        console.log(user);
         store.commit("SET_USER_EMAIL", user.email);
         store.commit("SET_USER_DISPLAY_NAME", user.email);
-        console.log("4. user email commited");
         next();
       } else {
-        console.log("else do if user");
         store.commit("SET_USER_EMAIL", null);
-        if (to.name === "admin") {
-          next("/admlogin");
-        } else {
-          next("/userlogin");
-        }
+        next("/login");
       }
     });
   } else {
