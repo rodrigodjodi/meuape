@@ -22,7 +22,7 @@
         </p>
         <div style="text-align:center" v-else>
             <h3>Modo visitante. </h3>
-            <p>Somente usuários registrados podem ver preços e condições.</p>
+            <p>Somente proprietários podem ver preços e condições.</p>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button  
@@ -73,6 +73,13 @@
         <h4 class="section-title">Resumo do orçamento</h4>
         
           <span class="opItemValor">VALOR TOTAL DO ORÇAMENTO: {{custoTotal|currency}}</span>
+          <span class="opItemValor">PARCELAS:
+            <select>
+              <option v-for="n in numParcelas" :value="n" :key="n">
+                {{n}} x de {{valorParcela(n)|currency}}
+              </option>
+            </select>
+          </span>
         
       </div>
     </div>
@@ -84,6 +91,7 @@
 import Krpano from "@/components/Krpano";
 import { mapState } from "vuex";
 import { db } from "../firebase";
+import floor from "lodash.floor";
 export default {
   name: "home",
   components: { Krpano },
@@ -125,7 +133,7 @@ export default {
       }
     };
   },
-  filters :{
+  filters: {
     currency(value) {
       return value.toLocaleString("pt-BR", {
         style: "currency",
@@ -138,7 +146,6 @@ export default {
     parcelasMaximasData() {
       let DisplayFrom = new Date();
       let DisplayTo = this.constants.PRAZO_MAX_QUITACAO;
-      console.log(DisplayFrom, DisplayTo)
       if (DisplayFrom < DisplayTo) {
         return (
           DisplayTo.getMonth() -
@@ -149,20 +156,25 @@ export default {
         return 0;
       }
     },
-    parcelasMaximasValor () {
-      return this.CustoTotal / this.constants.VALOR_MINIMO_PARCELA
+    numParcelasMaximasValor() {
+      console.log(this.custoTotal);
+      console.log(this.constants.VALOR_MINIMO_PARCELA);
+      console.log(this.custoTotal / this.constants.VALOR_MINIMO_PARCELA);
+      return floor(this.custoTotal / this.constants.VALOR_MINIMO_PARCELA);
+    },
+    numParcelas() {
+      return Math.min(this.parcelasMaximasData, this.numParcelasMaximasValor);
     },
     custoTotal() {
       let sum = 0;
-      this.kit === "padrao"
-        ? (sum += 0)
-        : (sum += this.custos[this.tipologia]["op1"]);
-      this.op2 ? (sum += this.custos[this.tipologia]["op2"]) : (sum += 0);
-      this.op4 ? (sum += this.custos[this.tipologia]["op4"]) : (sum += 0);
-
-      let cost = sum * this.incc;
-
-      return cost;
+      if (this.kit === "padrao") {
+        this.op4 ? (sum += this.getCost("op4")) : (sum += 0);
+      } else {
+        sum += this.getCost("op1");
+        this.op2 ? (sum += this.getCost("op2")) : (sum += 0);
+        this.op4 ? (sum += this.getCost("op4")) : (sum += 0);
+      }
+      return floor(sum, 2);
     },
     scene() {
       let sceneString = "";
@@ -185,6 +197,9 @@ export default {
     }
   },
   methods: {
+    valorParcela(numParcelas) {
+      return floor(this.custoTotal / numParcelas, 2);
+    },
     changeApto(ev) {
       let ap = ev.target.value;
       this.apto = ap;
@@ -199,13 +214,12 @@ export default {
     getCost(op) {
       if (this.visitante) return 0;
       var cost = this[op] ? this.custos[this.tipologia][op] * this.incc : 0;
-      return cost;
+      return floor(cost, 2);
     },
     init() {
       console.log("initialized");
     },
     getUserInfo() {
-      console.log("home user: " + this.userEmail);
       if (!this.userEmail) return;
       db
         .ref("empreendimentos/bosc")
@@ -214,7 +228,6 @@ export default {
         .once("value")
         .then(snapshot => {
           let result = snapshot.val();
-          console.log(result);
           if (!result) {
             console.log("É visitante");
           }
