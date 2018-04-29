@@ -12,15 +12,17 @@
         <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
       </div>
       <div class="opcoes-text">
-        <div v-if="tipologia">
-          Personalizando apartamento
-          <select @change="changeApto">
+        <h4 class="section-title">Personalizando apartamento &nbsp;
+          <select v-if="tipologia" @change="changeApto">
             <option v-for="apto in nomesUnidades" :key="apto" :value="apto">{{apto}}</option>
-          </select> Tipologia: {{tipologia}}
-        </div>
+          </select>
+        </h4>
+        <p v-if="tipologia">
+           Tipologia: {{tipologia}}
+        </p>
         <div style="text-align:center" v-else>
             <h3>Modo visitante. </h3>
-            <p>Somente usuários registrador podem ver preços e condições.</p>
+            <p>Somente usuários registrados podem ver preços e condições.</p>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button  
@@ -29,7 +31,7 @@
             v-if="kit !== 'padrao'" :value="true" :disabled="true"
           />
          <span style="margin-left:8px;">Acabamentos kit</span>
-          <span v-if="tipologia" class="opItemValor">{{getCost('op1')}}</span>
+          <span v-if="tipologia" class="opItemValor">{{getCost('op1')|currency}}</span>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
@@ -40,7 +42,7 @@
             :labels="{checked: 'Sim', unchecked: 'Não'}"
           />
           <span style="margin-left:8px;">Piso áreas secas</span>
-          <span v-if="tipologia"  class="opItemValor">{{getCost('op2')}}</span>
+          <span v-if="tipologia"  class="opItemValor">{{getCost('op2')|currency}}</span>
         </div>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
@@ -52,7 +54,7 @@
             :color="{checked: '#75C791', unchecked: '#75C791'}"
           />
           <span style="margin-left:8px;">Parede da Cozinha</span>
-          <span v-if="tipologia"  class="opItemValor">{{getCost('op3')}}</span>
+          <span v-if="tipologia"  class="opItemValor">{{getCost('op3')|currency}}</span>
 
         </div>
         <div class="opItem">
@@ -64,11 +66,14 @@
             :labels="{checked: 'Sim', unchecked: 'Não'}"
           />
           <span style="margin-left:8px;">Kit aquecedor</span>
-          <span v-if="tipologia"  class="opItemValor">{{getCost('op4')}}</span>
+          <span v-if="tipologia"  class="opItemValor">{{getCost('op4')|currency}}</span>
         </div>
-        <div style="text-align:right">
-          TOTAL: {{custoTotal}}
-        </div>
+      </div>
+      <div v-if="tipologia" class="opcoes-text">
+        <h4 class="section-title">Resumo do orçamento</h4>
+        
+          <span class="opItemValor">VALOR TOTAL DO ORÇAMENTO: {{custoTotal|currency}}</span>
+        
       </div>
     </div>
   </div>
@@ -84,6 +89,10 @@ export default {
   components: { Krpano },
   data() {
     return {
+      constants: {
+        PRAZO_MAX_QUITACAO: new Date(2019, 7, 31),
+        VALOR_MINIMO_PARCELA: 2000
+      },
       apto: "",
       tipologia: "",
       ambiente: "sala",
@@ -116,8 +125,33 @@ export default {
       }
     };
   },
+  filters :{
+    currency(value) {
+      return value.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+  },
   computed: {
     ...mapState(["incc", "userEmail"]),
+    parcelasMaximasData() {
+      let DisplayFrom = new Date();
+      let DisplayTo = this.constants.PRAZO_MAX_QUITACAO;
+      console.log(DisplayFrom, DisplayTo)
+      if (DisplayFrom < DisplayTo) {
+        return (
+          DisplayTo.getMonth() -
+          DisplayFrom.getMonth() +
+          12 * (DisplayTo.getFullYear() - DisplayFrom.getFullYear())
+        );
+      } else {
+        return 0;
+      }
+    },
+    parcelasMaximasValor () {
+      return this.CustoTotal / this.constants.VALOR_MINIMO_PARCELA
+    },
     custoTotal() {
       let sum = 0;
       this.kit === "padrao"
@@ -128,10 +162,7 @@ export default {
 
       let cost = sum * this.incc;
 
-      return cost.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
+      return cost;
     },
     scene() {
       let sceneString = "";
@@ -168,10 +199,7 @@ export default {
     getCost(op) {
       if (this.visitante) return 0;
       var cost = this[op] ? this.custos[this.tipologia][op] * this.incc : 0;
-      return cost.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
+      return cost;
     },
     init() {
       console.log("initialized");
@@ -244,11 +272,18 @@ export default {
 }
 .opcoes-text {
   border: 2px groove #555;
-  flex: 0;
   align-self: stretch;
   color: #fff;
   padding: 10px;
-  margin: 4px;
+  margin: 20px 4px;
+  display: flex;
+  flex-direction: column;
+}
+.section-title {
+  margin: -20px -4px 0;
+  background-color: #2d2d2b;
+  align-self: flex-start;
+  padding: 0 4px;
 }
 .opcoes-confirm {
   align-self: center;
