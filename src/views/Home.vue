@@ -25,40 +25,38 @@
             <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
           </div>
         </section>
-        <div class="opItem"  v-if="kit !== 'padrao'">
-          <toggle-button
-            :value="op2"
-            :sync="true"
-            @change = "setOption(2)"
-            :width="90"
-            :labels="{checked: 'Sim', unchecked: 'Não'}"
-          />
-          <span style="margin-left:8px;">Piso áreas secas</span>
-          <span v-if="tipologia"  class="opItemValor">{{getCost('op2')|currency}}</span>
-        </div>
-        <div class="opItem"  v-if="kit !== 'padrao'">
-          <toggle-button
-            :value="op3"
-            :sync="true"
-            @change = "setOption(3)"
-            :width="90"
-            :labels="{checked: 'Pintura', unchecked: 'Porcelanato'}"
-            :color="{checked: '#75C791', unchecked: '#75C791'}"
-          />
-          <span style="margin-left:8px;">Parede da Cozinha</span>
-          <span v-if="tipologia"  class="opItemValor">{{getCost('op3')|currency}}</span>
 
+        <div class="opItem" >
+          <div class="section-titles">
+            <h4 class="section-left">Piso áreas secas <span>+</span></h4>
+            <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
+          </div>
+          <div class="opcoes-nav">
+            <div class="tab" :class="[op2 ? '' : 'active']" @click="op2=false">Contrapiso</div>
+            <div class="tab" :class="[op2  ? 'active' : '']" @click="op2=true" v-if="kit !== 'padrao'">Opção kit</div>
+          </div>
         </div>
+
         <div class="opItem">
-          <toggle-button
-            :value="op4"
-            :sync="true"
-            @change = "setOption(4)"
-            :width="90"
-            :labels="{checked: 'Sim', unchecked: 'Não'}"
-          />
-          <span style="margin-left:8px;">Kit aquecedor</span>
-          <span v-if="tipologia"  class="opItemValor">{{getCost('op4')|currency}}</span>
+          <div class="section-titles">
+            <h4 class="section-left">Paredes cozinha / lavanderia <span>+</span></h4>
+            <h4 v-if="tipologia" class="section-right">valor fixo</h4>
+          </div>
+          <div class="opcoes-nav">
+            <div class="tab" :class="[op3 ? '' : 'active']" @click="op3=false">Porcelanato</div>
+            <div class="tab" :class="[op3  ? 'active' : '']" @click="op3=true" v-if="kit !== 'padrao'">Pintura</div>
+          </div>
+        </div>
+
+        <div class="opItem">
+          <div class="section-titles">
+            <h4 class="section-left">Instalação kit aquecedor <span>+</span></h4>
+            <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
+          </div>
+          <div class="opcoes-nav">
+            <div class="tab" :class="[op4 ? '' : 'active']" @click="op4=false">Não</div>
+            <div class="tab" :class="[op4  ? 'active' : '']" @click="op4=true">Sim</div>
+          </div>
         </div>
       </div>
       <div v-if="tipologia" class="panel">
@@ -248,7 +246,8 @@ export default {
       this["op" + op] = !this["op" + op];
     },
     getCost(op) {
-      if (this.visitante) return 0;
+      if (!this.tipologia) return 0;
+      if (this.kit === "padrao" && op === "op1") return 0;
       var cost = this[op] ? this.custos[this.tipologia][op] * this.incc : 0;
       return floor(cost, 2);
     },
@@ -281,7 +280,13 @@ export default {
     }
   },
   watch: {
-    userEmail: "getUserInfo"
+    userEmail: "getUserInfo",
+    kit(val) {
+      if (val === "padrao") {
+        this.op2 = false;
+        this.op3 = false;
+      }
+    }
   },
   created() {
     window.vm = this;
