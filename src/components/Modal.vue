@@ -38,8 +38,6 @@ export default {};
   vertical-align: middle;
 }
 .modal-container {
-  width: 90vw;
-  height: 100vh;
   margin: 0px auto;
   padding: 0 0 20px;
   background-color: #fff;
