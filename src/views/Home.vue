@@ -15,13 +15,13 @@
         </h4>
         <section class="opItem">
           <div class="section-titles">
-            <h4 @click="sectionExpanded = !sectionExpanded" style="cursor:pointer;" class="section-left">Kit Acabamentos <span >{{sectionExpanded?'-':'+'}}</span></h4>
+            <h4 @click="sectionExpanded = !sectionExpanded" style="cursor:pointer;" class="section-left">Kit Acabamentos</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op1')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <button class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="kit='padrao'">Padrão</button>
-            <button class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="kit='classico'">Clássico</button>
-            <button class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</button>
+            <button :disabled="lockdown" class="tab" :class="[kit === 'padrao' ? 'active' : '', {locked:lockdown}]" @click="kit='padrao'">Padrão</button>
+            <button :disabled="lockdown" class="tab" :class="[kit === 'classico' ? 'active' : '', {locked:lockdown}]" @click="kit='classico'">Clássico</button>
+            <button :disabled="lockdown" class="tab" :class="[kit === 'contemporaneo' ? 'active' : '', {locked:lockdown}]" @click="kit='contemporaneo'">Contemporâneo</button>
           </div>
           <div v-if="sectionExpanded">
             <p>Acabamentos</p>
@@ -38,34 +38,34 @@
 
         <section class="opItem">
           <div class="section-titles">
-            <h4 class="section-left">Piso áreas secas <span>+</span></h4>
+            <h4 class="section-left">Piso áreas secas</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <button class="tab" :class="[op2 ? '' : 'active']" @click="op2=false">Contrapiso</button>
-            <button class="tab" :class="[op2  ? 'active' : '']" @click="op2=true" v-if="kit !== 'padrao'">Opção kit</button>
+            <button :disabled="lockdown" class="tab" :class="[op2 ? '' : 'active', {locked:lockdown}]" @click="op2=false">Contrapiso</button>
+            <button :disabled="lockdown" class="tab" :class="[op2  ? 'active' : '', {locked:lockdown}]" @click="op2=true" v-if="kit !== 'padrao'">Opção do kit</button>
           </div>
         </section>
 
         <section class="opItem">
           <div class="section-titles">
-            <h4 class="section-left">Paredes cozinha / lavanderia <span>+</span></h4>
-            <h4 v-if="tipologia" class="section-right">valor fixo</h4>
+            <h4 class="section-left">Paredes cozinha / lavanderia</h4>
+            <h4 v-if="tipologia" class="section-right">sem alteração</h4>
           </div>
           <div class="opcoes-nav">
-            <button class="tab" :class="[op3 ? '' : 'active']" @click="op3=false">Porcelanato</button>
-            <button class="tab" :class="[op3  ? 'active' : '']" @click="op3=true" v-if="kit !== 'padrao'">Pintura</button>
+            <button :disabled="lockdown" class="tab" :class="[op3 ? '' : 'active', {locked:lockdown}]" @click="op3=false">Porcelanato</button>
+            <button :disabled="lockdown" class="tab" :class="[op3  ? 'active' : '', {locked:lockdown}]" @click="op3=true" v-if="kit !== 'padrao'">Pintura</button>
           </div>
         </section>
 
         <section class="opItem">
           <div class="section-titles">
-            <h4 class="section-left">Instalação kit aquecedor <span>+</span></h4>
+            <h4 class="section-left">Instalação kit aquecedor</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <button class="tab" :class="[op4 ? '' : 'active']" @click="op4=false">Não</button>
-            <button class="tab" :class="[op4  ? 'active' : '']" @click="op4=true">Sim</button>
+            <button :disabled="lockdown" class="tab" :class="[op4 ? '' : 'active', {locked:lockdown}]" @click="op4=false">Não</button>
+            <button :disabled="lockdown" class="tab" :class="[op4  ? 'active' : '', {locked:lockdown}]" @click="op4=true">Sim</button>
           </div>
         </section>
       </div>
@@ -80,7 +80,7 @@
               </option>
             </select>
           </span>
-          <button @click="makePDF" class="opItemValor">VER DOCUMENTO DE PERSONALIZAÇÃO</button>
+          <button @click="makePDF" class="opItemValor">GERAR SOLICITAÇÃO</button>
       </div>
       <modal v-if="showDocModal" @close="showDocModal=false">
         <div slot="body" style="height:80vh">
@@ -98,24 +98,12 @@
       </modal>
 
       <modal v-if="showWelcomeModal">
-        <div slot="body" style="width:300px;margin:0 auto;padding:20px">
-          <p >Prezado cliente</p>
-          <p >Nós da Piemonte Construções e Incorporações temos o prazer lhe dar as boas-vindas e
-            parabeniza-lo pela inclusão em nosso portfólio de proprietários do Bosc Residence.
+
+          <h3 slot="header">Prezado cliente seja bem-vindo!</h3>
+          <p slot="body">Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
+            personalização à sua disposição.
           </p>
-          <p>Aproveitamos a oportunidade para apresentar o setor e nos colocar à sua disposição. A
-            Personalização tem uma equipe técnica para esclarecer suas dúvidas e oferecer as opções de
-            acabamentos e revestimentos para a sua unidade. Entre em contato e agende seu horário.
-          </p>
-          <p>Após adquirir um Bosc Eco Residence, com o contrato gerado, terá acesso a área restrita com
-          todas as opções e condições de aquisição.
-          </p>
-          <p>Consulte o site, faça seu login e estude o que está sendo lhe oferecido.</p>
-          <p>Estamos a sua disposição pelos seguintes canais:</p>
-          <p>Email: personalizacao@piemonte.com.br</p>
-          <p>Telefone: 3316-3300</p>
-          <p>Aguardamos sua visita!</p>
-        </div>
+
         <div slot="footer">
           <button @click="showWelcomeModal = false">FECHAR</button>
           <button onclick="alert('baixa pdf do manual ou mostra na tela?')">DOWNLOAD MANUAL</button>
@@ -139,6 +127,7 @@ export default {
   components: { Krpano, Modal },
   data() {
     return {
+      lockdown: false,
       sectionExpanded: false,
       showDocModal: false,
       showWelcomeModal: false,
@@ -329,9 +318,14 @@ export default {
         this.op3 = false;
       }
     },
-    tipologia(val) {
+    apto(val) {
       if (val) {
         this.showWelcomeModal = true;
+        if (this.unidades[val].isLocked) {
+          this.lockdown = true;
+        } else {
+          this.lockdown = false;
+        }
       }
     }
   },
@@ -413,7 +407,10 @@ export default {
   border: 1px solid #9ac088;
   border-radius: 4px;
 }
-.tab:hover {
+.locked {
+  cursor: not-allowed;
+}
+.tab:not(.locked):hover {
   background-color: #b5e29f;
 }
 .active {

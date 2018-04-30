@@ -25,6 +25,7 @@
       <input v-model="email" type="email" name="input-email" placeholder="Email cliente..." :disabled="unidade===''" required><br>
       <input v-model="nomeCliente" type="text" name="input-nome" placeholder="Nome..." :disabled="unidade===''" required><br>
       <input v-model="sobrenomeCliente" type="text" name="input-sobrenome" placeholder="Sobrenome..." :disabled="unidade===''" required>
+      <input v-model="cpfCliente" type="text" name="input-cpf" placeholder="CPF..." :disabled="unidade===''" required>
       <br>
       <button :disabled="unidade===''">CADASTRAR CONTRATO</button>
     </form>
@@ -38,6 +39,7 @@
         <th>E-mail</th>
         <th>Nome</th>
         <th>Sobrenome</th>
+        <th>CPF</th>
         <th>Kit</th>
         <th>Piso áreas secas</th>
         <th>Paredes cozinha</th>
@@ -53,6 +55,7 @@
         <td>{{props.adm ? props.adm.email : null}}</td>
         <td>{{props.adm ? props.adm.nome : null}}</td>
         <td>{{props.adm ? props.adm.sobrenome : null}}</td>
+        <td>{{props.adm ? props.adm.cpfCliente : null}}</td>
         <td>{{props.private ? props.private.kit : null}}</td>
         <td>{{props.private ? props.private.op2 : null}}</td>
         <td>{{props.private ? props.private.op3 : null}}</td>
@@ -94,7 +97,8 @@ export default {
       empreendimento: "",
       unidades: null,
       contrato: null,
-      email: null
+      email: null,
+      cpfCliente: null
     };
   },
   methods: {
@@ -108,7 +112,8 @@ export default {
           contrato: this.contrato,
           email: this.email,
           nome: this.nomeCliente,
-          sobrenome: this.sobrenomeCliente
+          sobrenome: this.sobrenomeCliente,
+          cpf: this.cpfCliente
         })
         .then(() => {
           this.unidade = "";
@@ -116,6 +121,7 @@ export default {
           this.email = null;
           this.nomeCliente = null;
           this.sobrenomeCliente = null;
+          this.cpfCliente = null;
           console.log("Dados inseridos");
         })
         .catch(error => console.log("error" + error));

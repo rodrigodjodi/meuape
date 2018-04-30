@@ -25,7 +25,7 @@ export default {
   created() {
     auth.onAuthStateChanged(user => {
       if (user) {
-        setTimeout(() => this.$router.push("/"), 3000);
+        setTimeout(() => this.$router.push("/"), 1000);
       }
     });
   },

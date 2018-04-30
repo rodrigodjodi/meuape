@@ -1,356 +1,359 @@
 ﻿<krpano version="1.19" title="" idletime="0.5" debugmode="true">
-	<include url="skin/vtourskin.xml" />
-	<include url="skin/vtourskin_design_flat_light.xml" />
-	<!--
-	 customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... 
-	-->
-	<skin_settings webvr_prev_next_hotspots="false"
-		tooltips_hotspots="true"
-		tooltips_mapspots="false"
-		thumbs="false"
-		loadscene_flags="MERGE|KEEPVIEW"
-		loadingtext="carregando..."
-		deeplinking="false"
-		design_text_css="color:#FFFFFF;
-		font-family:Roboto;"
-		design_skin_images="PIPE-vtourskin_light.png" />
-	<!-- startup action - load the first scene -->
-	<action name="startup" autorun="onstart">
-		if(ambiente === null OR !scene[get(ambiente)], copy(ambiente,scene[0].name); );
-		loadscene(get(ambiente), null, MERGE);
-		if(startactions !== null, startactions() );
-		if(stagewidth GT 1200, sidebar_open());
-	</action>
+  <include url="skin/vtourskin.xml" />
+  <include url="skin/vtourskin_design_flat_light.xml" />
+  <!--
+    customize skin settings: maps, gyro, webvr, thumbnails, tooltips, layout, design, ... 
+  -->
+  <skin_settings webvr_prev_next_hotspots="false"
+    tooltips_hotspots="true"
+    tooltips_mapspots="false"
+    thumbs="false"
+    loadscene_flags="MERGE|KEEPVIEW"
+    loadingtext="carregando..."
+    deeplinking="false"
+    design_text_css="color:#FFFFFF;
+    font-family:Roboto;"
+    design_skin_images="PIPE-vtourskin_light.png"
+  />
+  <!-- startup action - load the first scene -->
+  <action name="startup" autorun="onstart">
+    if(ambiente === null OR !scene[get(ambiente)], copy(ambiente,scene[0].name); );
+    loadscene(get(ambiente), null, MERGE);
+    if(startactions !== null, startactions() );
+    if(stagewidth GT 1200, sidebar_open());
+  </action>
+  <autorotate enabled="true" waittime="5" speed="3"/>
+  <events onautorotatestop="set(autorotate.enabled, false);"/>
 <!-- TROCA DE CENA -->
-	<style name="scn_btn" 
-		type="text" vcenter="true" bg="false" css="text-align:center;color:#FFFFFF"
-		height="100%" width="50%"
-	/>
-	<layer name="skin_scene_change" bgcolor="get:skin_settings.design_bgcolor"
-		bgalpha="get:skin_settings.design_bgalpha" bgborder="get:skin_settings.design_bgborder"
-		bgroundedge="get:skin_settings.design_bgroundedge" bgshadow="get:skin_settings.design_bgshadow"
-		type="container" align="top" width="200" height="40" height.mobile="20" x="0" y="5"
-		onloaded="" zorder="3" keep="true"
-	>
-		<layer name="btn-sala"  html="SALA" style="scn_btn" 
-			ondown="scenechange" scene="sala"
-		/>
-		<layer name="btn-bwc" html="BANHEIRO" style="scn_btn" 
-			x="100"
-			ondown="scenechange" scene="bwc"
-		/>
-	</layer>
-	<action name="scenechange" scope="local" type="Javascript">
-		vm.ambiente = caller.scene;
-	</action>
+    <style name="scn_btn" 
+        type="text" vcenter="true" bg="false" css="text-align:center;color:#FFFFFF"
+        height="100%" width="50%"
+    />
+    <layer name="skin_scene_change" bgcolor="get:skin_settings.design_bgcolor"
+        bgalpha="get:skin_settings.design_bgalpha" bgborder="get:skin_settings.design_bgborder"
+        bgroundedge="get:skin_settings.design_bgroundedge" bgshadow="get:skin_settings.design_bgshadow"
+        type="container" align="top" width="200" height="40" height.mobile="20" x="0" y="5"
+        onloaded="" zorder="3" keep="true"
+    >
+        <layer name="btn-sala"  html="SALA" style="scn_btn" 
+            ondown="scenechange" scene="sala"
+        />
+        <layer name="btn-bwc" html="BANHEIRO" style="scn_btn" 
+            x="100"
+            ondown="scenechange" scene="bwc"
+        />
+    </layer>
+    <action name="scenechange" scope="local" type="Javascript">
+        vm.ambiente = caller.scene;
+    </action>
 
 <!-- FIM TROCA DE CENA -->	
 <!-- DOM elements as layers
-	<layer 
-		name="op1"
-		keep="true"
-		align="top"
-		url="skin/black.png"
-		onloaded="get_dom_element('ambtoggle');" 
+    <layer 
+        name="op1"
+        keep="true"
+        align="top"
+        url="skin/black.png"
+        onloaded="get_dom_element('ambtoggle');" 
 
-	/>
-	<action name="get_dom_element" type="Javascript">
-		var node = document.getElementById(args[1]);
-		caller.sprite.appendChild(node);
-	</action>
-	-->
-	<scene name="sala-padrao" title="Cozinha/Sala: padrão" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-padrao.tiles/thumb.jpg" lat="" lng="" heading="">
-
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="120" limitview="auto" />
+    />
+    <action name="get_dom_element" type="Javascript">
+        var node = document.getElementById(args[1]);
+        caller.sprite.appendChild(node);
+    </action>
+    -->
+    <scene name="sala-padrao" title="Cozinha/Sala: padrão" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-padrao.tiles/thumb.jpg" lat="" lng="" heading="">
+
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="120" limitview="auto" />
 
-		<preview url="panos/sala-padrao.tiles/preview.jpg" />
+        <preview url="panos/sala-padrao.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-padrao.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-padrao.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-padrao.tiles/vr/pano_%s.jpg" />
-		</image>
-	</scene>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-padrao.tiles/vr/pano_%s.jpg" />
+        </image>
+    </scene>
 
-	<scene name="bwc-classico-1_0" title="Banheiro: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-classico-1_0.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="bwc-classico-1_0" title="Banheiro: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-classico-1_0.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/bwc-classico-1_0.tiles/preview.jpg" />
+        <preview url="panos/bwc-classico-1_0.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/bwc-classico-1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/bwc-classico-1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/bwc-classico-1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/bwc-classico-1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/bwc-classico-1_0.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/bwc-classico-1_0.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="bwc-classico-1_1" title="Banheiro: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-classico-1_1.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="bwc-classico-1_1" title="Banheiro: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-classico-1_1.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/bwc-classico-1_1.tiles/preview.jpg" />
+        <preview url="panos/bwc-classico-1_1.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/bwc-classico-1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/bwc-classico-1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/bwc-classico-1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/bwc-classico-1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/bwc-classico-1_1.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/bwc-classico-1_1.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="bwc-contemporaneo-1_0" title="Banheiro: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-contemporaneo-1_0.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="bwc-contemporaneo-1_0" title="Banheiro: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-contemporaneo-1_0.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/bwc-contemporaneo-1_0.tiles/preview.jpg" />
+        <preview url="panos/bwc-contemporaneo-1_0.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/bwc-contemporaneo-1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/bwc-contemporaneo-1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/bwc-contemporaneo-1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/bwc-contemporaneo-1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/bwc-contemporaneo-1_0.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/bwc-contemporaneo-1_0.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="bwc-contemporaneo-1_1" title="Banheiro: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-contemporaneo-1_1.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="bwc-contemporaneo-1_1" title="Banheiro: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-contemporaneo-1_1.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/bwc-contemporaneo-1_1.tiles/preview.jpg" />
+        <preview url="panos/bwc-contemporaneo-1_1.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/bwc-contemporaneo-1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/bwc-contemporaneo-1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/bwc-contemporaneo-1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/bwc-contemporaneo-1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/bwc-contemporaneo-1_1.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/bwc-contemporaneo-1_1.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="bwc-padrao" title="Banheiro: padrao" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-padrao.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="bwc-padrao" title="Banheiro: padrao" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-padrao.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/bwc-padrao.tiles/preview.jpg" />
+        <preview url="panos/bwc-padrao.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/bwc-padrao.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/bwc-padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/bwc-padrao.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/bwc-padrao.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/bwc-padrao.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/bwc-padrao.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-classico-1_0_0" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_0_0.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-classico-1_0_0" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_0_0.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-classico-1_0_0.tiles/preview.jpg" />
+        <preview url="panos/sala-classico-1_0_0.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-classico-1_0_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-classico-1_0_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-classico-1_0_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-classico-1_0_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-classico-1_0_0.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-classico-1_0_0.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-classico-1_0_1" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_0_1.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-classico-1_0_1" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_0_1.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-classico-1_0_1.tiles/preview.jpg" />
+        <preview url="panos/sala-classico-1_0_1.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-classico-1_0_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-classico-1_0_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-classico-1_0_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-classico-1_0_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-classico-1_0_1.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-classico-1_0_1.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-classico-1_1_0" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_1_0.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-classico-1_1_0" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_1_0.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-classico-1_1_0.tiles/preview.jpg" />
+        <preview url="panos/sala-classico-1_1_0.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-classico-1_1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-classico-1_1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-classico-1_1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-classico-1_1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-classico-1_1_0.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-classico-1_1_0.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-classico-1_1_1" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_1_1.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-classico-1_1_1" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_1_1.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-classico-1_1_1.tiles/preview.jpg" />
+        <preview url="panos/sala-classico-1_1_1.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-classico-1_1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-classico-1_1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-classico-1_1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-classico-1_1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-classico-1_1_1.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-classico-1_1_1.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-contemporaneo-1_0_0" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_0_0.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-contemporaneo-1_0_0" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_0_0.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-contemporaneo-1_0_0.tiles/preview.jpg" />
+        <preview url="panos/sala-contemporaneo-1_0_0.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-contemporaneo-1_0_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-contemporaneo-1_0_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-contemporaneo-1_0_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-contemporaneo-1_0_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-contemporaneo-1_0_0.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-contemporaneo-1_0_0.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-contemporaneo-1_0_1" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_0_1.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-contemporaneo-1_0_1" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_0_1.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-contemporaneo-1_0_1.tiles/preview.jpg" />
+        <preview url="panos/sala-contemporaneo-1_0_1.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-contemporaneo-1_0_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-contemporaneo-1_0_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-contemporaneo-1_0_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-contemporaneo-1_0_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-contemporaneo-1_0_1.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-contemporaneo-1_0_1.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-contemporaneo-1_1_0" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_1_0.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-contemporaneo-1_1_0" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_1_0.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-contemporaneo-1_1_0.tiles/preview.jpg" />
+        <preview url="panos/sala-contemporaneo-1_1_0.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-contemporaneo-1_1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-contemporaneo-1_1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-contemporaneo-1_1_0.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-contemporaneo-1_1_0.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-contemporaneo-1_1_0.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-contemporaneo-1_1_0.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
-	<scene name="sala-contemporaneo-1_1_1" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_1_1.tiles/thumb.jpg" lat="" lng="" heading="">
+    <scene name="sala-contemporaneo-1_1_1" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_1_1.tiles/thumb.jpg" lat="" lng="" heading="">
 
-		<view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
-		<preview url="panos/sala-contemporaneo-1_1_1.tiles/preview.jpg" />
+        <preview url="panos/sala-contemporaneo-1_1_1.tiles/preview.jpg" />
 
-		<image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
-			<level tiledimagewidth="1792" tiledimageheight="1792">
-				<cube url="panos/sala-contemporaneo-1_1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
-			</level>
-			<level tiledimagewidth="1024" tiledimageheight="1024">
-				<cube url="panos/sala-contemporaneo-1_1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
-			</level>
-		</image>
+        <image type="CUBE" multires="true" tilesize="512" if="!webvr.isenabled">
+            <level tiledimagewidth="1792" tiledimageheight="1792">
+                <cube url="panos/sala-contemporaneo-1_1_1.tiles/%s/l2/%v/l2_%s_%v_%h.jpg" />
+            </level>
+            <level tiledimagewidth="1024" tiledimageheight="1024">
+                <cube url="panos/sala-contemporaneo-1_1_1.tiles/%s/l1/%v/l1_%s_%v_%h.jpg" />
+            </level>
+        </image>
 
-		<image if="webvr.isenabled">
-			<cube url="panos/sala-contemporaneo-1_1_1.tiles/vr/pano_%s.jpg" />
-		</image>
+        <image if="webvr.isenabled">
+            <cube url="panos/sala-contemporaneo-1_1_1.tiles/vr/pano_%s.jpg" />
+        </image>
 
-	</scene>
+    </scene>
 
 
 
