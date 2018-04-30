@@ -4,7 +4,7 @@
       <button>
       <h2>{{title}}</h2>
         <i class="spinner"></i>
-        <span v-if="loginSuccess">Você pode fechar essa janela e voltar à administração.</span>
+        <span v-if="loginSuccess">Você está sendo direcionado à personalização.</span>
       </button>
     </form>
   </div>
@@ -19,13 +19,13 @@ export default {
   },
   computed: {
     title() {
-      return this.loginSuccess ? "Pronto!" : "Validando...";
+      return this.loginSuccess ? "Bem-vindo!" : "Validando...";
     }
   },
   created() {
     auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push("/");
+        setTimeout(() => this.$router.push("/"), 3000);
       }
     });
   },
