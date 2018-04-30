@@ -6,7 +6,6 @@
       :scene="scene"
     />
     <div class="opcoes">
-      
       <div class="panel">
         <h4 class="section-center">Personalizando apartamento &nbsp;
           <select v-if="tipologia" @change="changeApto">
@@ -16,48 +15,59 @@
         </h4>
         <section class="opItem">
           <div class="section-titles">
-            <h4 class="section-left">Kit Acabamentos <span>+</span></h4>
+            <h4 @click="sectionExpanded = !sectionExpanded" style="cursor:pointer;" class="section-left">Kit Acabamentos <span >{{sectionExpanded?'-':'+'}}</span></h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op1')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <div class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="kit='padrao'">Padrão</div>
-            <div class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="kit='classico'">Clássico</div>
-            <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
+            <button class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="kit='padrao'">Padrão</button>
+            <button class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="kit='classico'">Clássico</button>
+            <button class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</button>
+          </div>
+          <div v-if="sectionExpanded">
+            <p>Acabamentos</p>
+            <ul>
+              <li>Pisos Banheiros:</li>
+              <li>Paredes Banheiros:</li>
+              <li>Metais Banheiros:</li>
+              <li>Piso Cozinha:</li>
+              <li>Paredes Cozinha:</li>
+              <li>Piso Sacada:</li>
+            </ul>
           </div>
         </section>
 
-        <div class="opItem" >
+        <section class="opItem">
           <div class="section-titles">
             <h4 class="section-left">Piso áreas secas <span>+</span></h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <div class="tab" :class="[op2 ? '' : 'active']" @click="op2=false">Contrapiso</div>
-            <div class="tab" :class="[op2  ? 'active' : '']" @click="op2=true" v-if="kit !== 'padrao'">Opção kit</div>
+            <button class="tab" :class="[op2 ? '' : 'active']" @click="op2=false">Contrapiso</button>
+            <button class="tab" :class="[op2  ? 'active' : '']" @click="op2=true" v-if="kit !== 'padrao'">Opção kit</button>
           </div>
-        </div>
+        </section>
 
-        <div class="opItem">
+        <section class="opItem">
           <div class="section-titles">
             <h4 class="section-left">Paredes cozinha / lavanderia <span>+</span></h4>
             <h4 v-if="tipologia" class="section-right">valor fixo</h4>
           </div>
           <div class="opcoes-nav">
-            <div class="tab" :class="[op3 ? '' : 'active']" @click="op3=false">Porcelanato</div>
-            <div class="tab" :class="[op3  ? 'active' : '']" @click="op3=true" v-if="kit !== 'padrao'">Pintura</div>
+            <button class="tab" :class="[op3 ? '' : 'active']" @click="op3=false">Porcelanato</button>
+            <button class="tab" :class="[op3  ? 'active' : '']" @click="op3=true" v-if="kit !== 'padrao'">Pintura</button>
           </div>
-        </div>
+        </section>
 
-        <div class="opItem">
+        <section class="opItem">
           <div class="section-titles">
             <h4 class="section-left">Instalação kit aquecedor <span>+</span></h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <div class="tab" :class="[op4 ? '' : 'active']" @click="op4=false">Não</div>
-            <div class="tab" :class="[op4  ? 'active' : '']" @click="op4=true">Sim</div>
+            <button class="tab" :class="[op4 ? '' : 'active']" @click="op4=false">Não</button>
+            <button class="tab" :class="[op4  ? 'active' : '']" @click="op4=true">Sim</button>
           </div>
-        </div>
+        </section>
       </div>
       <div v-if="tipologia" class="panel">
         <h4 class="section-left">Resumo</h4>
@@ -72,20 +82,48 @@
           </span>
           <button @click="makePDF" class="opItemValor">VER DOCUMENTO DE PERSONALIZAÇÃO</button>
       </div>
-      <modal v-if="showModal" @close="showModal=false">
-        <iframe slot="body" class="preview-pane" type="application/pdf"
-          width="100%" height="100%" frameborder="0" style="position:relative;z-index:999"
-          :src="pdf">
-        </iframe>
+      <modal v-if="showDocModal" @close="showDocModal=false">
+        <div slot="body" style="height:80vh">
+          <iframe class="preview-pane" type="application/pdf"
+            width="100%" height="100%" frameborder="0" style="position:relative;z-index:999"
+            :src="pdf">
+          </iframe>
+        </div>
         <div slot="footer">
           <input type="checkbox" name="agreement" id="agreement">
           <label for="agreement">Entendo as condições</label>
           <button>CONFIRMAR</button>
-          <button @click="showModal = false">VOLTAR</button>
+          <button @click="showDocModal = false">VOLTAR</button>
         </div>
-      </modal> 
-    </div>
-  </div>
+      </modal>
+
+      <modal v-if="showWelcomeModal">
+        <div slot="body" style="width:300px;margin:0 auto;padding:20px">
+          <p >Prezado cliente</p>
+          <p >Nós da Piemonte Construções e Incorporações temos o prazer lhe dar as boas-vindas e
+            parabeniza-lo pela inclusão em nosso portfólio de proprietários do Bosc Residence.
+          </p>
+          <p>Aproveitamos a oportunidade para apresentar o setor e nos colocar à sua disposição. A
+            Personalização tem uma equipe técnica para esclarecer suas dúvidas e oferecer as opções de
+            acabamentos e revestimentos para a sua unidade. Entre em contato e agende seu horário.
+          </p>
+          <p>Após adquirir um Bosc Eco Residence, com o contrato gerado, terá acesso a área restrita com
+          todas as opções e condições de aquisição.
+          </p>
+          <p>Consulte o site, faça seu login e estude o que está sendo lhe oferecido.</p>
+          <p>Estamos a sua disposição pelos seguintes canais:</p>
+          <p>Email: personalizacao@piemonte.com.br</p>
+          <p>Telefone: 3316-3300</p>
+          <p>Aguardamos sua visita!</p>
+        </div>
+        <div slot="footer">
+          <button @click="showWelcomeModal = false">FECHAR</button>
+          <button onclick="alert('baixa pdf do manual ou mostra na tela?')">DOWNLOAD MANUAL</button>
+        </div>
+      </modal>
+
+    </div><!-- raiz opções -->
+  </div><!-- raiz home -->
 </template>
 
 <script>
@@ -101,7 +139,9 @@ export default {
   components: { Krpano, Modal },
   data() {
     return {
-      showModal: false,
+      sectionExpanded: false,
+      showDocModal: false,
+      showWelcomeModal: false,
       pdf: "",
       constants: {
         PRAZO_MAX_QUITACAO: new Date(2019, 7, 31),
@@ -136,6 +176,11 @@ export default {
           op3: 0,
           op4: 8.595
         }
+      },
+      acabamentos: {
+        padrao: {},
+        classico: {},
+        contemporaneo: {}
       }
     };
   },
@@ -149,7 +194,7 @@ export default {
   },
   computed: {
     ...mapState(["incc", "userEmail"]),
-    parcelasMaximasData() {
+    numMaxParcelasData() {
       let DisplayFrom = new Date();
       let DisplayTo = this.constants.PRAZO_MAX_QUITACAO;
       if (DisplayFrom < DisplayTo) {
@@ -162,14 +207,11 @@ export default {
         return 0;
       }
     },
-    numParcelasMaximasValor() {
-      console.log(this.custoTotal);
-      console.log(this.constants.VALOR_MINIMO_PARCELA);
-      console.log(this.custoTotal / this.constants.VALOR_MINIMO_PARCELA);
+    numMaxParcelasValor() {
       return floor(this.custoTotal / this.constants.VALOR_MINIMO_PARCELA);
     },
     numParcelas() {
-      return Math.min(this.parcelasMaximasData, this.numParcelasMaximasValor);
+      return Math.min(this.numMaxParcelasData, this.numMaxParcelasValor);
     },
     custoTotal() {
       let sum = 0;
@@ -213,7 +255,7 @@ export default {
         author: "Piemonte"
       });
       this.pdf = doc.output("datauristring");
-      this.showModal = true;
+      this.showDocModal = true;
     },
     confirmOptions() {
       db.ref("empreendimentos/bosc/" + this.apto).update(
@@ -285,6 +327,11 @@ export default {
       if (val === "padrao") {
         this.op2 = false;
         this.op3 = false;
+      }
+    },
+    tipologia(val) {
+      if (val) {
+        this.showWelcomeModal = true;
       }
     }
   },
@@ -363,7 +410,6 @@ export default {
   text-align: center;
   background-color: #555;
   color: white;
-  padding-top: 12px;
   border: 1px solid #9ac088;
   border-radius: 4px;
 }
