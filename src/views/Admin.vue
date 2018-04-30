@@ -42,6 +42,9 @@
         <th>Piso áreas secas</th>
         <th>Paredes cozinha</th>
         <th>Kit aquecedor</th>
+        <th>Total orçamento</th>
+        <th>Num. parcelas</th>
+        <th>Valor Parcela</th>
       </tr>
       <tr v-for="(props, unidade) in unidades" :key="unidade">
         <td>{{unidade}}</td>
@@ -54,6 +57,9 @@
         <td>{{props.private ? props.private.op2 : null}}</td>
         <td>{{props.private ? props.private.op3 : null}}</td>
         <td>{{props.private ? props.private.op4 : null}}</td>
+        <td>{{props.private ? props.private.valorTotal : null}}</td>
+        <td>{{props.private ? props.private.numParcelas : null}}</td>
+        <td>{{props.private ? props.private.valorParcela : null}}</td>
       </tr>
     </table>
 

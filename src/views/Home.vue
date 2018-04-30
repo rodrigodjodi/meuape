@@ -6,33 +6,25 @@
       :scene="scene"
     />
     <div class="opcoes">
-      <div class="opcoes-nav">
-        <div class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="kit='padrao'">Padrão</div>
-        <div class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="kit='classico'">Clássico</div>
-        <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
-      </div>
-      <div class="opcoes-text">
-        <h4 class="section-title">Personalizando apartamento &nbsp;
+      
+      <div class="panel">
+        <h4 class="section-center">Personalizando apartamento &nbsp;
           <select v-if="tipologia" @change="changeApto">
             <option v-for="apto in nomesUnidades" :key="apto" :value="apto">{{apto}}</option>
-          </select>
+          </select> :
+          {{tipologia}}
         </h4>
-        <p v-if="tipologia">
-           Tipologia: {{tipologia}}
-        </p>
-        <div style="text-align:center" v-else>
-            <h3>Modo visitante. </h3>
-            <p>Somente proprietários podem ver preços e condições.</p>
-        </div>
-        <div class="opItem"  v-if="kit !== 'padrao'">
-          <toggle-button  
-            :labels="{checked: 'Sim (kit)', unchecked: 'Não'}"
-            :width="90"
-            v-if="kit !== 'padrao'" :value="true" :disabled="true"
-          />
-         <span style="margin-left:8px;">Acabamentos kit</span>
-          <span v-if="tipologia" class="opItemValor">{{getCost('op1')|currency}}</span>
-        </div>
+        <section class="opItem">
+          <div class="section-titles">
+            <h4 class="section-left">Kit Acabamentos <span>+</span></h4>
+            <h4 v-if="tipologia" class="section-right">{{getCost('op1')|currency}}</h4>
+          </div>
+          <div class="opcoes-nav">
+            <div class="tab" :class="[kit === 'padrao' ? 'active' : '']" @click="kit='padrao'">Padrão</div>
+            <div class="tab" :class="[kit === 'classico' ? 'active' : '']" @click="kit='classico'">Clássico</div>
+            <div class="tab" :class="[kit === 'contemporaneo' ? 'active' : '']" @click="kit='contemporaneo'">Contemporâneo</div>
+          </div>
+        </section>
         <div class="opItem"  v-if="kit !== 'padrao'">
           <toggle-button
             :value="op2"
@@ -69,19 +61,31 @@
           <span v-if="tipologia"  class="opItemValor">{{getCost('op4')|currency}}</span>
         </div>
       </div>
-      <div v-if="tipologia" class="opcoes-text">
-        <h4 class="section-title">Resumo do orçamento</h4>
+      <div v-if="tipologia" class="panel">
+        <h4 class="section-left">Resumo</h4>
         
           <span class="opItemValor">VALOR TOTAL DO ORÇAMENTO: {{custoTotal|currency}}</span>
-          <span class="opItemValor">PARCELAS:
+          <span v-if="numParcelas" class="opItemValor">CONDIÇÕES DE PAGAMENTO:
             <select>
               <option v-for="n in numParcelas" :value="n" :key="n">
                 {{n}} x de {{valorParcela(n)|currency}}
               </option>
             </select>
           </span>
-        
+          <button @click="makePDF" class="opItemValor">VER DOCUMENTO DE PERSONALIZAÇÃO</button>
       </div>
+      <modal v-if="showModal" @close="showModal=false">
+        <iframe slot="body" class="preview-pane" type="application/pdf"
+          width="100%" height="100%" frameborder="0" style="position:relative;z-index:999"
+          :src="pdf">
+        </iframe>
+        <div slot="footer">
+          <input type="checkbox" name="agreement" id="agreement">
+          <label for="agreement">Entendo as condições</label>
+          <button>CONFIRMAR</button>
+          <button @click="showModal = false">VOLTAR</button>
+        </div>
+      </modal> 
     </div>
   </div>
 </template>
@@ -92,11 +96,15 @@ import Krpano from "@/components/Krpano";
 import { mapState } from "vuex";
 import { db } from "../firebase";
 import floor from "lodash.floor";
+import jsPDF from "jspdf";
+const Modal = () => import("@/components/Modal");
 export default {
   name: "home",
-  components: { Krpano },
+  components: { Krpano, Modal },
   data() {
     return {
+      showModal: false,
+      pdf: "",
       constants: {
         PRAZO_MAX_QUITACAO: new Date(2019, 7, 31),
         VALOR_MINIMO_PARCELA: 2000
@@ -197,6 +205,34 @@ export default {
     }
   },
   methods: {
+    makePDF() {
+      var doc = new jsPDF();
+      window.doc = doc;
+      doc.text("Hello world!", 10, 10);
+      doc.setProperties({
+        title: "PERSONALIZAÇÃO",
+        subject: "Acordo entre Piemonte e Proprietário",
+        author: "Piemonte"
+      });
+      this.pdf = doc.output("datauristring");
+      this.showModal = true;
+    },
+    confirmOptions() {
+      db.ref("empreendimentos/bosc/" + this.apto).update(
+        {
+          private: {
+            kit: this.kit,
+            op2: this.op2,
+            op3: this.op3,
+            op4: this.op4,
+            valorTotal: this.custoTotal,
+            numParcelas: this.numParcelas,
+            valorParcela: this.valorParcela(this.numParcelas)
+          }
+        },
+        () => console.log("dados registrados...")
+      );
+    },
     valorParcela(numParcelas) {
       return floor(this.custoTotal / numParcelas, 2);
     },
@@ -248,7 +284,6 @@ export default {
     userEmail: "getUserInfo"
   },
   created() {
-    console.log(".Home.vue created hook:");
     window.vm = this;
     this.$store.dispatch("getINCC");
     this.getUserInfo();
@@ -259,8 +294,7 @@ export default {
 <style>
 .home {
   display: flex;
-  border: 2px solid #9ac088;
-  margin: 10px 5px;
+  margin: 15px 5px;
   flex-wrap: wrap;
 }
 .krpano {
@@ -268,6 +302,7 @@ export default {
   flex-shrink: 1;
   flex-basis: 480px;
   min-height: 360px;
+  margin-bottom: 20px;
 }
 
 .opcoes {
@@ -283,19 +318,28 @@ export default {
   display: flex;
   width: 100%;
 }
-.opcoes-text {
+.panel {
   border: 2px groove #555;
   align-self: stretch;
   color: #fff;
-  padding: 10px;
-  margin: 20px 4px;
+  padding: 0 10px 0;
+  margin: 0 4px 15px;
   display: flex;
   flex-direction: column;
 }
-.section-title {
-  margin: -20px -4px 0;
+.section-left {
   background-color: #2d2d2b;
-  align-self: flex-start;
+  padding: 0 4px;
+}
+.section-center {
+  margin: -12px 0 15px;
+  background-color: #2d2d2b;
+  align-self: center;
+  padding: 0 4px;
+}
+.section-right {
+  margin-left: auto;
+  background-color: #2d2d2b;
   padding: 0 4px;
 }
 .opcoes-confirm {
@@ -316,6 +360,7 @@ export default {
   color: white;
   padding-top: 12px;
   border: 1px solid #9ac088;
+  border-radius: 4px;
 }
 .tab:hover {
   background-color: #b5e29f;
@@ -325,9 +370,14 @@ export default {
 }
 .opItem {
   display: flex;
+  flex-direction: column;
   border: 2px groove #555;
   margin: 8px 0;
   padding: 4px;
+}
+.section-titles {
+  display: flex;
+  margin: -36px 0 -15px;
 }
 .opItemValor {
   margin-left: auto;
