@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
-    <form class="login loading" :class="{ok:loginSuccess}">
+    <form class="login loading" :class="{ok:loginComplete}">
       <button>
       <h2>{{title}}</h2>
         <i class="spinner"></i>
-        <span v-if="loginSuccess">Você está sendo direcionado à personalização.</span>
+        <span v-if="loginComplete">{{completeMsg}}</span>
       </button>
     </form>
   </div>
@@ -14,12 +14,24 @@ import { auth } from "../firebase";
 export default {
   data() {
     return {
-      loginSuccess: false
+      loginComplete: false,
+      loginError: false,
+      completeMsg: "Você está sendo direcionado à personalização."
     };
   },
   computed: {
     title() {
-      return this.loginSuccess ? "Bem-vindo!" : "Validando...";
+      let titleMsg;
+      if (!this.loginComplete) {
+        titleMsg = "Validando...";
+      } else {
+        if (this.loginError) {
+          titleMsg = "Erro :(";
+        } else {
+          titleMsg = "Pronto!";
+        }
+      }
+      return titleMsg;
     }
   },
   created() {
@@ -40,9 +52,16 @@ export default {
         .then(() => {
           // Clear email from storage.
           window.localStorage.removeItem("emailForSignIn");
-          this.loginSuccess = true;
+          this.loginComplete = true;
         })
         .catch(error => {
+          this.loginError = true;
+          this.loginComplete = true;
+
+          this.completeMsg =
+            "Parece que você usou um link expirado ou inválido. Redirecionando para login...";
+
+          setTimeout(() => this.$router.push("/"), 3000);
           console.log(error);
         });
     }

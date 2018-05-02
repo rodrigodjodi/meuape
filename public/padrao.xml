@@ -1,0 +1,38 @@
+<krpano bgcolor="0x000000" debugmode="false" showerrors="false">
+	<!-- the skin and the flat pano viewing and controlling setup -->
+
+    <layer html="VOLTAR"
+        name="skin_exit_book" bgcolor="0x9ac088"
+        bgalpha="get:skin_settings.design_bgalpha" bgborder="get:skin_settings.design_bgborder"
+        bgroundedge="4" bgshadow="get:skin_settings.design_bgshadow"
+        type="text" align="top" width="100" height="40" height.mobile="20" x="0" y="5" vcenter="true"
+        onloaded="" zorder="3" keep="true"
+        ondown="trace('shit');back2tour" onover="set(bgcolor, 0xb5e29f)" onout="set(bgcolor, 0x9ac088)"
+        css="text-align:center;color:#FFFFFF"
+    >
+    </layer>
+    <action name="back2tour" type="Javascript">
+        console.log('javascript');
+        vm.xml="tour.xml"
+    </action>    
+	<include url="skin/flatpano_setup.xml" />
+	
+    <autorotate enabled="false"/>
+    <preview url="panos/padrao.tiles/preview.jpg" />
+
+    <image type="CYLINDER" hfov="1.00" vfov="0.707116" voffset="0.00" multires="true" tilesize="512">
+        <level tiledimagewidth="4864" tiledimageheight="3440">
+            <cylinder url="panos/padrao.tiles/l4/%0v/l4_%0v_%0h.jpg" />
+        </level>
+        <level tiledimagewidth="2560" tiledimageheight="1810">
+            <cylinder url="panos/padrao.tiles/l3/%0v/l3_%0v_%0h.jpg" />
+        </level>
+        <level tiledimagewidth="1280" tiledimageheight="906">
+            <cylinder url="panos/padrao.tiles/l2/%0v/l2_%0v_%0h.jpg" />
+        </level>
+        <level tiledimagewidth="640" tiledimageheight="452">
+            <cylinder url="panos/padrao.tiles/l1/%0v/l1_%0v_%0h.jpg" />
+        </level>
+    </image>
+
+</krpano>

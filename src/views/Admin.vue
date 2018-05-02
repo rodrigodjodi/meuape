@@ -33,6 +33,7 @@
     <h3>Quadro resumo</h3>
     <table>
       <tr>
+        <th>BL</th>
         <th>Unidade</th>
         <th>Tipologia</th>
         <th>Contrato</th>
@@ -49,6 +50,7 @@
         <th>Valor Parcela</th>
       </tr>
       <tr v-for="(props, unidade) in unidades" :key="unidade">
+        <td>{{props.lock}}</td>
         <td>{{unidade}}</td>
         <td>{{props.tipologia}}</td>
         <td>{{props.adm ? props.adm.contrato : null}}</td>

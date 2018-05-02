@@ -1,4 +1,4 @@
-﻿<krpano version="1.19" title="" idletime="0.5" debugmode="true">
+﻿<krpano version="1.19" title="" idletime="0.5" debugmode="false">
   <include url="skin/vtourskin.xml" />
   <include url="skin/vtourskin_design_flat_light.xml" />
   <!--
@@ -22,32 +22,38 @@
     if(startactions !== null, startactions() );
     if(stagewidth GT 1200, sidebar_open());
   </action>
-  <autorotate enabled="true" waittime="5" speed="3"/>
+  <autorotate enabled="true" waittime="3" interruptionevents="userviewchange|keyboard"/>
   <events onautorotatestop="set(autorotate.enabled, false);"/>
 <!-- TROCA DE CENA -->
     <style name="scn_btn" 
         type="text" vcenter="true" bg="false" css="text-align:center;color:#FFFFFF"
         height="100%" width="50%"
     />
+    <style name="scn_btn_active" 
+        type="text" vcenter="true" bg="true" css="text-align:center;color:#FFFFFF"
+        height="100%" width="50%"
+        bgcolor="0x9ac088" bgroundedge="4"
+    />
     <layer name="skin_scene_change" bgcolor="get:skin_settings.design_bgcolor"
         bgalpha="get:skin_settings.design_bgalpha" bgborder="get:skin_settings.design_bgborder"
-        bgroundedge="get:skin_settings.design_bgroundedge" bgshadow="get:skin_settings.design_bgshadow"
+        bgroundedge="4" bgshadow="get:skin_settings.design_bgshadow"
         type="container" align="top" width="200" height="40" height.mobile="20" x="0" y="5"
         onloaded="" zorder="3" keep="true"
     >
-        <layer name="btn-sala"  html="SALA" style="scn_btn" 
-            ondown="scenechange" scene="sala"
+        <layer name="btn-sala"  html="SALA" style="scn_btn_active" 
+            ondown="loadstyle('scn_btn_active');layer[btn-bwc].loadstyle('scn_btn');scenechange" scene="sala"
         />
         <layer name="btn-bwc" html="BANHEIRO" style="scn_btn" 
             x="100"
-            ondown="scenechange" scene="bwc"
+            ondown="loadstyle('scn_btn_active');layer[btn-sala].loadstyle('scn_btn');scenechange" scene="bwc"
         />
     </layer>
     <action name="scenechange" scope="local" type="Javascript">
         vm.ambiente = caller.scene;
     </action>
 
-<!-- FIM TROCA DE CENA -->	
+<!-- FIM TROCA DE CENA -->
+<layer name="bosclogo" url="images/bosc.png" keep="true" align="righttop" edge="righttop" x="8" y="8" scale="0.5" />   	
 <!-- DOM elements as layers
     <layer 
         name="op1"
@@ -63,8 +69,8 @@
     </action>
     -->
     <scene name="sala-padrao" title="Cozinha/Sala: padrão" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-padrao.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="120" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="120" limitview="auto" />
 
         <preview url="panos/sala-padrao.tiles/preview.jpg" />
 
@@ -83,8 +89,8 @@
     </scene>
 
     <scene name="bwc-classico-1_0" title="Banheiro: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-classico-1_0.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="3"/>
+        <view hlookat="-35" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/bwc-classico-1_0.tiles/preview.jpg" />
 
@@ -104,8 +110,8 @@
     </scene>
 
     <scene name="bwc-classico-1_1" title="Banheiro: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-classico-1_1.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="3"/>
+        <view hlookat="-35" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/bwc-classico-1_1.tiles/preview.jpg" />
 
@@ -125,8 +131,8 @@
     </scene>
 
     <scene name="bwc-contemporaneo-1_0" title="Banheiro: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-contemporaneo-1_0.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="3"/>
+        <view hlookat="-35" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/bwc-contemporaneo-1_0.tiles/preview.jpg" />
 
@@ -146,8 +152,8 @@
     </scene>
 
     <scene name="bwc-contemporaneo-1_1" title="Banheiro: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-contemporaneo-1_1.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="3"/>
+        <view hlookat="-35" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/bwc-contemporaneo-1_1.tiles/preview.jpg" />
 
@@ -167,8 +173,8 @@
     </scene>
 
     <scene name="bwc-padrao" title="Banheiro: padrao" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/bwc-padrao.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="3"/>
+        <view hlookat="-35" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/bwc-padrao.tiles/preview.jpg" />
 
@@ -188,8 +194,8 @@
     </scene>
 
     <scene name="sala-classico-1_0_0" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_0_0.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-classico-1_0_0.tiles/preview.jpg" />
 
@@ -209,8 +215,8 @@
     </scene>
 
     <scene name="sala-classico-1_0_1" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_0_1.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-classico-1_0_1.tiles/preview.jpg" />
 
@@ -230,8 +236,8 @@
     </scene>
 
     <scene name="sala-classico-1_1_0" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_1_0.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-classico-1_1_0.tiles/preview.jpg" />
 
@@ -251,8 +257,8 @@
     </scene>
 
     <scene name="sala-classico-1_1_1" title="Cozinha/Sala: kit clássico" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-classico-1_1_1.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-classico-1_1_1.tiles/preview.jpg" />
 
@@ -272,8 +278,8 @@
     </scene>
 
     <scene name="sala-contemporaneo-1_0_0" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_0_0.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-contemporaneo-1_0_0.tiles/preview.jpg" />
 
@@ -293,8 +299,8 @@
     </scene>
 
     <scene name="sala-contemporaneo-1_0_1" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_0_1.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-contemporaneo-1_0_1.tiles/preview.jpg" />
 
@@ -314,8 +320,8 @@
     </scene>
 
     <scene name="sala-contemporaneo-1_1_0" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_1_0.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-contemporaneo-1_1_0.tiles/preview.jpg" />
 
@@ -335,8 +341,8 @@
     </scene>
 
     <scene name="sala-contemporaneo-1_1_1" title="Cozinha/Sala: kit contemporâneo" onstart="on_scene_loaded();" havevrimage="true" thumburl="panos/sala-contemporaneo-1_1_1.tiles/thumb.jpg" lat="" lng="" heading="">
-
-        <view hlookat="0.0" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
+        <autorotate speed="-3"/>
+        <view hlookat="30" vlookat="0.0" fovtype="MFOV" fov="120" maxpixelzoom="2.0" fovmin="70" fovmax="140" limitview="auto" />
 
         <preview url="panos/sala-contemporaneo-1_1_1.tiles/preview.jpg" />
 
@@ -354,8 +360,5 @@
         </image>
 
     </scene>
-
-
-
 
 </krpano>

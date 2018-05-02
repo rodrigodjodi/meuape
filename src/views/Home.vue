@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-    <krpano xml="tour.xml"
+    <krpano :xml="xml"
       :lazy-load="true"
       @panoCreated="init"
       :scene="scene"
     />
     <div class="opcoes">
       <div class="panel">
-        <h4 class="section-center">Personalizando apartamento &nbsp;
+        <h4 class="section-center">Personalizando unidade &nbsp;
           <select v-if="tipologia" @change="changeApto">
             <option v-for="apto in nomesUnidades" :key="apto" :value="apto">{{apto}}</option>
           </select> :
-          {{tipologia}}
+          {{tipologia|tipologia}}
         </h4>
         <section class="opItem">
           <div class="section-titles">
@@ -23,17 +23,11 @@
             <button :disabled="lockdown" class="tab" :class="[kit === 'classico' ? 'active' : '', {locked:lockdown}]" @click="kit='classico'">Clássico</button>
             <button :disabled="lockdown" class="tab" :class="[kit === 'contemporaneo' ? 'active' : '', {locked:lockdown}]" @click="kit='contemporaneo'">Contemporâneo</button>
           </div>
-          <div v-if="sectionExpanded">
-            <p>Acabamentos</p>
-            <ul>
-              <li>Pisos Banheiros:</li>
-              <li>Paredes Banheiros:</li>
-              <li>Metais Banheiros:</li>
-              <li>Piso Cozinha:</li>
-              <li>Paredes Cozinha:</li>
-              <li>Piso Sacada:</li>
-            </ul>
+          <div class="opcoes-nav">
+            <a @click="toggleKitDetails" class="detalhes">{{kitDetailsMsg}}</a>
+
           </div>
+          
         </section>
 
         <section class="opItem">
@@ -70,17 +64,17 @@
         </section>
       </div>
       <div v-if="tipologia" class="panel">
-        <h4 class="section-left">Resumo</h4>
+        <h4 class="section-center">Resumo</h4>
         
-          <span class="opItemValor">VALOR TOTAL DO ORÇAMENTO: {{custoTotal|currency}}</span>
-          <span v-if="numParcelas" class="opItemValor">CONDIÇÕES DE PAGAMENTO:
-            <select>
-              <option v-for="n in numParcelas" :value="n" :key="n">
+          <h4 class="opItemValor">Valor total do orçamento: {{custoTotal|currency}}</h4>
+          <h4 v-if="numMaxParcelas" class="opItemValor">Condições de pagamento:
+            <select :disabled="lockdown" v-model="opcaoParcelas">
+              <option v-for="n in numMaxParcelas" :value="n" :key="n">
                 {{n}} x de {{valorParcela(n)|currency}}
               </option>
             </select>
-          </span>
-          <button @click="showDocModal = true" class="opItemValor">GERAR SOLICITAÇÃO</button>
+          </h4>
+          <button @click="showDocModal = true" class="btn-solicitacao">GERAR SOLICITAÇÃO</button>
       </div>
       <modal v-if="showDocModal" @close="showDocModal=false">
         <div slot="body" style="height:80vh;width:56vh;">
@@ -89,7 +83,7 @@
         <div slot="footer">
           <input type="checkbox" name="agreement" id="agreement">
           <label for="agreement">Entendo as condições</label>
-          <button>CONFIRMAR</button>
+          <button @click="confirmOptions">CONFIRMAR</button>
           <button @click="showDocModal = false">VOLTAR</button>
         </div>
       </modal>
@@ -123,6 +117,8 @@ export default {
   components: { Krpano, Modal, pdf },
   data() {
     return {
+      xml: "tour.xml",
+      opcaoParcelas: 1,
       lockdown: false,
       sectionExpanded: false,
       showDocModal: false,
@@ -175,9 +171,29 @@ export default {
         style: "currency",
         currency: "BRL"
       });
+    },
+    tipologia(tipo) {
+      let tipologia = "";
+      switch (tipo) {
+        case "2quartos":
+          tipologia = "2 Quartos";
+          break;
+        case "3quartos":
+          tipologia = "3 Quartos";
+          break;
+        case "duplex":
+          tipologia = "Duplex";
+          break;
+      }
+      return tipologia;
     }
   },
   computed: {
+    kitDetailsMsg() {
+      return this.xml === "tour.xml"
+        ? "Ver detalhes do kit"
+        : "Sair da visualização do kit";
+    },
     ...mapState(["incc", "userEmail"]),
     numMaxParcelasData() {
       let DisplayFrom = new Date();
@@ -195,7 +211,7 @@ export default {
     numMaxParcelasValor() {
       return floor(this.custoTotal / this.constants.VALOR_MINIMO_PARCELA);
     },
-    numParcelas() {
+    numMaxParcelas() {
       return Math.min(this.numMaxParcelasData, this.numMaxParcelasValor);
     },
     custoTotal() {
@@ -230,24 +246,40 @@ export default {
     }
   },
   methods: {
-    confirmOptions() {
-      db.ref("empreendimentos/bosc/" + this.apto).update(
-        {
-          private: {
-            kit: this.kit,
-            op2: this.op2,
-            op3: this.op3,
-            op4: this.op4,
-            valorTotal: this.custoTotal,
-            numParcelas: this.numParcelas,
-            valorParcela: this.valorParcela(this.numParcelas)
-          }
-        },
-        () => console.log("dados registrados...")
-      );
+    toggleKitDetails() {
+      if (this.xml === "tour.xml") {
+        this.xml = this.kit + ".xml";
+      } else {
+        this.xml = "tour.xml";
+      }
     },
-    valorParcela(numParcelas) {
-      return floor(this.custoTotal / numParcelas, 2);
+    confirmOptions() {
+      db
+        .ref("empreendimentos/bosc/" + this.apto)
+        .update(
+          {
+            lock: false,
+            private: {
+              kit: this.kit,
+              op2: this.op2,
+              op3: this.op3,
+              op4: this.op4,
+              valorTotal: this.custoTotal,
+              numParcelas: this.opcaoParcelas,
+              valorParcela: this.valorParcela(this.opcaoParcelas)
+            }
+          },
+          () => {
+            console.log("dados registrados...");
+            this.showDocModal = false;
+          }
+        )
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    valorParcela(numMaxParcelas) {
+      return floor(this.custoTotal / numMaxParcelas, 2);
     },
     changeApto(ev) {
       let ap = ev.target.value;
@@ -301,15 +333,31 @@ export default {
         this.op2 = false;
         this.op3 = false;
       }
+      if (this.xml !== "tour.xml") {
+        this.xml = val + ".xml";
+      }
     },
-    apto(val) {
-      if (val) {
+    apto(ap) {
+      if (ap) {
         this.showWelcomeModal = true;
-        if (this.unidades[val].isLocked) {
+        if (this.unidades[ap].private) {
+          this.kit = this.unidades[ap].private.kit;
+          this.op2 = this.unidades[ap].private.op2;
+          this.op3 = this.unidades[ap].private.op3;
+          this.op4 = this.unidades[ap].private.op4;
+          this.opcaoParcelas = this.unidades[ap].private.numParcelas;
+        }
+        if (this.unidades[ap].lock) {
           this.lockdown = true;
         } else {
           this.lockdown = false;
         }
+      }
+    },
+    custoTotal(val) {
+      if (!this.lockdown) {
+        console.log("entrou na condição");
+        this.opcaoParcelas = this.numMaxParcelas;
       }
     }
   },
@@ -391,6 +439,31 @@ export default {
   border: 1px solid #9ac088;
   border-radius: 4px;
 }
+.btn-solicitacao {
+  height: 40px;
+  flex: 1;
+
+  cursor: pointer;
+  text-align: center;
+  background-color: #9ac088;
+  color: white;
+  border: 1px solid #9ac088;
+  border-radius: 4px;
+}
+.btn-solicitacao:hover {
+  background-color: #b5e29f;
+}
+a.detalhes {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: 8px;
+  color: #9ac088;
+}
+a.detalhes:hover {
+  color: #b5e29f;
+}
 .locked {
   cursor: not-allowed;
 }
@@ -412,7 +485,7 @@ export default {
   margin: -36px 0 -15px;
 }
 .opItemValor {
-  margin-left: auto;
+  margin: 4px 0 4px auto;
 }
 
 @media (max-width: 479px) {
