@@ -46,7 +46,7 @@ export default {};
 }
 
 .modal-container {
-  width: 300px;
+  /*width: 300px;*/
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -54,6 +54,7 @@ export default {};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
+  float: left;
 }
 
 .modal-header h3 {
@@ -62,7 +63,7 @@ export default {};
 }
 
 .modal-body {
-  margin: 20px 0;
+  margin: 0;
 }
 
 .modal-default-button {

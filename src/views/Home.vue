@@ -80,14 +80,11 @@
               </option>
             </select>
           </span>
-          <button @click="makePDF" class="opItemValor">GERAR SOLICITAÇÃO</button>
+          <button @click="showDocModal = true" class="opItemValor">GERAR SOLICITAÇÃO</button>
       </div>
       <modal v-if="showDocModal" @close="showDocModal=false">
-        <div slot="body" style="height:80vh">
-          <iframe class="preview-pane" type="application/pdf"
-            width="100%" height="100%" frameborder="0" style="position:relative;z-index:999"
-            :src="pdf">
-          </iframe>
+        <div slot="body" style="height:80vh;width:56vh;">
+          <pdf/>
         </div>
         <div slot="footer">
           <input type="checkbox" name="agreement" id="agreement">
@@ -96,8 +93,7 @@
           <button @click="showDocModal = false">VOLTAR</button>
         </div>
       </modal>
-
-      <modal v-if="showWelcomeModal">
+      <modal v-if="false">
 
           <h3 slot="header">Prezado cliente seja bem-vindo!</h3>
           <p slot="body">Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
@@ -117,14 +113,14 @@
 <script>
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
+const pdf = () => import("@/components/PDF");
 import { mapState } from "vuex";
 import { db } from "../firebase";
 import floor from "lodash.floor";
-import jsPDF from "jspdf";
 const Modal = () => import("@/components/Modal");
 export default {
   name: "home",
-  components: { Krpano, Modal },
+  components: { Krpano, Modal, pdf },
   data() {
     return {
       lockdown: false,
@@ -234,18 +230,6 @@ export default {
     }
   },
   methods: {
-    makePDF() {
-      var doc = new jsPDF();
-      window.doc = doc;
-      doc.text("Hello world!", 10, 10);
-      doc.setProperties({
-        title: "PERSONALIZAÇÃO",
-        subject: "Acordo entre Piemonte e Proprietário",
-        author: "Piemonte"
-      });
-      this.pdf = doc.output("datauristring");
-      this.showDocModal = true;
-    },
     confirmOptions() {
       db.ref("empreendimentos/bosc/" + this.apto).update(
         {
