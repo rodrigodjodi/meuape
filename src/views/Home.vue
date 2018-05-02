@@ -74,7 +74,11 @@
               </option>
             </select>
           </h4>
-          <button @click="showDocModal = true" class="btn-solicitacao">GERAR SOLICITAÇÃO</button>
+          <button @click="showDocModal = true" class="btn-solicitacao">
+            {{lockdown ? "VER SOLICITAÇÃO GERADA"
+            : "GERAR SOLICITAÇÃO"
+            }}
+            </button>
       </div>
       <modal v-if="showDocModal" @close="showDocModal=false">
         <div slot="body" style="height:80vh;width:56vh;">
@@ -83,7 +87,7 @@
         <div slot="footer">
           <input type="checkbox" name="agreement" id="agreement">
           <label for="agreement">Entendo as condições</label>
-          <button @click="confirmOptions">CONFIRMAR</button>
+          <button :disabled="lockdown" @click="confirmOptions">CONFIRMAR</button>
           <button @click="showDocModal = false">VOLTAR</button>
         </div>
       </modal>
@@ -258,7 +262,7 @@ export default {
         .ref("empreendimentos/bosc/" + this.apto)
         .update(
           {
-            lock: false,
+            lock: true,
             private: {
               kit: this.kit,
               op2: this.op2,
