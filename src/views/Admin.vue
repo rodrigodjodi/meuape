@@ -7,10 +7,12 @@
         <option value="bosc">BOSC Eco Residence</option>
     </select>
   </div>
-  <hr>
-  <div v-if="unidades!==null">
+  <div>
     <h3>Atualizar INCC (toDO)</h3>
+    <input type="text" :placeholder="incc">
+    <button>Ainda não faz nada</button>
   </div>
+  <hr>
   <hr>
   <div v-if="unidades!==null">
     <h3>Cadastro contrato</h3>
@@ -103,6 +105,11 @@ export default {
       cpfCliente: null
     };
   },
+  computed: {
+    incc() {
+      return this.$store.state.incc;
+    }
+  },
   methods: {
     cadastraContrato(e) {
       e.preventDefault();
@@ -124,7 +131,7 @@ export default {
           this.nomeCliente = null;
           this.sobrenomeCliente = null;
           this.cpfCliente = null;
-          console.log("Dados inseridos");
+          console.log("Dados inseridos, confirmar na IU");
         })
         .catch(error => console.log("error" + error));
     },
@@ -144,7 +151,6 @@ export default {
         })
         .then(function(snapshot) {
           var data = snapshot.val();
-          console.log(data);
         });
     }
   },
@@ -157,9 +163,11 @@ export default {
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
       empreendimento.on("value", snapshot => {
         this.unidades = snapshot.val();
-        console.log(this.unidades);
       });
     }
+  },
+  created() {
+    this.$store.dispatch("getINCC");
   }
 };
 </script>

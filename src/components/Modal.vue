@@ -1,8 +1,8 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
+    <div class="modal-mask"  @click="$emit('close')">
+
+        <div class="modal-container" @click.stop>
           <div class="modal-header">
             <slot name="header">
             </slot>
@@ -18,7 +18,7 @@
             </slot>
           </div>
         </div>
-      </div>
+
     </div>
   </transition>
 </template>
@@ -36,25 +36,20 @@ export default {};
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: table;
   transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-container {
-  /*width: 300px;*/
-  margin: 0px auto;
-  padding: 20px 30px;
+  flex: 0;
+  padding: 24px 24px 0 24px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-  float: left;
+  font-family: Lato, sans-serif;
 }
 
 .modal-header h3 {
@@ -64,6 +59,11 @@ export default {};
 
 .modal-body {
   margin: 0;
+}
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .modal-default-button {

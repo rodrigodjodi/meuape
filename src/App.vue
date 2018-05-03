@@ -4,7 +4,7 @@
       <router-link class="logo" to="/">
         <img src="images/piemonte.png" alt="logo piemonte">
       </router-link>
-      <span v-if="user" class="logout">Olá, {{displayName}}  </span>
+      <span v-if="user" class="greeting">Olá, {{displayName}}  </span>
       <span v-if="user" class="logout" @click="logout">SAIR</span>
     </div>
     <router-view class="router"/>
@@ -68,6 +68,14 @@ body {
   color: white;
   text-decoration: none;
   cursor: pointer;
+}
+.header .logout:hover {
+  color: #9ac088;
+}
+.header .greeting {
+  margin-left: auto;
+  color: white;
+  text-decoration: none;
 }
 .router {
   flex: 1;

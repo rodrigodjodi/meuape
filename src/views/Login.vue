@@ -73,6 +73,7 @@ export default {
   created() {
     if (this.$route.query.email) {
       this.email = this.$route.query.email;
+      this.generatingLink = "true";
       this.sendEmailLink();
     }
   }

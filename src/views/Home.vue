@@ -80,28 +80,39 @@
             }}
             </button>
       </div>
+      <a class="link-manual" href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf" download>
+        Manual de Preenchimento
+      </a>
       <modal v-if="showDocModal" @close="showDocModal=false">
-        <div slot="body" style="height:80vh;width:56vh;">
+        <div slot="body" style="height:80vh;width:90vw;">
           <pdf/>
         </div>
-        <div slot="footer">
-          <input type="checkbox" name="agreement" id="agreement">
-          <label for="agreement">Entendo as condições</label>
-          <button :disabled="lockdown" @click="confirmOptions">CONFIRMAR</button>
-          <button @click="showDocModal = false">VOLTAR</button>
-        </div>
-      </modal>
-      <modal v-if="false">
+        <template slot="footer">
+          <div v-if="!lockdown" style="margin-right:auto;">
+            <input v-model="flagSolicitacao" type="checkbox" name="agreement" id="agreement">
+            <label for="agreement">Li e aceito as condições do termo de solicitação. Entendo que ao confirmar não poderei alterar as opções.</label>
+          </div>
+          <button class="modal-button" @click="showDocModal = false">VOLTAR</button>
 
-          <h3 slot="header">Prezado cliente seja bem-vindo!</h3>
-          <p slot="body">Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
+          <button class="modal-button primary" v-if="!lockdown" @click="confirmOptions" :disabled="!flagSolicitacao" >CONFIRMAR</button>
+        </template>
+      </modal>
+      <modal v-if="showWelcomeModal" @close="showWelcomeModal=false">
+          <div slot="header">
+          <img src="images/bosc.png" alt="Logo Bosc" style="display: block;
+              margin: 0 auto 10px;">  
+          <h3 >Prezado cliente seja bem-vindo!</h3>
+          </div>
+          <p slot="body" style="width:300px;">Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
             personalização à sua disposição.
           </p>
 
-        <div slot="footer">
-          <button @click="showWelcomeModal = false">FECHAR</button>
-          <button onclick="alert('baixa pdf do manual ou mostra na tela?')">DOWNLOAD MANUAL</button>
-        </div>
+        <template slot="footer">
+          <a href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf" download>
+            <button class="modal-button">DOWNLOAD MANUAL</button>
+          </a> 
+          <button class="modal-button primary" @click="showWelcomeModal = false">FECHAR</button>
+        </template>
       </modal>
 
     </div><!-- raiz opções -->
@@ -121,6 +132,7 @@ export default {
   components: { Krpano, Modal, pdf },
   data() {
     return {
+      flagSolicitacao: false,
       xml: "tour.xml",
       opcaoParcelas: 1,
       lockdown: false,
@@ -274,8 +286,9 @@ export default {
             }
           },
           () => {
-            console.log("dados registrados...");
+            alert("Dados registrados!");
             this.showDocModal = false;
+            this.getUserInfo();
           }
         )
         .catch(error => {
@@ -446,6 +459,7 @@ export default {
 .btn-solicitacao {
   height: 40px;
   flex: 1;
+  margin: 10px 0 8px;
 
   cursor: pointer;
   text-align: center;
@@ -457,6 +471,35 @@ export default {
 .btn-solicitacao:hover {
   background-color: #b5e29f;
 }
+.modal-button {
+  flex: 0 1 100;
+  background-color: #455258;
+  height: 36px;
+  margin: 8px 8px 8px 0;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #9ac088;
+  border-radius: 4px;
+  text-transform: uppercase;
+  padding: 0 8px;
+  font-family: Lato, sans-serif;
+  color: white;
+}
+.modal-button.primary {
+  color: white;
+  background-color: #9ac088;
+}
+.modal-button:hover {
+  color: #adadad;
+}
+.modal-button.primary:hover {
+  color: white;
+  background-color: #b5e29f;
+}
+.modal-button.primary:disabled {
+  opacity: 0.6;
+}
+
 a.detalhes {
   flex: 1;
   text-align: center;
@@ -468,6 +511,17 @@ a.detalhes {
 a.detalhes:hover {
   color: #b5e29f;
 }
+a.link-manual {
+  flex: 1;
+  align-self: center;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #9ac088;
+}
+a.link-manual:hover {
+  color: #b5e29f;
+}
+
 .locked {
   cursor: not-allowed;
 }

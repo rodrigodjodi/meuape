@@ -1,5 +1,6 @@
 <div data-duration-in="300" data-duration-out="100" class="tabs w-tabs">
     <div class="tabs-menu w-tab-menu">
+        <!-- conteúdo existente
         <a data-w-tab="Tab 1" class="tab-link w--current w-inline-block w-tab-link">
             <div>2ª via de boleto</div>
         </a>
@@ -9,48 +10,19 @@
         <a data-w-tab="Tab 3" class="tab-link w-inline-block w-tab-link">
             <div>Assistência Técnica</div>
         </a>
+    -->
         <a data-w-tab="Tab 4" class="tab-link w-inline-block w-tab-link">
             <div>Personalização</div>
         </a>
     </div>
     <div class="tabs-content w-clearfix w-tab-content">
-
+        <!-- conteúdo existente
         <div data-w-tab="Tab 1" class="tab-pane w--tab-active w-clearfix w-tab-pane">
             <div class="_02 section-content">
                 <form class="empre-interest-form" action="http://boleto.piemonteimoveis.com.br:8080/scciweb/cgi-bin/scciweb.cgi" method="get">
                     <p>Digite o número do contrato (sem o dígito verificador) e o CPF do titular.</p>
                     <input type="hidden" name="nomeprog" value="webcalcdata">
                     <input type="hidden" name="tipoexec" value="W">
-                    <!--
-                    <select class="form-field w-select">
-                        <option>Empreendimento...</option>
-                        <option>Arvoredo Residencial</option>
-                        <option>Edifício Interlaken</option>
-                        <option>Edifício Sant Louis</option>
-                        <option>Edifício Torre do Sol</option>
-                        <option>Edifício Ville Bretagne</option>
-                        <option>Floripa Residence</option>
-                        <option>Lojas Antonina</option>
-                        <option>Lojas Florianópolis</option>
-                        <option>Lojas Morretes</option>
-                        <option>Moradias Rio Bonito</option>
-                        <option>Reserva Allameda</option>
-                        <option>Reserva Boulevard</option>
-                        <option>Reserva Ecoville</option>
-                        <option>Residencial Antonina</option>
-                        <option>Residencial Bela Vista</option>
-                        <option>Residencial Florianópolis</option>
-                        <option>Residencial Hortências I</option>
-                        <option>Residencial Hortências II</option>
-                        <option>Residencial Morretes</option>
-                        <option>Residencial Rio Bonito</option>
-                        <option>Residencial Vila do Sol</option>
-                        <option>Sant Paul de Vence</option>
-                        <option>Versatile Home</option>
-                        <option>Versatile Office</option>
-                        <option>Victoria Village</option>
-                    </select>
-                    -->
                     <input type="text" class="form-field w-input" maxlength="256" name="login" data-name="Contrato" placeholder="Contrato" id="contrato"
                         required="">
                     <input type="text" class="form-field w-input" maxlength="256" name="cpf" data-name="CPF" placeholder="CPF" id="cpf" required="">
@@ -153,45 +125,18 @@
 
             </div>
         </div>
+         -->
         <div data-w-tab="Tab 4" class="tab-pane w--tab-active w-clearfix w-tab-pane">
             <div class="_02 section-content">
-                <form class="empre-interest-form" action="https://dist-qsedmfeqzb.now.sh/#/" method="get">
-                    <p>Digite o número do contrato (sem o dígito verificador) e o CPF do titular.</p>
-
-                    <select class="form-field w-select">
-                        <option>Empreendimento...</option>
-                        <option>Bosc Eco Residence</option>
-                        <option disabled>Arvoredo Residencial</option>
-                        <option disabled>Edifício Interlaken</option>
-                        <option disabled>Edifício Sant Louis</option>
-                        <option disabled>Edifício Torre do Sol</option>
-                        <option disabled>Edifício Ville Bretagne</option>
-                        <option disabled>Floripa Residence</option>
-                        <option disabled>Lojas Antonina</option>
-                        <option disabled>Lojas Florianópolis</option>
-                        <option disabled>Lojas Morretes</option>
-                        <option disabled>Moradias Rio Bonito</option>
-                        <option disabled>Reserva Allameda</option>
-                        <option disabled>Reserva Boulevard</option>
-                        <option disabled>Reserva Ecoville</option>
-                        <option disabled>Residencial Antonina</option>
-                        <option disabled>Residencial Bela Vista</option>
-                        <option disabled>Residencial Florianópolis</option>
-                        <option disabled>Residencial Hortências I</option>
-                        <option disabled>Residencial Hortências II</option>
-                        <option disabled>Residencial Morretes</option>
-                        <option disabled>Residencial Rio Bonito</option>
-                        <option disabled>Residencial Vila do Sol</option>
-                        <option disabled>Sant Paul de Vence</option>
-                        <option disabled>Versatile Home</option>
-                        <option disabled>Versatile Office</option>
-                        <option disabled>Victoria Village</option>
+                <form class="empre-interest-form" action="http://personalizacao.piemonte.com.br/login" method="get">
+                    <p>Escolha o empreendimento e entre com seu e-mail.</p>
+                    <label for="empreendimento">Empreendimento:</label>
+                    <select class="form-field w-select" name="empreendimento" id="empreendimento">
+                        <option value="bosc">Bosc Eco Residence</option>
                     </select>
-
-                    <input type="text" class="form-field w-input" maxlength="256" name="login" data-name="Contrato" placeholder="Contrato" id="contrato"
-                        required="">
-                    <input type="text" class="form-field w-input" maxlength="256" name="cpf" data-name="CPF" placeholder="CPF" id="cpf" required="">
-                    <input type="submit" value="Gerar Boleto" data-wait="Aguarde..." class="form-button w-button" onclick="">
+                    <input type="email" class="form-field w-input" maxlength="256" name="email" data-name="email" placeholder="email..." id="email"
+                        required>
+                    <input type="submit" value="Personalizar" data-wait="Aguarde..." class="form-button w-button">
                 </form>
             </div>
         </div>
