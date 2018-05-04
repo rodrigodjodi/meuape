@@ -13,7 +13,7 @@
     <button>Ainda não faz nada</button>
   </div>
   <hr>
-  <hr>
+
   <div v-if="unidades!==null">
     <h3>Cadastro contrato</h3>
     <form @submit="cadastraContrato">

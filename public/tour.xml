@@ -43,7 +43,7 @@
         <layer name="btn-sala"  html="SALA" style="scn_btn_active" 
             ondown="loadstyle('scn_btn_active');layer[btn-bwc].loadstyle('scn_btn');scenechange" scene="sala"
         />
-        <layer name="btn-bwc" html="BANHEIRO" style="scn_btn" 
+        <layer name="btn-bwc" html="BANHEIROS" style="scn_btn" 
             x="100"
             ondown="loadstyle('scn_btn_active');layer[btn-sala].loadstyle('scn_btn');scenechange" scene="bwc"
         />

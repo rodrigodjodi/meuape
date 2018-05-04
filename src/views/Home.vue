@@ -80,7 +80,8 @@
             }}
             </button>
       </div>
-      <a class="link-manual" href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf" download>
+      <a class="link-manual" href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
+        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
         Manual de Preenchimento
       </a>
       <modal v-if="showDocModal" @close="showDocModal=false">
@@ -524,6 +525,7 @@ a.link-manual:hover {
 
 .locked {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 .tab:not(.locked):hover {
   background-color: #b5e29f;
