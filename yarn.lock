@@ -5162,10 +5162,6 @@ pdfjs-dist@^2.0.303, pdfjs-dist@^2.0.489:
     node-ensure "^0.0.0"
     worker-loader "^1.1.1"
 
-pdfobject@^2.0.201604172:
-  version "2.0.201604172"
-  resolved "https://registry.yarnpkg.com/pdfobject/-/pdfobject-2.0.201604172.tgz#112edf93b98be121a5e780b06e7f5f78ad31ab3f"
-
 performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
@@ -7095,10 +7091,6 @@ vue-eslint-parser@^2.0.3:
 vue-hot-reload-api@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
-
-vue-js-toggle-button@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/vue-js-toggle-button/-/vue-js-toggle-button-1.2.2.tgz#0062f8fa0f34babf2d76c77d88ccbe4d462ce1ac"
 
 vue-krpano@^1.5.3:
   version "1.5.3"
