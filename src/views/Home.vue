@@ -110,7 +110,7 @@
 
         <template slot="footer">
           <a href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
-          download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf">
+          download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
             <button class="modal-button">DOWNLOAD MANUAL</button>
           </a> 
           <button class="modal-button primary" @click="showWelcomeModal = false">FECHAR</button>
