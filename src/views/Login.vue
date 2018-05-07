@@ -3,7 +3,7 @@
   <form @submit="onSubmit" class="login" :class="{loading:generatingLink, ok:linkReady}">
     <p class="title">Use seu e-mail para entrar</p>
     <input ref="email" v-model="email" type="email" placeholder="email" autofocus required/>
-    <i class="fa fa-envelope"></i>
+    <font-awesome-icon :icon="icon" />
     <span class="errorMessage">{{errMsg}}</span>
     <button>
     <h2 v-if="generatingLink">{{titleMsg}}</h2>
@@ -11,12 +11,16 @@
       <span>{{msg}}</span>
     </button>
   </form>
+
 </div>
 </template>
 
 <script>
 import { auth, actionCodeSettings } from "../firebase";
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import faEnvelope from "@fortawesome/fontawesome-free-solid/faEnvelope";
 export default {
+  components: { FontAwesomeIcon },
   data() {
     return {
       email: "",
@@ -26,6 +30,9 @@ export default {
     };
   },
   computed: {
+    icon() {
+      return faEnvelope;
+    },
     titleMsg() {
       if (this.linkReady) {
         return "Pronto!";
@@ -40,7 +47,7 @@ export default {
       } else if (this.generatingLink) {
         return "";
       } else {
-        return "Entrar";
+        return "ENTRAR";
       }
     }
   },
@@ -153,7 +160,7 @@ $primary: #42b983;
     border-radius: 2px;
     color: #ccc;
 
-    & + i.fa {
+    & + svg.fa-envelope {
       color: #fff;
       font-size: 1em;
       position: absolute;
@@ -164,7 +171,7 @@ $primary: #42b983;
     }
 
     &:focus {
-      & + i.fa {
+      & + svg.fa-envelope {
         opacity: 1;
         left: 30px;
         transition: all 0.25s ease-out;
