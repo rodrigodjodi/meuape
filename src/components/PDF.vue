@@ -235,8 +235,5 @@ export default {
 </script>
 
 <style>
-.pdfobject-container {
-  width: 100%;
-  height: 100%;
-}
+
 </style>
