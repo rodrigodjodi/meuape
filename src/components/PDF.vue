@@ -1,22 +1,37 @@
 <template>
-  <div ref="pdf" id="pdf"></div>
+  <object :data="pdf" type="application/pdf" width="100%" height="95%">
+    <pdf-fallback v-if="!supportsPdfMimeType" @loaded="fallbackLoaded" 
+    v-for="i in numPages" :key="i" :src="src" :page="i"
+    style="display: block;width:100%;"></pdf-fallback>
+  </object>
 </template>
 
 <script>
-import PDFObject from "pdfobject";
 import jsPDF from "jspdf";
+import pdfFallback from "vue-pdf";
+//const pdfFallback = () => import("vue-pdf");
 import * as Img from "@/assets/images";
 import * as revest from "@/assets/revest";
 import * as tlm from "@/assets/tlm";
 import * as lavabo from "@/assets/lavabo";
 import * as areasSecas from "@/assets/areasSecas";
+
 export default {
+  components: {
+    pdfFallback
+  },
   data() {
     return {
-      pdf: ""
+      supportsPdfMimeType:
+        typeof navigator.mimeTypes["application/pdf"] !== "undefined",
+      pdf: "",
+      numPages: undefined
     };
   },
   computed: {
+    src() {
+      return pdfFallback.createLoadingTask(this.pdf);
+    },
     parent() {
       return this.$parent.$parent;
     },
@@ -39,6 +54,9 @@ export default {
     }
   },
   methods: {
+    fallbackLoaded() {
+      console.log("fallback pdf loaded");
+    },
     makePDF() {
       let meses = [
         "Janeiro",
@@ -200,18 +218,18 @@ export default {
         format: "a4"
       });
       doc.text(20, 20, "Hello world!");
-      this.pdf = doc.output("datauri");
+      this.pdf = doc.output("datauristring");
     }
   },
   created() {
-    this.makeDemoPDF();
+    this.makePDF();
   },
   mounted() {
-    let options = {
-      forcePDFJS: true,
-      PDFJS_URL: "../pdfjs/web/viewer.html"
-    };
-    PDFObject.embed(this.pdf, this.$refs.pdf, options);
+    if (!this.supportsPdfMimeType) {
+      this.src.then(pdf => {
+        this.numPages = pdf.numPages;
+      });
+    }
   }
 };
 </script>
