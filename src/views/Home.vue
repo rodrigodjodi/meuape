@@ -89,7 +89,7 @@
           <pdf/>
         </div>
         <template slot="footer">
-          <div v-if="!lockdown" style="margin-right:auto;">
+          <div v-if="!lockdown" style="margin-right:auto;flex:1 1 320px;">
             <input v-model="flagSolicitacao" type="checkbox" name="agreement" id="agreement">
             <label for="agreement">Li e aceito as condições do termo de solicitação. Entendo que ao confirmar não poderei alterar as opções.</label>
           </div>
@@ -109,7 +109,8 @@
           </p>
 
         <template slot="footer">
-          <a href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf" download>
+          <a href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
+          download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
             <button class="modal-button">DOWNLOAD MANUAL</button>
           </a> 
           <button class="modal-button primary" @click="showWelcomeModal = false">FECHAR</button>
@@ -140,7 +141,6 @@ export default {
       sectionExpanded: false,
       showDocModal: false,
       showWelcomeModal: false,
-      pdf: "",
       constants: {
         PRAZO_MAX_QUITACAO: new Date(2019, 7, 31),
         VALOR_MINIMO_PARCELA: 2000
@@ -372,9 +372,8 @@ export default {
         }
       }
     },
-    custoTotal(val) {
+    custoTotal() {
       if (!this.lockdown) {
-        console.log("entrou na condição");
         this.opcaoParcelas = this.numMaxParcelas;
       }
     }
