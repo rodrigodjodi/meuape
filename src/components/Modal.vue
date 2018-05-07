@@ -59,11 +59,13 @@ export default {};
 
 .modal-body {
   margin: 0;
+  overflow: auto;
 }
 .modal-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .modal-default-button {
