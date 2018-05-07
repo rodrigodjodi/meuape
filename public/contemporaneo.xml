@@ -28,7 +28,6 @@
     >
     </layer>
     <action name="back2tour" type="Javascript">
-        console.log('javascript');
         vm.xml="tour.xml"
     </action>    
 	<include url="skin/flatpano_setup.xml" />
