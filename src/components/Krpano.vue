@@ -42,7 +42,6 @@ export default {
       });
     },
     krpanoReady(krpanoInstance) {
-      console.log("embedpano fulfilled");
       this.krpanoInstance = krpanoInstance;
       this.loadScene();
     },
@@ -77,9 +76,7 @@ export default {
   },
   watch: {
     scene: function(newScene, oldScene) {
-      console.log(oldScene, newScene);
       if (oldScene.split("-")[0] === newScene.split("-")[0]) {
-        console.log("cenas iguais");
         this.flags = "MERGE|KEEPVIEW";
       } else {
         this.flags = "MERGE";
@@ -89,7 +86,6 @@ export default {
     xml: function(xml) {
       if (this.krpanoInstance && xml) {
         if (xml === "tour.xml") {
-          console.log("voltar para os paoramas");
           this.krpanoInstance.call(
             `loadpanoscene(${xml},${this.scene},null,IGNOREKEEP)`
           );
@@ -97,7 +93,6 @@ export default {
           this.krpanoInstance.call(`loadpano(${xml},null,IGNOREKEEP)`);
         }
         this.$emit("xmlChanged", xml);
-        console.log("xml changed: " + xml);
       }
     }
   }
