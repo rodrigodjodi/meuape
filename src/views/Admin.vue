@@ -151,6 +151,7 @@ export default {
         })
         .then(function(snapshot) {
           var data = snapshot.val();
+          console.log(data);
         });
     }
   },
