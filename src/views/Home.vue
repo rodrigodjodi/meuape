@@ -80,7 +80,7 @@
             }}
             </button>
       </div>
-      <a class="link-manual" href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
+      <a class="link-manual" href="manual-de-preenchimento-solicitacao-de-personalizacao-site.pdf"
         download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf">
         Manual de Preenchimento
       </a>
@@ -109,7 +109,7 @@
           </p>
 
         <template slot="footer">
-          <a href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
+          <a href="manual-de-preenchimento-solicitacao-de-personalizacao-site.pdf"
           download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
             <button class="modal-button">DOWNLOAD MANUAL</button>
           </a> 
