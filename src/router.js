@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-const Home = () => import("./views/Home.vue");
 const Erro = () => import("./views/Erro.vue");
+const Home = () => import("./views/Home.vue");
 const Admin = () => import("./views/Admin.vue");
 const Login = () => import("./views/Login.vue");
 const FinishLogin = () => import("./views/FinishLogin.vue");
