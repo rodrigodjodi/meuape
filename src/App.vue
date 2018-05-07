@@ -26,9 +26,7 @@ export default {
       auth.signOut().then(() => this.$router.push("userlogin"));
     }
   },
-  created() {
-    console.log("app.vue created hook");
-  }
+  created() {}
 };
 </script>
 
