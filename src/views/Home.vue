@@ -81,7 +81,7 @@
             </button>
       </div>
       <a class="link-manual" href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
-        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
+        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf">
         Manual de Preenchimento
       </a>
       <modal v-if="showDocModal" @close="showDocModal=false">
@@ -110,7 +110,7 @@
 
         <template slot="footer">
           <a href="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
-          download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
+          download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf">
             <button class="modal-button">DOWNLOAD MANUAL</button>
           </a> 
           <button class="modal-button primary" @click="showWelcomeModal = false">FECHAR</button>
