@@ -26,7 +26,8 @@ const router = new Router({
       component: Admin,
       meta: {
         title: "Administração Personalização",
-        auth: true
+        auth: true,
+        admin: true
       }
     },
     {
@@ -56,7 +57,22 @@ router.beforeResolve((to, from, next) => {
       if (user) {
         store.commit("SET_USER_EMAIL", user.email);
         store.commit("SET_USER_DISPLAY_NAME", user.email);
-        next();
+        if (to.meta.admin) {
+          user.getIdToken().then(idToken => {
+            // Parse the ID token.
+            const payload = JSON.parse(atob(idToken.split(".")[1]));
+            // Confirm the user is an Admin.
+            if (!!payload["admin"]) {
+              console.log("usuário é administrador.");
+              next();
+            } else {
+              console.error("Somente administradores tem acesso a essa rota.");
+              next("/login");
+            }
+          });
+        } else {
+          next();
+        }
       } else {
         store.commit("SET_USER_EMAIL", null);
         next("/login");
