@@ -52,7 +52,7 @@
         <th>Valor Parcela</th>
       </tr>
       <tr v-for="(props, unidade) in unidades" :key="unidade">
-        <td>{{props.lock}}</td>
+        <lock :isLocked="props.lock ? true : false" @toggleLock="onToggleLock(unidade, !props.lock )" />
         <td>{{unidade}}</td>
         <td>{{props.tipologia}}</td>
         <td>{{props.adm ? props.adm.contrato : null}}</td>
@@ -88,8 +88,9 @@
 
 <script>
 import { db } from "../firebase";
-
+import Lock from "@/components/Lock";
 export default {
+  components: { Lock },
   data() {
     return {
       nomeCliente: null,
@@ -111,6 +112,10 @@ export default {
     }
   },
   methods: {
+    onToggleLock(u, newState) {
+      const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
+      empreendimento.child(u).update({ lock: newState });
+    },
     cadastraContrato(e) {
       e.preventDefault();
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
