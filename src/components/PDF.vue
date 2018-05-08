@@ -191,13 +191,15 @@ export default {
       doc.setFontStyle("normal");
       doc.text(dataExtenso, 10, 240);
       let apto = this.parent.unidades[this.parent.apto];
-      doc.text("______________________________", 10, 255);
-      doc.text("______________________________", 120, 255);
+      doc.text("_____________________________________________", 10, 255);
+
       doc.text(`${apto.adm.nome} ${apto.adm.sobrenome}`, 10, 260);
-      doc.text("Nome do Responsável pelo Setor:", 120, 260);
+
       let cpf = apto.adm.cpf ? apto.adm.cpf : "";
+      let contrato = apto.adm.contrato ? apto.adm.contrato : "";
       doc.text(`CPF: ${cpf}`, 10, 265);
-      doc.text("Assinatura do Setor de Personalização", 120, 265);
+      doc.text(`Contrato: ${contrato}`, 80, 265);
+
       doc.setFontSize(9);
       doc.text("Campo para preenchimento do Setor de Personalização", 10, 270);
       doc.roundedRect(5, 271, 200, 10, 0, 0, "S");
