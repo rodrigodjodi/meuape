@@ -36,8 +36,14 @@
             <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
           </div>
           <div class="opcoes-nav">
-            <button :disabled="lockdown" class="tab" :class="[op2 ? '' : 'active', {locked:lockdown}]" @click="op2=false">Contrapiso</button>
-            <button :disabled="lockdown" class="tab" :class="[op2  ? 'active' : '', {locked:lockdown}]" @click="op2=true" v-if="kit !== 'padrao'">Opção do kit</button>
+            <button :disabled="lockdown" class="tab" :class="[op2 ? '' : 'active', {locked:lockdown}]"
+            @click="op2=false" :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''">
+              Contrapiso
+            </button>
+            <button :disabled="lockdown" class="tab" :class="[op2  ? 'active' : '', {locked:lockdown}]"
+            @click="op2=true" v-if="kit !== 'padrao'">
+              Opção do kit
+            </button>
           </div>
         </section>
 
@@ -47,8 +53,14 @@
             <h4 v-if="tipologia" class="section-right">sem alteração</h4>
           </div>
           <div class="opcoes-nav">
-            <button :disabled="lockdown" class="tab" :class="[op3 ? '' : 'active', {locked:lockdown}]" @click="op3=false">Porcelanato</button>
-            <button :disabled="lockdown" class="tab" :class="[op3  ? 'active' : '', {locked:lockdown}]" @click="op3=true" v-if="kit !== 'padrao'">Pintura</button>
+            <button :disabled="lockdown" class="tab" :class="[op3 ? '' : 'active', {locked:lockdown}]"
+            @click="op3=false" :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''">
+              Porcelanato
+            </button>
+            <button :disabled="lockdown" class="tab" :class="[op3  ? 'active' : '', {locked:lockdown}]"
+            @click="op3=true" v-if="kit !== 'padrao'">
+              Pintura
+            </button>
           </div>
         </section>
 
@@ -340,8 +352,31 @@ export default {
             result[arrayUnidades[0]].adm.nome
           );
           this.unidades = result;
+          updateUnidade(this.apto);
         })
         .catch(error => console.log(error));
+    },
+    updateUnidade(ap) {
+      if (ap) {
+        if (this.unidades[ap].private) {
+          this.kit = this.unidades[ap].private.kit;
+          this.op2 = this.unidades[ap].private.op2;
+          this.op3 = this.unidades[ap].private.op3;
+          this.op4 = this.unidades[ap].private.op4;
+          this.opcaoParcelas = this.unidades[ap].private.numParcelas;
+        } else {
+          this.kit = "padrao";
+          this.op2 = false;
+          this.op3 = false;
+          this.op4 = false;
+        }
+        if (this.unidades[ap].lock) {
+          this.lockdown = true;
+        } else {
+          this.lockdown = false;
+          this.showWelcomeModal = true;
+        }
+      }
     }
   },
   watch: {
@@ -356,21 +391,7 @@ export default {
       }
     },
     apto(ap) {
-      if (ap) {
-        this.showWelcomeModal = true;
-        if (this.unidades[ap].private) {
-          this.kit = this.unidades[ap].private.kit;
-          this.op2 = this.unidades[ap].private.op2;
-          this.op3 = this.unidades[ap].private.op3;
-          this.op4 = this.unidades[ap].private.op4;
-          this.opcaoParcelas = this.unidades[ap].private.numParcelas;
-        }
-        if (this.unidades[ap].lock) {
-          this.lockdown = true;
-        } else {
-          this.lockdown = false;
-        }
-      }
+      this.updateUnidade(ap);
     },
     custoTotal() {
       if (!this.lockdown) {
@@ -512,7 +533,7 @@ a.detalhes:hover {
   color: #b5e29f;
 }
 a.link-manual {
-  flex: 1;
+  flex: 0;
   align-self: center;
   cursor: pointer;
   text-decoration: underline;
