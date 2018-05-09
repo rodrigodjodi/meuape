@@ -352,7 +352,7 @@ export default {
             result[arrayUnidades[0]].adm.nome
           );
           this.unidades = result;
-          updateUnidade(this.apto);
+          this.updateUnidade(this.apto);
         })
         .catch(error => console.log(error));
     },
