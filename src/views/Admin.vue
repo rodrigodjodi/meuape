@@ -8,9 +8,9 @@
     </select>
   </div>
   <div>
-    <h3>Atualizar INCC (toDO)</h3>
-    <input type="text" :placeholder="incc">
-    <button>Ainda não faz nada</button>
+    <h3>Atualizar INCC</h3>
+    <input type="number" step="0.001" :placeholder="incc" v-model.number="newINCC">
+    <button @click="updateINCC">ATUALIZA VALOR</button>
   </div>
   <hr>
 
@@ -55,18 +55,18 @@
         <lock :isLocked="props.lock ? true : false" @toggleLock="onToggleLock(unidade, !props.lock )" />
         <td>{{unidade}}</td>
         <td>{{props.tipologia}}</td>
-        <td>{{props.adm ? props.adm.contrato : null}}</td>
-        <td>{{props.adm ? props.adm.email : null}}</td>
-        <td>{{props.adm ? props.adm.nome : null}}</td>
-        <td>{{props.adm ? props.adm.sobrenome : null}}</td>
-        <td>{{props.adm ? props.adm.cpfCliente : null}}</td>
+        <editable-cell :content="props.adm ? props.adm.contrato : null" @update="updateCell('contrato', unidade, $event)"/>
+        <editable-cell :content="props.adm ? props.adm.email : null" @update="updateCell('email', unidade, $event)"/>
+        <editable-cell :content="props.adm ? props.adm.nome : null" @update="updateCell('nome', unidade, $event)"/>
+        <editable-cell :content="props.adm ? props.adm.sobrenome : null" @update="updateCell('sobrenome', unidade, $event)"/>
+        <editable-cell :content="props.adm ? props.adm.cpfCliente : null" @update="updateCell('cpfCliente', unidade, $event)"/>
         <td>{{props.private ? props.private.kit : null}}</td>
         <td>{{props.private ? props.private.op2 : null}}</td>
         <td>{{props.private ? props.private.op3 : null}}</td>
         <td>{{props.private ? props.private.op4 : null}}</td>
-        <td>{{props.private ? props.private.valorTotal : null}}</td>
-        <td>{{props.private ? props.private.numParcelas : null}}</td>
-        <td>{{props.private ? props.private.valorParcela : null}}</td>
+        <td style="text-align: right;">{{props.private ? $options.filters.currency(props.private.valorTotal) : null}}</td>
+        <td style="text-align: center;">{{props.private ? props.private.numParcelas : null}}</td>
+        <td style="text-align: right;">{{(props.private ? $options.filters.currency(props.private.valorParcela)  : null)}}</td>
       </tr>
     </table>
 
@@ -89,8 +89,9 @@
 <script>
 import { db } from "../firebase";
 import Lock from "@/components/Lock";
+import EditableCell from "@/components/EditableCell";
 export default {
-  components: { Lock },
+  components: { Lock, EditableCell },
   data() {
     return {
       nomeCliente: null,
@@ -103,7 +104,8 @@ export default {
       unidades: null,
       contrato: null,
       email: null,
-      cpfCliente: null
+      cpfCliente: null,
+      newINCC: null
     };
   },
   computed: {
@@ -112,9 +114,25 @@ export default {
     }
   },
   methods: {
-    onToggleLock(u, newState) {
+    updateINCC() {
+      db
+        .ref()
+        .update({ incc: this.newINCC })
+        .then(() => {
+          this.newINCC = null;
+          this.$store.dispatch("getINCC");
+        });
+    },
+    updateCell(cellname, unidade, event) {
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
-      empreendimento.child(u).update({ lock: newState });
+      empreendimento
+        .child(unidade)
+        .child("adm")
+        .update({ [cellname]: event });
+    },
+    onToggleLock(unidade, newState) {
+      const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
+      empreendimento.child(unidade).update({ lock: newState });
     },
     cadastraContrato(e) {
       e.preventDefault();
@@ -160,6 +178,14 @@ export default {
         });
     }
   },
+  filters: {
+    currency(value) {
+      return value.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+  },
   watch: {
     empreendimento() {
       if (!this.empreendimento) {
@@ -191,5 +217,12 @@ label {
 }
 .text_center {
   text-align: center;
+}
+table,
+th,
+td {
+  border: 1px solid gray;
+  border-collapse: collapse;
+  padding: 0 4px;
 }
 </style>
