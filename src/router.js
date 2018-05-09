@@ -63,7 +63,6 @@ router.beforeResolve((to, from, next) => {
             const payload = JSON.parse(atob(idToken.split(".")[1]));
             // Confirm the user is an Admin.
             if (!!payload["admin"]) {
-              console.log("usuário é administrador.");
               next();
             } else {
               console.error("Somente administradores tem acesso a essa rota.");
