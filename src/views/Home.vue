@@ -4,10 +4,13 @@
       :lazy-load="true"
       @panoCreated="init"
       :scene="scene"
+      v-intro="'Suas escolhas serão atualizadas nessa janela. Use os botões SALA e BANHEIROS para mudar de ambiente.'"
     />
     <div class="opcoes">
       <div class="panel">
-        <h4 class="section-center">Personalizando unidade &nbsp;
+        <h4 class="section-center" 
+          v-intro="'Verifique se o número da unidade e a tipologia estão corretos. Se for proprietário de mais de uma unidade será possível escolhê-la aqui'"
+         v-intro-step="1">Personalizando unidade &nbsp;
           <select v-if="tipologia" @change="changeApto">
             <option v-for="apto in nomesUnidades" :key="apto" :value="apto">{{apto}}</option>
           </select> :
@@ -18,24 +21,33 @@
             <h4 @click="sectionExpanded = !sectionExpanded" style="cursor:pointer;" class="section-left">Kit Acabamentos</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op1')|currency}}</h4>
           </div>
-          <div class="opcoes-nav">
+          <div  v-intro="'Escolha o acabamento. As opções Clássico e Contemporâneo adicionam revestimentos e mais opções de personalização.'" 
+          v-intro-step="3"
+          class="opcoes-nav">
             <button :disabled="lockdown" class="tab" :class="[kit === 'padrao' ? 'active' : '', {locked:lockdown}]" @click="kit='padrao'">Padrão</button>
             <button :disabled="lockdown" class="tab" :class="[kit === 'classico' ? 'active' : '', {locked:lockdown}]" @click="kit='classico'">Clássico</button>
             <button :disabled="lockdown" class="tab" :class="[kit === 'contemporaneo' ? 'active' : '', {locked:lockdown}]" @click="kit='contemporaneo'">Contemporâneo</button>
           </div>
           <div class="opcoes-nav">
-            <a @click="toggleKitDetails" class="detalhes">{{kitDetailsMsg}}</a>
+            <a @click="toggleKitDetails" class="detalhes"
+              v-intro="'Clicando aqui você pode ver todos os detalhes de cada kit'" 
+              v-intro-step="4"
+            >{{kitDetailsMsg}}</a>
 
           </div>
           
         </section>
 
         <section class="opItem">
-          <div class="section-titles">
+          <div class="section-titles"
+          >
             <h4 class="section-left">Piso áreas secas</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
           </div>
-          <div class="opcoes-nav">
+          <div class="opcoes-nav"
+            v-intro="'Escolha o piso'" 
+            v-intro-step="5"
+          >
             <button :disabled="lockdown" class="tab" :class="[op2 ? '' : 'active', {locked:lockdown}]"
             @click="op2=false" :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''">
               Contrapiso
@@ -52,7 +64,10 @@
             <h4 class="section-left">Paredes cozinha / lavanderia</h4>
             <h4 v-if="tipologia" class="section-right">sem alteração</h4>
           </div>
-          <div class="opcoes-nav">
+          <div class="opcoes-nav"
+            v-intro="'Escolha a parede'" 
+            v-intro-step="6"
+          >
             <button :disabled="lockdown" class="tab" :class="[op3 ? '' : 'active', {locked:lockdown}]"
             @click="op3=false" :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''">
               Porcelanato
@@ -69,7 +84,10 @@
             <h4 class="section-left">Instalação kit aquecedor</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
           </div>
-          <div class="opcoes-nav">
+          <div class="opcoes-nav"
+            v-intro="'Quer aquecedor?'" 
+            v-intro-step="7"
+          >
             <button :disabled="lockdown" class="tab" :class="[op4 ? '' : 'active', {locked:lockdown}]" @click="op4=false">Não</button>
             <button :disabled="lockdown" class="tab" :class="[op4  ? 'active' : '', {locked:lockdown}]" @click="op4=true">Sim</button>
           </div>
@@ -80,20 +98,29 @@
         
           <h4 class="opItemValor">Valor total do orçamento: {{custoTotal|currency}}</h4>
           <h4 v-if="numMaxParcelas" class="opItemValor">Condições de pagamento:
-            <select :disabled="lockdown" v-model="opcaoParcelas">
+            <select :disabled="lockdown" v-model="opcaoParcelas"
+              v-intro="'Parcelas'" 
+              v-intro-step="8"
+            >
               <option v-for="n in numMaxParcelas" :value="n" :key="n">
                 {{n}} x de {{valorParcela(n)|currency}}
               </option>
             </select>
           </h4>
-          <button @click="showDocModal = true" class="btn-solicitacao">
+          <button @click="showDocModal = true" class="btn-solicitacao"
+            v-intro="'Confira todas suas escolhas'" 
+            v-intro-step="9"
+          >
             {{lockdown ? "VER SOLICITAÇÃO GERADA"
             : "GERAR SOLICITAÇÃO"
             }}
             </button>
       </div>
       <a class="link-manual" href="manual-de-preenchimento-solicitacao-de-personalizacao-site.pdf"
-        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf">
+        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
+        v-intro="'Ainda tem dúvidas? No manual tem instruções detalhadas! Não hesite em entrar em contato com nossa equipe.'" 
+              v-intro-step="10"
+        >
         Manual de Preenchimento
       </a>
       <modal v-if="showDocModal" @close="showDocModal=false">
@@ -119,13 +146,12 @@
           <p slot="body" style="width:300px;">Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
             personalização à sua disposição.
           </p>
+          <p slot="body" style="width:300px;">
+            Faça um tour para entender como fazer melhor proveito desta ferramenta.
+          </p>
 
         <template slot="footer">
-          <a href="manual-de-preenchimento-solicitacao-de-personalizacao-site.pdf"
-          download="Manual-de-Preenchimento-Solicitação-de-Personalização-site">
-            <button class="modal-button">DOWNLOAD MANUAL</button>
-          </a> 
-          <button class="modal-button primary" @click="showWelcomeModal = false">FECHAR</button>
+          <button class="modal-button primary" @click="tourStart">INICIAR TOUR</button>
         </template>
       </modal>
 
@@ -134,6 +160,7 @@
 </template>
 
 <script>
+import introJs from "intro.js";
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
 const pdf = () => import("@/components/PDF");
@@ -275,6 +302,18 @@ export default {
     }
   },
   methods: {
+    tourStart() {
+      this.showWelcomeModal = false;
+      this.$intro()
+        .setOptions({
+          skipLabel: "Sair",
+          tooltipPosition: "right",
+          nextLabel: "Próximo",
+          prevLabel: "Anterior",
+          doneLabel: "Pronto"
+        })
+        .start();
+    },
     toggleKitDetails() {
       if (this.xml === "tour.xml") {
         this.xml = this.kit + ".xml";
@@ -403,6 +442,9 @@ export default {
     window.vm = this;
     this.$store.dispatch("getINCC");
     this.getUserInfo();
+  },
+  mounted() {
+    window.introJs = introJs;
   }
 };
 </script>
