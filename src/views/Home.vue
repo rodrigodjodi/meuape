@@ -92,7 +92,36 @@
             <button :disabled="lockdown" class="tab" :class="[op4  ? 'active' : '', {locked:lockdown}]" @click="op4=true">Sim</button>
           </div>
         </section>
+
+        <section class="opItem">
+          <div class="section-titles">
+            <h4 class="section-left">Central de aspiração</h4>
+            <h4 v-if="tipologia" class="section-right">{{getCost('op5')|currency}}</h4>
+          </div>
+          <div class="opcoes-nav"
+            v-intro="'Escolha central de aspiração.'" 
+            v-intro-step="8"
+          >
+            <button :disabled="lockdown" class="tab" :class="[op5 ? '' : 'active', {locked:lockdown}]" @click="op5=false">Não</button>
+            <button :disabled="lockdown" class="tab" :class="[op5  ? 'active' : '', {locked:lockdown}]" @click="op5=true">Sim</button>
+          </div>
+        </section>
+
+        <section class="opItem">
+          <div class="section-titles">
+            <h4 class="section-left">Assento sanitário</h4>
+            <h4 v-if="tipologia" class="section-right">{{getCost('op6')|currency}}</h4>
+          </div>
+          <div class="opcoes-nav"
+            v-intro="'Assento sanitário'" 
+            v-intro-step="9"
+          >
+            <button :disabled="lockdown" class="tab" :class="[op6 ? '' : 'active', {locked:lockdown}]" @click="op6=false">Não</button>
+            <button :disabled="lockdown" class="tab" :class="[op6  ? 'active' : '', {locked:lockdown}]" @click="op6=true">Sim</button>
+          </div>
+        </section>
       </div>
+      
       <div v-if="tipologia" class="panel">
         <h4 class="section-center">Resumo</h4>
         
@@ -100,7 +129,7 @@
           <h4 v-if="numMaxParcelas" class="opItemValor">Condições de pagamento:
             <select :disabled="lockdown" v-model="opcaoParcelas"
               v-intro="'Parcelas'" 
-              v-intro-step="8"
+              v-intro-step="10"
             >
               <option v-for="n in numMaxParcelas" :value="n" :key="n">
                 {{n}} x de {{valorParcela(n)|currency}}
@@ -192,6 +221,8 @@ export default {
       op2: false,
       op3: false,
       op4: false,
+      op5: false,
+      op6: false,
       unidades: null,
       nomesUnidades: [],
       custos: {
@@ -199,25 +230,26 @@ export default {
           op1: 12.917,
           op2: 18.197,
           op3: 0,
-          op4: 8.595
+          op4: 8.595,
+          op5: 0,
+          op6: 0
         },
         "3quartos": {
           op1: 13.293,
           op2: 24.592,
           op3: 0,
-          op4: 8.595
+          op4: 8.595,
+          op5: 0,
+          op6: 0
         },
         duplex: {
           op1: 15.04,
           op2: 33.641,
           op3: 0,
-          op4: 8.595
+          op4: 8.595,
+          op5: 0,
+          op6: 0
         }
-      },
-      acabamentos: {
-        padrao: {},
-        classico: {},
-        contemporaneo: {}
       }
     };
   },
