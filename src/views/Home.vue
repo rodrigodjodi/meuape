@@ -154,7 +154,7 @@
       </a>
       <modal v-if="showDocModal" @close="showDocModal=false">
         <div slot="body" style="height:80vh;width:90vw;">
-          <pdf/>
+          <bosc-report/>
         </div>
         <template slot="footer">
           <div v-if="!lockdown" style="margin-right:auto;flex:1 1 320px;">
@@ -168,7 +168,7 @@
       </modal>
       <modal v-if="showWelcomeModal" @close="showWelcomeModal=false">
           <div slot="header">
-          <img src="images/bosc.png" alt="Logo Bosc" style="display: block;
+          <img src="@/assets/bosc/bosc.png" alt="Logo Bosc" style="display: block;
               margin: 0 auto 10px;">  
           <h3 >Prezado cliente seja bem-vindo!</h3>
           </div>
@@ -192,14 +192,14 @@
 import introJs from "intro.js";
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
-const pdf = () => import("@/components/PDF");
+const BoscReport = () => import("@/components/BoscReport");
 import { mapState } from "vuex";
 import { db } from "../firebase";
 import floor from "lodash.floor";
 const Modal = () => import("@/components/Modal");
 export default {
   name: "home",
-  components: { Krpano, Modal, pdf },
+  components: { Krpano, Modal, BoscReport },
   data() {
     return {
       flagSolicitacao: false,
@@ -230,36 +230,30 @@ export default {
           op1: 12.917,
           op2: 18.197,
           op3: 0,
-          op4: 8.595,
-          op5: 0,
-          op6: 0
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
         },
         "3quartos": {
           op1: 13.293,
           op2: 24.592,
           op3: 0,
-          op4: 8.595,
-          op5: 0,
-          op6: 0
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
         },
         duplex: {
           op1: 15.04,
           op2: 33.641,
           op3: 0,
-          op4: 8.595,
-          op5: 0,
-          op6: 0
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
         }
       }
     };
   },
   filters: {
-    currency(value) {
-      return value.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
-    },
     tipologia(tipo) {
       let tipologia = "";
       switch (tipo) {
@@ -306,10 +300,14 @@ export default {
       let sum = 0;
       if (this.kit === "padrao") {
         this.op4 ? (sum += this.getCost("op4")) : (sum += 0);
+        this.op5 ? (sum += this.getCost("op5")) : (sum += 0);
+        this.op6 ? (sum += this.getCost("op6")) : (sum += 0);
       } else {
         sum += this.getCost("op1");
         this.op2 ? (sum += this.getCost("op2")) : (sum += 0);
         this.op4 ? (sum += this.getCost("op4")) : (sum += 0);
+        this.op5 ? (sum += this.getCost("op5")) : (sum += 0);
+        this.op6 ? (sum += this.getCost("op6")) : (sum += 0);
       }
       return floor(sum, 2);
     },
@@ -364,6 +362,8 @@ export default {
               op2: this.op2,
               op3: this.op3,
               op4: this.op4,
+              op5: this.op5,
+              op6: this.op6,
               valorTotal: this.custoTotal,
               numParcelas: this.opcaoParcelas,
               valorParcela: this.valorParcela(this.opcaoParcelas)
@@ -434,12 +434,16 @@ export default {
           this.op2 = this.unidades[ap].private.op2;
           this.op3 = this.unidades[ap].private.op3;
           this.op4 = this.unidades[ap].private.op4;
+          this.op5 = this.unidades[ap].private.op5;
+          this.op6 = this.unidades[ap].private.op6;
           this.opcaoParcelas = this.unidades[ap].private.numParcelas;
         } else {
           this.kit = "padrao";
           this.op2 = false;
           this.op3 = false;
           this.op4 = false;
+          this.op5 = false;
+          this.op6 = false;
         }
         if (this.unidades[ap].lock) {
           this.lockdown = true;

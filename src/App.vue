@@ -2,7 +2,7 @@
   <div id="app">
     <div class="header">
       <router-link class="logo" to="/">
-        <img src="images/piemonte.png" alt="logo piemonte">
+        <img src="@/assets/piemonte.png" alt="logo piemonte">
       </router-link>
       <span v-if="user" class="greeting">Olá, {{displayName}}  </span>
       <span v-if="user" class="logout" @click="logout">SAIR</span>

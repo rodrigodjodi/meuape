@@ -34,40 +34,48 @@
   <hr>
     <h3>Quadro resumo</h3>
     <table>
-      <tr>
-        <th>BL</th>
-        <th>Unidade</th>
-        <th>Tipologia</th>
-        <th>Contrato</th>
-        <th>E-mail</th>
-        <th>Nome</th>
-        <th>Sobrenome</th>
-        <th>CPF</th>
-        <th>Kit</th>
-        <th>Piso áreas secas</th>
-        <th>Paredes cozinha</th>
-        <th>Kit aquecedor</th>
-        <th>Total orçamento</th>
-        <th>Num. parcelas</th>
-        <th>Valor Parcela</th>
-      </tr>
-      <tr v-for="(props, unidade) in unidades" :key="unidade">
-        <lock :isLocked="props.lock ? true : false" @toggleLock="onToggleLock(unidade, !props.lock )" />
-        <td>{{unidade}}</td>
-        <td>{{props.tipologia}}</td>
-        <editable-cell :content="props.adm ? props.adm.contrato : null" @update="updateCell('contrato', unidade, $event)"/>
-        <editable-cell :content="props.adm ? props.adm.email : null" @update="updateCell('email', unidade, $event)"/>
-        <editable-cell :content="props.adm ? props.adm.nome : null" @update="updateCell('nome', unidade, $event)"/>
-        <editable-cell :content="props.adm ? props.adm.sobrenome : null" @update="updateCell('sobrenome', unidade, $event)"/>
-        <editable-cell :content="props.adm ? props.adm.cpfCliente : null" @update="updateCell('cpfCliente', unidade, $event)"/>
-        <td>{{props.private ? props.private.kit : null}}</td>
-        <td>{{props.private ? props.private.op2 : null}}</td>
-        <td>{{props.private ? props.private.op3 : null}}</td>
-        <td>{{props.private ? props.private.op4 : null}}</td>
-        <td style="text-align: right;">{{props.private ? $options.filters.currency(props.private.valorTotal) : null}}</td>
-        <td style="text-align: center;">{{props.private ? props.private.numParcelas : null}}</td>
-        <td style="text-align: right;">{{(props.private ? $options.filters.currency(props.private.valorParcela)  : null)}}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th>BL</th>
+          <th>Unidade</th>
+          <th>Tipologia</th>
+          <th>Contrato</th>
+          <th>E-mail</th>
+          <th>Nome</th>
+          <th>Sobrenome</th>
+          <th>CPF</th>
+          <th>Kit</th>
+          <th>Piso áreas secas</th>
+          <th>Paredes cozinha</th>
+          <th>Kit aquecedor</th>
+          <th>Central aspiração</th>
+          <th>Assento sanitário</th>
+          <th>Total orçamento</th>
+          <th>Num. parcelas</th>
+          <th>Valor Parcela</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(props, unidade) in unidades" :key="unidade">
+          <lock :isLocked="props.lock ? true : false" @toggleLock="onToggleLock(unidade, !props.lock )" />
+          <td>{{unidade}}</td>
+          <td>{{props.tipologia}}</td>
+          <editable-cell :content="props.adm ? props.adm.contrato : null" @update="updateCell('contrato', unidade, $event)"/>
+          <editable-cell :content="props.adm ? props.adm.email : null" @update="updateCell('email', unidade, $event)"/>
+          <editable-cell :content="props.adm ? props.adm.nome : null" @update="updateCell('nome', unidade, $event)"/>
+          <editable-cell :content="props.adm ? props.adm.sobrenome : null" @update="updateCell('sobrenome', unidade, $event)"/>
+          <editable-cell :content="props.adm ? props.adm.cpfCliente : null" @update="updateCell('cpfCliente', unidade, $event)"/>
+          <td>{{props.private ? props.private.kit : null}}</td>
+          <td>{{props.private ? props.private.op2 : null}}</td>
+          <td>{{props.private ? props.private.op3 : null}}</td>
+          <td>{{props.private ? props.private.op4 : null}}</td>
+          <td>{{props.private ? props.private.op5 : null}}</td>
+          <td>{{props.private ? props.private.op6 : null}}</td>
+          <td style="text-align: right;">{{props.private ? $options.filters.currency(props.private.valorTotal) : null}}</td>
+          <td style="text-align: center;">{{props.private ? props.private.numParcelas : null}}</td>
+          <td style="text-align: right;">{{(props.private ? $options.filters.currency(props.private.valorParcela)  : null)}}</td>
+        </tr>
+      </tbody>
     </table>
 
   <hr>
