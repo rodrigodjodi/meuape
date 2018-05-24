@@ -183,6 +183,8 @@
 </template>
 
 <script>
+import VueIntro from "vue-introjs";
+import "intro.js/introjs.css";
 import introJs from "intro.js";
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
@@ -191,9 +193,10 @@ import { mapState } from "vuex";
 import { db } from "../firebase";
 import floor from "lodash.floor";
 const Modal = () => import("@/components/Modal");
+
 export default {
   name: "home",
-  components: { Krpano, Modal, BoscReport },
+  components: { Krpano, Modal, BoscReport, VueIntro },
   data() {
     return {
       flagSolicitacao: false,
