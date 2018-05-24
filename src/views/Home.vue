@@ -45,7 +45,7 @@
             <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
           </div>
           <div class="opcoes-nav"
-            v-intro="'Escolha o piso'" 
+            v-intro="'Nos kits Clássico e Contemporâneo você pode decidir se já quer receber as áreas secas com piso.'" 
             v-intro-step="5"
           >
             <button :disabled="lockdown" class="tab" :class="[op2 ? '' : 'active', {locked:lockdown}]"
@@ -65,7 +65,7 @@
             <h4 v-if="tipologia" class="section-right">sem alteração</h4>
           </div>
           <div class="opcoes-nav"
-            v-intro="'Escolha a parede'" 
+            v-intro="'Nos kits Clássico e Contemporâneo você pode substituir o porcelanato por pintura nas paredes da cozinha e lavanderia.'" 
             v-intro-step="6"
           >
             <button :disabled="lockdown" class="tab" :class="[op3 ? '' : 'active', {locked:lockdown}]"
@@ -78,48 +78,42 @@
             </button>
           </div>
         </section>
+        <div v-intro="'Esses itens estão disponíveis inclusive para o kit Padrão.'" 
+              v-intro-step="7" style="display: flex;flex-direction: column;">
+          <section class="opItem">
+            <div class="section-titles">
+              <h4 class="section-left">Instalação kit aquecedor</h4>
+              <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
+            </div>
+            <div class="opcoes-nav"
+            >
+              <button :disabled="lockdown" class="tab" :class="[op4 ? '' : 'active', {locked:lockdown}]" @click="op4=false">Não</button>
+              <button :disabled="lockdown" class="tab" :class="[op4  ? 'active' : '', {locked:lockdown}]" @click="op4=true">Sim</button>
+            </div>
+          </section>
 
-        <section class="opItem">
-          <div class="section-titles">
-            <h4 class="section-left">Instalação kit aquecedor</h4>
-            <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
-          </div>
-          <div class="opcoes-nav"
-            v-intro="'Quer aquecedor?'" 
-            v-intro-step="7"
-          >
-            <button :disabled="lockdown" class="tab" :class="[op4 ? '' : 'active', {locked:lockdown}]" @click="op4=false">Não</button>
-            <button :disabled="lockdown" class="tab" :class="[op4  ? 'active' : '', {locked:lockdown}]" @click="op4=true">Sim</button>
-          </div>
-        </section>
+          <section class="opItem">
+            <div class="section-titles">
+              <h4 class="section-left">Central de aspiração</h4>
+              <h4 v-if="tipologia" class="section-right">{{getCost('op5')|currency}}</h4>
+            </div>
+            <div class="opcoes-nav">
+              <button :disabled="lockdown" class="tab" :class="[op5 ? '' : 'active', {locked:lockdown}]" @click="op5=false">Não</button>
+              <button :disabled="lockdown" class="tab" :class="[op5  ? 'active' : '', {locked:lockdown}]" @click="op5=true">Sim</button>
+            </div>
+          </section>
 
-        <section class="opItem">
-          <div class="section-titles">
-            <h4 class="section-left">Central de aspiração</h4>
-            <h4 v-if="tipologia" class="section-right">{{getCost('op5')|currency}}</h4>
-          </div>
-          <div class="opcoes-nav"
-            v-intro="'Escolha central de aspiração.'" 
-            v-intro-step="8"
-          >
-            <button :disabled="lockdown" class="tab" :class="[op5 ? '' : 'active', {locked:lockdown}]" @click="op5=false">Não</button>
-            <button :disabled="lockdown" class="tab" :class="[op5  ? 'active' : '', {locked:lockdown}]" @click="op5=true">Sim</button>
-          </div>
-        </section>
-
-        <section class="opItem">
-          <div class="section-titles">
-            <h4 class="section-left">Assento sanitário</h4>
-            <h4 v-if="tipologia" class="section-right">{{getCost('op6')|currency}}</h4>
-          </div>
-          <div class="opcoes-nav"
-            v-intro="'Assento sanitário'" 
-            v-intro-step="9"
-          >
-            <button :disabled="lockdown" class="tab" :class="[op6 ? '' : 'active', {locked:lockdown}]" @click="op6=false">Não</button>
-            <button :disabled="lockdown" class="tab" :class="[op6  ? 'active' : '', {locked:lockdown}]" @click="op6=true">Sim</button>
-          </div>
-        </section>
+          <section class="opItem">
+            <div class="section-titles">
+              <h4 class="section-left">Assento sanitário</h4>
+              <h4 v-if="tipologia" class="section-right">{{getCost('op6')|currency}}</h4>
+            </div>
+            <div class="opcoes-nav">
+              <button :disabled="lockdown" class="tab" :class="[op6 ? '' : 'active', {locked:lockdown}]" @click="op6=false">Não</button>
+              <button :disabled="lockdown" class="tab" :class="[op6  ? 'active' : '', {locked:lockdown}]" @click="op6=true">Sim</button>
+            </div>
+          </section>
+        </div>
       </div>
       
       <div v-if="tipologia" class="panel">
@@ -128,8 +122,8 @@
           <h4 class="opItemValor">Valor total do orçamento: {{custoTotal|currency}}</h4>
           <h4 v-if="numMaxParcelas" class="opItemValor">Condições de pagamento:
             <select :disabled="lockdown" v-model="opcaoParcelas"
-              v-intro="'Parcelas'" 
-              v-intro-step="10"
+              v-intro="'Número de parcelas'" 
+              v-intro-step="8"
             >
               <option v-for="n in numMaxParcelas" :value="n" :key="n">
                 {{n}} x de {{valorParcela(n)|currency}}
