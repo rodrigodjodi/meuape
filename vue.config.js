@@ -1,6 +1,8 @@
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 module.exports = {
   configureWebpack: {
-    //this is because the krpano component needs the full build of vue, with the compiler
+    //use the full build of vue, useful if some component have HTML templates
     /*
     resolve: {
       alias: {
@@ -8,5 +10,6 @@ module.exports = {
       }
     }
     */
+    plugins: [new BundleAnalyzerPlugin()]
   }
 };
