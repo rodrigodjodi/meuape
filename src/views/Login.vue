@@ -3,7 +3,7 @@
   <form @submit="onSubmit" class="login" :class="{loading:generatingLink, ok:linkReady}">
     <p class="title">Use seu e-mail para entrar</p>
     <input ref="email" v-model="email" type="email" placeholder="email" autofocus required/>
-    <font-awesome-icon :icon="icon" />
+    <svg data-v-02d38ff2="" aria-hidden="true" data-prefix="fas" data-icon="envelope" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-envelope fa-w-16"><path data-v-02d38ff2="" fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z" class=""></path></svg>
     <span class="errorMessage">{{errMsg}}</span>
     <button>
     <h2 v-if="generatingLink">{{titleMsg}}</h2>
@@ -17,10 +17,8 @@
 
 <script>
 import { auth, actionCodeSettings } from "../firebase";
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import faEnvelope from "@fortawesome/fontawesome-free-solid/faEnvelope";
 export default {
-  components: { FontAwesomeIcon },
+  components: {},
   data() {
     return {
       email: "",
@@ -30,9 +28,6 @@ export default {
     };
   },
   computed: {
-    icon() {
-      return faEnvelope;
-    },
     titleMsg() {
       if (this.linkReady) {
         return "Pronto!";
@@ -243,6 +238,19 @@ $primary: #42b983;
   }
   &:not(.loading) button:focus {
     border-bottom-width: 4px;
+  }
+  .svg-inline--fa {
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+  }
+  .svg-inline--fa.fa-w-16 {
+    width: 1em;
+  }
+  svg:not(:root).svg-inline--fa {
+    overflow: visible;
   }
 }
 </style>
