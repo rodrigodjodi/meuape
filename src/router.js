@@ -1,10 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
 const Erro = () => import("./views/Erro.vue");
-const Home = () => import("./views/Home.vue");
-const Admin = () => import("./views/Admin.vue");
-const Login = () => import("./views/Login.vue");
-const FinishLogin = () => import("./views/FinishLogin.vue");
+const Home = () => import(/* webpackChunkName: "home" */ "./views/Home.vue");
+const Admin = () => import(/* webpackChunkName: "admin" */ "./views/Admin.vue");
+const Login = () => import(/* webpackChunkName: "login" */ "./views/Login.vue");
+const FinishLogin = () =>
+  import(/* webpackChunkName: "finishlogin" */ "./views/FinishLogin.vue");
 import { auth } from "./firebase";
 import store from "./store";
 Vue.use(Router);

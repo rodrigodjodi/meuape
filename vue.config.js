@@ -10,6 +10,9 @@ module.exports = {
       }
     }
     */
-    plugins: [new BundleAnalyzerPlugin()]
+    plugins: [new BundleAnalyzerPlugin()],
+    output: {
+      chunkFilename: "js/[name].[chunkhash:5].js"
+    }
   }
 };
