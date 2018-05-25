@@ -2,7 +2,7 @@
   <div ref="page">
     <img src="@/assets/bosc/bosc.png" alt="logo bosc" style="width:100px;">
     <img src="@/assets/piemonte-negativo.png" alt="logo piemonte" style="width:200px;float:right">
-    <h1>SOLICITAÇÃO DE PERSONALIZAÇÃO UNIDADE 1004</h1>
+    <h1>SOLICITAÇÃO DE PERSONALIZAÇÃO UNIDADE {{this.parent.apto}}</h1>
     <h2>1. Acabamentos e revestimentos kit {{kit}}</h2>
     <img class="responsive" :src="require(`@/assets/bosc/${this.parent.kit}_revest.jpg`)" alt="">
     <img class="responsive" :src="require(`@/assets/bosc/${this.parent.kit}_tlm.jpg`)" alt="">
