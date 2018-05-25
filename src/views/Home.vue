@@ -183,8 +183,6 @@
 </template>
 
 <script>
-import VueIntro from "vue-introjs";
-import "intro.js/introjs.css";
 import introJs from "intro.js";
 // @ is an alias to /src
 import Krpano from "@/components/Krpano";
@@ -196,7 +194,7 @@ const Modal = () => import("@/components/Modal");
 
 export default {
   name: "home",
-  components: { Krpano, Modal, BoscReport, VueIntro },
+  components: { Krpano, Modal, BoscReport },
   data() {
     return {
       flagSolicitacao: false,
