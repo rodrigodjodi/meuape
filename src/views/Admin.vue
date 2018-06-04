@@ -64,7 +64,7 @@
           <editable-cell :content="props.adm ? props.adm.email : null" @update="updateCell('email', unidade, $event)"/>
           <editable-cell :content="props.adm ? props.adm.nome : null" @update="updateCell('nome', unidade, $event)"/>
           <editable-cell :content="props.adm ? props.adm.sobrenome : null" @update="updateCell('sobrenome', unidade, $event)"/>
-          <editable-cell :content="props.adm ? props.adm.cpfCliente : null" @update="updateCell('cpfCliente', unidade, $event)"/>
+          <editable-cell :content="props.adm ? props.adm.cpf : null" @update="updateCell('cpf', unidade, $event)"/>
           <td>{{props.private ? props.private.kit : null}}</td>
           <td>{{props.private ? props.private.op2 : null}}</td>
           <td>{{props.private ? props.private.op3 : null}}</td>
@@ -132,6 +132,7 @@ export default {
         });
     },
     updateCell(cellname, unidade, event) {
+      if (!event) return;
       const empreendimento = db.ref("empreendimentos/" + this.empreendimento);
       empreendimento
         .child(unidade)
