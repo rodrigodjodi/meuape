@@ -32,7 +32,39 @@
       <button :disabled="unidade===''">CADASTRAR CONTRATO</button>
     </form>
   <hr>
-    <h3>Quadro resumo</h3>
+    <h3>Quadro valores kits</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipologia</th>
+            <th>Padrão</th>
+            <th>Clássico</th>
+            <th>Contemporâneo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2quartos</td>
+            <td>{{custoOpcao('padrao')|currency}}</td>
+            <td>{{custoOpcao('2quartos')|currency}}</td>
+            <td>{{custoOpcao('2quartos')|currency}}</td>
+          </tr>
+          <tr>
+            <td>3quartos</td>
+            <td>{{custoOpcao('padrao')|currency}}</td>
+            <td>{{custoOpcao('3quartos')|currency}}</td>
+            <td>{{custoOpcao('3quartos')|currency}}</td>
+          </tr>
+          <tr>
+            <td>Duplex</td>
+            <td>{{custoOpcao('padrao')|currency}}</td>
+            <td>{{custoOpcao('duplex')|currency}}</td>
+            <td>{{custoOpcao('duplex')|currency}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    <h3>Quadro resumo unidades</h3>
     <table>
       <thead>
         <tr>
@@ -98,6 +130,7 @@
 import { db } from "../firebase";
 import Lock from "@/components/Lock";
 import EditableCell from "@/components/EditableCell";
+import floor from "lodash.floor";
 export default {
   components: { Lock, EditableCell },
   data() {
@@ -113,7 +146,41 @@ export default {
       contrato: null,
       email: null,
       cpfCliente: null,
-      newINCC: null
+      newINCC: null,
+      custosBosc: {
+        "2quartos": {
+          op1: 12.917,
+          op2: 18.197,
+          op3: 0,
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
+        },
+        "3quartos": {
+          op1: 13.293,
+          op2: 24.592,
+          op3: 0,
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
+        },
+        duplex: {
+          op1: 15.04,
+          op2: 33.641,
+          op3: 0,
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
+        },
+        padrao: {
+          op1: 0,
+          op2: 0,
+          op3: 0,
+          op4: 6.921,
+          op5: 9.984,
+          op6: 10.341
+        }
+      }
     };
   },
   computed: {
@@ -122,6 +189,16 @@ export default {
     }
   },
   methods: {
+    custoOpcao(opcao) {
+      let sum = 0;
+      sum += floor(this.custosBosc[opcao]["op1"] * this.incc, 2);
+      sum += floor(this.custosBosc[opcao]["op2"] * this.incc, 2);
+      sum += floor(this.custosBosc[opcao]["op3"] * this.incc, 2);
+      sum += floor(this.custosBosc[opcao]["op4"] * this.incc, 2);
+      sum += floor(this.custosBosc[opcao]["op5"] * this.incc, 2);
+      sum += floor(this.custosBosc[opcao]["op6"] * this.incc, 2);
+      return floor(sum, 2);
+    },
     updateINCC() {
       db
         .ref()

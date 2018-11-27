@@ -1,11 +1,14 @@
 <template>
-  <td @click="$emit('toggleLock')"><font-awesome-icon :icon="icon" :class="{locked:isLocked}" /></td>
+  <td @click="$emit('toggleLock')">
+    <font-awesome-icon :icon="icon" :class="{locked:isLocked}"/>
+  </td>
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import faLock from "@fortawesome/fontawesome-free-solid/faLock";
-import faLockOpen from "@fortawesome/fontawesome-free-solid/faLockOpen";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+library.add([faLock, faLockOpen]);
 export default {
   components: { FontAwesomeIcon },
   props: {

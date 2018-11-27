@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <krpano :xml="xml"
+    <krpano
+      :xml="xml"
       :lazy-load="true"
       @panoCreated="init"
       :scene="scene"
@@ -8,54 +9,85 @@
     />
     <div class="opcoes">
       <div class="panel">
-        <h4 class="section-center" 
+        <h4
+          class="section-center"
           v-intro="'Verifique se o número da unidade e a tipologia estão corretos. Se for proprietário de mais de uma unidade será possível escolhê-la aqui'"
-         v-intro-step="1">Personalizando unidade &nbsp;
+          v-intro-step="1"
+        >
+          Personalizando unidade &nbsp;
           <select v-if="tipologia" @change="changeApto">
             <option v-for="apto in nomesUnidades" :key="apto" :value="apto">{{apto}}</option>
-          </select> :
+          </select>
+          :
           {{tipologia|tipologia}}
         </h4>
         <section class="opItem">
           <div class="section-titles">
-            <h4 @click="sectionExpanded = !sectionExpanded" style="cursor:pointer;" class="section-left">Kit Acabamentos</h4>
+            <h4
+              @click="sectionExpanded = !sectionExpanded"
+              style="cursor:pointer;"
+              class="section-left"
+            >Kit Acabamentos</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op1')|currency}}</h4>
           </div>
-          <div  v-intro="'Escolha o acabamento. As opções Clássico e Contemporâneo adicionam revestimentos e mais opções de personalização.'" 
-          v-intro-step="3"
-          class="opcoes-nav">
-            <button :disabled="lockdown" class="tab" :class="[kit === 'padrao' ? 'active' : '', {locked:lockdown}]" @click="kit='padrao'">Padrão</button>
-            <button :disabled="lockdown" class="tab" :class="[kit === 'classico' ? 'active' : '', {locked:lockdown}]" @click="kit='classico'">Clássico</button>
-            <button :disabled="lockdown" class="tab" :class="[kit === 'contemporaneo' ? 'active' : '', {locked:lockdown}]" @click="kit='contemporaneo'">Contemporâneo</button>
+          <div
+            v-intro="'Escolha o acabamento. As opções Clássico e Contemporâneo adicionam revestimentos e mais opções de personalização.'"
+            v-intro-step="3"
+            class="opcoes-nav"
+          >
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[kit === 'padrao' ? 'active' : '', {locked:lockdown}]"
+              @click="kit='padrao'"
+            >Padrão</button>
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[kit === 'classico' ? 'active' : '', {locked:lockdown}]"
+              @click="kit='classico'"
+            >Clássico</button>
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[kit === 'contemporaneo' ? 'active' : '', {locked:lockdown}]"
+              @click="kit='contemporaneo'"
+            >Contemporâneo</button>
           </div>
           <div class="opcoes-nav">
-            <a @click="toggleKitDetails" class="detalhes"
-              v-intro="'Clicando aqui você pode ver todos os detalhes de cada kit'" 
+            <a
+              @click="toggleKitDetails"
+              class="detalhes"
+              v-intro="'Clicando aqui você pode ver todos os detalhes de cada kit'"
               v-intro-step="4"
             >{{kitDetailsMsg}}</a>
-
           </div>
-          
         </section>
 
         <section class="opItem">
-          <div class="section-titles"
-          >
+          <div class="section-titles">
             <h4 class="section-left">Piso áreas secas</h4>
             <h4 v-if="tipologia" class="section-right">{{getCost('op2')|currency}}</h4>
           </div>
-          <div class="opcoes-nav"
-            v-intro="'Nos kits Clássico e Contemporâneo você pode decidir se já quer receber as áreas secas com piso.'" 
+          <div
+            class="opcoes-nav"
+            v-intro="'Nos kits Clássico e Contemporâneo você pode decidir se já quer receber as áreas secas com piso.'"
             v-intro-step="5"
           >
-            <button :disabled="lockdown" class="tab" :class="[op2 ? '' : 'active', {locked:lockdown}]"
-            @click="op2=false" :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''">
-              Contrapiso
-            </button>
-            <button :disabled="lockdown" class="tab" :class="[op2  ? 'active' : '', {locked:lockdown}]"
-            @click="op2=true" v-if="kit !== 'padrao'">
-              Opção do kit
-            </button>
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[op2 ? '' : 'active', {locked:lockdown}]"
+              @click="op2=false"
+              :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''"
+            >Contrapiso</button>
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[op2  ? 'active' : '', {locked:lockdown}]"
+              @click="op2=true"
+              v-if="kit !== 'padrao'"
+            >Opção do kit</button>
           </div>
         </section>
 
@@ -64,31 +96,50 @@
             <h4 class="section-left">Paredes cozinha / lavanderia</h4>
             <h4 v-if="tipologia" class="section-right">sem alteração</h4>
           </div>
-          <div class="opcoes-nav"
-            v-intro="'Nos kits Clássico e Contemporâneo você pode substituir o porcelanato por pintura nas paredes da cozinha e lavanderia.'" 
+          <div
+            class="opcoes-nav"
+            v-intro="'Nos kits Clássico e Contemporâneo você pode substituir o porcelanato por pintura nas paredes da cozinha e lavanderia.'"
             v-intro-step="6"
           >
-            <button :disabled="lockdown" class="tab" :class="[op3 ? '' : 'active', {locked:lockdown}]"
-            @click="op3=false" :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''">
-              Porcelanato
-            </button>
-            <button :disabled="lockdown" class="tab" :class="[op3  ? 'active' : '', {locked:lockdown}]"
-            @click="op3=true" v-if="kit !== 'padrao'">
-              Pintura
-            </button>
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[op3 ? '' : 'active', {locked:lockdown}]"
+              @click="op3=false"
+              :title="kit === 'padrao' ? 'Para mais opções escolha kit Clássico ou Contemporâneo' :''"
+            >Porcelanato</button>
+            <button
+              :disabled="lockdown"
+              class="tab"
+              :class="[op3  ? 'active' : '', {locked:lockdown}]"
+              @click="op3=true"
+              v-if="kit !== 'padrao'"
+            >Pintura</button>
           </div>
         </section>
-        <div v-intro="'Esses itens estão disponíveis inclusive para o kit Padrão.'" 
-              v-intro-step="7" style="display: flex;flex-direction: column;">
+        <div
+          v-intro="'Esses itens estão disponíveis inclusive para o kit Padrão.'"
+          v-intro-step="7"
+          style="display: flex;flex-direction: column;"
+        >
           <section class="opItem">
             <div class="section-titles">
               <h4 class="section-left">Instalação kit aquecedor</h4>
               <h4 v-if="tipologia" class="section-right">{{getCost('op4')|currency}}</h4>
             </div>
-            <div class="opcoes-nav"
-            >
-              <button :disabled="lockdown" class="tab" :class="[op4 ? '' : 'active', {locked:lockdown}]" @click="op4=false">Não</button>
-              <button :disabled="lockdown" class="tab" :class="[op4  ? 'active' : '', {locked:lockdown}]" @click="op4=true">Sim</button>
+            <div class="opcoes-nav">
+              <button
+                :disabled="lockdown"
+                class="tab"
+                :class="[op4 ? '' : 'active', {locked:lockdown}]"
+                @click="op4=false"
+              >Não</button>
+              <button
+                :disabled="lockdown"
+                class="tab"
+                :class="[op4  ? 'active' : '', {locked:lockdown}]"
+                @click="op4=true"
+              >Sim</button>
             </div>
           </section>
 
@@ -98,8 +149,18 @@
               <h4 v-if="tipologia" class="section-right">{{getCost('op5')|currency}}</h4>
             </div>
             <div class="opcoes-nav">
-              <button :disabled="lockdown" class="tab" :class="[op5 ? '' : 'active', {locked:lockdown}]" @click="op5=false">Não</button>
-              <button :disabled="lockdown" class="tab" :class="[op5  ? 'active' : '', {locked:lockdown}]" @click="op5=true">Sim</button>
+              <button
+                :disabled="lockdown"
+                class="tab"
+                :class="[op5 ? '' : 'active', {locked:lockdown}]"
+                @click="op5=false"
+              >Não</button>
+              <button
+                :disabled="lockdown"
+                class="tab"
+                :class="[op5  ? 'active' : '', {locked:lockdown}]"
+                @click="op5=true"
+              >Sim</button>
             </div>
           </section>
 
@@ -109,77 +170,109 @@
               <h4 v-if="tipologia" class="section-right">{{getCost('op6')|currency}}</h4>
             </div>
             <div class="opcoes-nav">
-              <button :disabled="lockdown" class="tab" :class="[op6 ? '' : 'active', {locked:lockdown}]" @click="op6=false">Não</button>
-              <button :disabled="lockdown" class="tab" :class="[op6  ? 'active' : '', {locked:lockdown}]" @click="op6=true">Sim</button>
+              <button
+                :disabled="lockdown"
+                class="tab"
+                :class="[op6 ? '' : 'active', {locked:lockdown}]"
+                @click="op6=false"
+              >Não</button>
+              <button
+                :disabled="lockdown"
+                class="tab"
+                :class="[op6  ? 'active' : '', {locked:lockdown}]"
+                @click="op6=true"
+              >Sim</button>
             </div>
           </section>
         </div>
       </div>
-      
+
       <div v-if="tipologia" class="panel">
         <h4 class="section-center">Resumo</h4>
-        
-          <h4 class="opItemValor">Valor total do orçamento: {{custoTotal|currency}}</h4>
-          <h4 v-if="numMaxParcelas" class="opItemValor">Condições de pagamento:
-            <select :disabled="lockdown" v-model="opcaoParcelas"
-              v-intro="'Número de parcelas'" 
-              v-intro-step="8"
-            >
-              <option v-for="n in numMaxParcelas" :value="n" :key="n">
-                {{n}} x de {{valorParcela(n)|currency}}
-              </option>
-            </select>
-          </h4>
-          <button @click="showDocModal = true" class="btn-solicitacao"
-            v-intro="'Confira todas suas escolhas'" 
-            v-intro-step="9"
+
+        <h4 class="opItemValor">Valor total do orçamento: {{custoTotal|currency}}</h4>
+        <h4 v-if="numMaxParcelas" class="opItemValor">
+          Condições de pagamento:
+          <select
+            :disabled="lockdown"
+            v-model="opcaoParcelas"
+            v-intro="'Número de parcelas'"
+            v-intro-step="8"
           >
-            {{lockdown ? "VER SOLICITAÇÃO GERADA"
-            : "GERAR SOLICITAÇÃO"
-            }}
-            </button>
-      </div>
-      <a class="link-manual" href="manual-de-preenchimento-solicitacao-de-personalizacao-site.pdf"
-        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
-        v-intro="'Ainda tem dúvidas? No manual tem instruções detalhadas! Não hesite em entrar em contato com nossa equipe.'" 
-              v-intro-step="10"
+            <option
+              v-for="n in numMaxParcelas"
+              :value="n"
+              :key="n"
+            >{{n}} x de {{valorParcela(n)|currency}}</option>
+          </select>
+        </h4>
+        <button
+          @click="showDocModal = true"
+          class="btn-solicitacao"
+          v-intro="'Confira todas suas escolhas'"
+          v-intro-step="9"
         >
-        Manual de Preenchimento
-      </a>
+          {{lockdown ? "VER SOLICITAÇÃO GERADA"
+          : "GERAR SOLICITAÇÃO"
+          }}
+        </button>
+      </div>
+      <a
+        class="link-manual"
+        href="manual-de-preenchimento-solicitacao-de-personalizacao-site.pdf"
+        download="Manual-de-Preenchimento-Solicitação-de-Personalização-site.pdf"
+        v-intro="'Ainda tem dúvidas? No manual tem instruções detalhadas! Não hesite em entrar em contato com nossa equipe.'"
+        v-intro-step="10"
+      >Manual de Preenchimento</a>
       <modal v-if="showDocModal" @close="showDocModal=false">
         <div slot="body" style="height:80vh;width:90vw;">
-          <bosc-report/>
+          <bosc-report ref="print"/>
         </div>
         <template slot="footer">
           <div v-if="!lockdown" style="margin-right:auto;flex:1 1 320px;">
             <input v-model="flagSolicitacao" type="checkbox" name="agreement" id="agreement">
-            <label for="agreement">Li e aceito as condições do termo de solicitação. Entendo que ao confirmar não poderei alterar as opções.</label>
+            <label
+              for="agreement"
+            >Li e aceito as condições do termo de solicitação. Entendo que ao confirmar não poderei alterar as opções.</label>
           </div>
-          <button class="modal-button" @click="showDocModal = false">VOLTAR</button>
-
-          <button class="modal-button primary" v-if="!lockdown" @click="confirmOptions" :disabled="!flagSolicitacao" >CONFIRMAR</button>
+          <button class="modal-button" @click="showDocModal = false">fechar</button>
+          
+          <button class="modal-button primary" @click="print">imprimir</button>
+          <button
+            class="modal-button primary"
+            v-if="!lockdown"
+            @click="confirmOptions"
+            :disabled="!flagSolicitacao"
+          >CONFIRMAR</button>
         </template>
       </modal>
       <modal v-if="showWelcomeModal" @close="showWelcomeModal=false">
-          <div slot="header">
-          <img src="@/assets/bosc/bosc.png" alt="Logo Bosc" style="display: block;
-              margin: 0 auto 10px;">  
-          <h3 >Prezado cliente seja bem-vindo!</h3>
-          </div>
-          <p slot="body" style="width:300px;">Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
-            personalização à sua disposição.
-          </p>
-          <p slot="body" style="width:300px;">
-            Faça um tour para entender como fazer melhor proveito desta ferramenta.
-          </p>
+        <div slot="header">
+          <img
+            src="@/assets/bosc/bosc.png"
+            alt="Logo Bosc"
+            style="display: block;
+              margin: 0 auto 10px;"
+          >
+          <h3>Prezado cliente seja bem-vindo!</h3>
+        </div>
+        <p slot="body" style="width:300px;">
+          Parabéns por se tornar um cliente Piemonte, agora você possui um setor técnico de
+          personalização à sua disposição.
+        </p>
+        <p
+          slot="body"
+          style="width:300px;"
+        >Faça um tour para entender como fazer melhor proveito desta ferramenta.</p>
 
         <template slot="footer">
           <button class="modal-button primary" @click="tourStart">INICIAR TOUR</button>
         </template>
       </modal>
-
-    </div><!-- raiz opções -->
-  </div><!-- raiz home -->
+    </div>
+    <!-- raiz opções -->
+  </div>
+  <!-- raiz home -->
 </template>
 
 <script>
@@ -327,6 +420,21 @@ export default {
     }
   },
   methods: {
+    print() {
+      const relatorio = this.$refs.print.$el;
+      const cloned = relatorio.cloneNode(true);
+      let section = document.getElementById("print");
+
+      if (!section) {
+        section = document.createElement("div");
+        section.id = "print";
+        document.body.appendChild(section);
+      }
+
+      section.innerHTML = "";
+      section.appendChild(cloned);
+      window.print();
+    },
     tourStart() {
       this.showWelcomeModal = false;
       this.$intro()
@@ -347,8 +455,7 @@ export default {
       }
     },
     confirmOptions() {
-      db
-        .ref("empreendimentos/bosc/" + this.apto)
+      db.ref("empreendimentos/bosc/" + this.apto)
         .update(
           {
             lock: true,
@@ -365,7 +472,9 @@ export default {
             }
           },
           () => {
-            alert("Dados registrados!");
+            alert(
+              'Dados registrados! Você pode imprimir a solicitação clicando em "VER SOLICITAÇÃO GERADA".'
+            );
             this.showDocModal = false;
             this.getUserInfo();
           }
@@ -399,8 +508,7 @@ export default {
     },
     getUserInfo() {
       if (!this.userEmail) return;
-      db
-        .ref("empreendimentos/bosc")
+      db.ref("empreendimentos/bosc")
         .orderByChild("adm/email")
         .equalTo(this.userEmail)
         .once("value")
@@ -426,11 +534,11 @@ export default {
       if (ap) {
         if (this.unidades[ap].private) {
           this.kit = this.unidades[ap].private.kit;
-          this.op2 = this.unidades[ap].private.op2;
-          this.op3 = this.unidades[ap].private.op3;
-          this.op4 = this.unidades[ap].private.op4;
-          this.op5 = this.unidades[ap].private.op5;
-          this.op6 = this.unidades[ap].private.op6;
+          this.op2 = this.unidades[ap].private.op2 || false;
+          this.op3 = this.unidades[ap].private.op3 || false;
+          this.op4 = this.unidades[ap].private.op4 || false;
+          this.op5 = this.unidades[ap].private.op5 || false;
+          this.op6 = this.unidades[ap].private.op6 || false;
           this.opcaoParcelas = this.unidades[ap].private.numParcelas;
         } else {
           this.kit = "padrao";
@@ -645,6 +753,25 @@ a.link-manual:hover {
   .home {
     margin: 0;
     border: none;
+  }
+}
+@media screen {
+  #print {
+    display: none;
+  }
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print,
+  #print * {
+    visibility: visible;
+  }
+  #print {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 }
 </style>
