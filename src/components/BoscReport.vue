@@ -18,7 +18,7 @@
     <h2>5. Central de aspiração</h2>
     <img v-if="this.parent.op5" class="responsive" src="@/assets/bosc/comum_aspiracao.jpg" alt>
     <p v-else>Não incluída no pedido.</p>
-    <h2>6. Assento eletrônico</h2>
+    <h2>6. Assento eletrônico (banheiro suíte)</h2>
     <img v-if="this.parent.op6" class="responsive" src="@/assets/bosc/comum_assento.jpg" alt>
     <p v-else>Não incluído no pedido.</p>
     <div style="page-break-inside: avoid;">
@@ -49,7 +49,7 @@
           <td class="tab-right">{{this.parent.getCost("op5") | currency}}</td>
         </tr>
         <tr>
-          <td>6. Assento eletrônico</td>
+          <td>6. Assento eletrônico (banheiro suíte)</td>
           <td class="tab-right">{{this.parent.getCost("op6") | currency}}</td>
         </tr>
         <tr>

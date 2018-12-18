@@ -166,7 +166,7 @@
 
           <section class="opItem">
             <div class="section-titles">
-              <h4 class="section-left">Assento sanitário</h4>
+              <h4 class="section-left">Assento eletrônico (banheiro suíte)</h4>
               <h4 v-if="tipologia" class="section-right">{{getCost('op6')|currency}}</h4>
             </div>
             <div class="opcoes-nav">
