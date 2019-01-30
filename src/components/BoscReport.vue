@@ -8,7 +8,13 @@
     <img class="responsive" :src="require(`@/assets/bosc/${this.parent.kit}_tlm.jpg`)" alt>
     <img class="responsive" :src="require(`@/assets/bosc/${this.parent.kit}_lavabo.jpg`)" alt>
     <h2>2. Pisos áreas secas</h2>
-    <img class="responsive" :src="require(`@/assets/bosc/${this.parent.kit}_areas-secas.jpg`)" alt>
+    <img
+      v-if="this.parent.op2"
+      class="responsive"
+      :src="require(`@/assets/bosc/${this.parent.kit}_areas-secas.jpg`)"
+      alt
+    >
+    <img v-else class="responsive" :src="require(`@/assets/bosc/padrao_areas-secas.jpg`)" alt>
     <h2>3. Revestimento da parede da cozinha</h2>
     <p v-if="this.parent.op3">Substituição do porcelanato por pintura branca.</p>
     <p v-else>Porcelanato NUVOLA MATE BOLD 35x65cm CEUSA Cod. 332719.</p>

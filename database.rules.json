@@ -1,0 +1,22 @@
+{
+  "rules": {
+    
+      "empreendimentos": {
+        "bosc": {
+          "$unidade":{
+              ".write": "auth.token.email === data.child('adm/email').val() ||
+                         auth.token.admin === true",
+              ".read": "auth.token.email === data.child('adm/email').val()",
+            },
+    			".read": "auth !== null",
+          ".indexOn": "adm/email",
+            
+        }
+      },
+      "incc": {
+        ".write": "auth.token.admin === true",
+    		".read": "auth !== null"
+      }
+      
+  }
+}
