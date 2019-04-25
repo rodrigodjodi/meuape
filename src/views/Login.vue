@@ -68,9 +68,7 @@ export default {
       this.sendEmailLink();
     },
     sendEmailLink() {
-      //actionCodeSettings.url = process.env.VUE_APP_URL + "finishlogin";
-      actionCodeSettings.url =
-        "https://sistema-pmnt.firebaseapp.com/" + "finishlogin";
+      actionCodeSettings.url = process.env.VUE_APP_URL + "finishlogin";
       auth
         .sendSignInLinkToEmail(this.email, actionCodeSettings)
         .then(() => {
