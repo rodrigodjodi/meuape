@@ -19,7 +19,7 @@
     <p v-if="this.parent.op3">Substituição do porcelanato por pintura branca.</p>
     <p v-else>Porcelanato NUVOLA MATE BOLD 35x65cm CEUSA Cod. 332719.</p>
     <h2>4. Instalação de kit aquecedor</h2>
-    <img v-if="this.parent.op4" class="responsive" src="@/assets/bosc/comum_aquecedor.jpg" alt>
+    <img v-if="this.parent.op4" class="responsive" :src="caminhoImagemAquecedor" alt>
     <p v-else>Não incluído no pedido.</p>
     <h2>5. Central de aspiração</h2>
     <img v-if="this.parent.op5" class="responsive" src="@/assets/bosc/comum_aspiracao.jpg" alt>
@@ -86,6 +86,15 @@ export default {
     return {};
   },
   computed: {
+    caminhoImagemAquecedor(){
+      let url
+      if (this.parent.tipologia==='duplex') {
+        url =  require("@/assets/bosc/comum_aquecedor-duplex.jpg")
+      } else {
+        url =  require("@/assets/bosc/comum_aquecedor.jpg")
+      }
+      return url;
+    },
     dataExtenso() {
       let meses = [
         "Janeiro",
