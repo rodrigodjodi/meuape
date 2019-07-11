@@ -298,7 +298,7 @@ export default {
       showDocModal: false,
       showWelcomeModal: false,
       constants: {
-        PRAZO_MAX_QUITACAO: new Date(2019, 7, 31),
+        PRAZO_MAX_QUITACAO: new Date(2019, 8, 31),
         VALOR_MINIMO_PARCELA: 2000
       },
       apto: "",
